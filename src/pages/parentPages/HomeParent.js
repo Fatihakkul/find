@@ -205,27 +205,32 @@ const HomeParent = props => {
 
     socketClient.on('offerOranswer', (sdp) => {
       //  this.textref.value = JSON.stringify(sdp)
-      console.log(sdp.type, "offer comdidmount")
-
+      console.log(sdp, "offer comdidmount")
+      if( sdp.parentUniqueId){
+        device.setRemoteDescription(new RTCSessionDescription(sdp.payload))
+      }
       // set sdp as remote descriptio
 
-      device.setRemoteDescription(new RTCSessionDescription(sdp.payload))
+   
 
 
 
     })
     
     socketClient.on('candidate', (candidate) => {
-      console.log("candidate aaa--------------------", candidate.type)
+      console.log("candidate aaa--------------------", candidate.parentUniqueId)
 
       // console.log('From Peer... ', JSON.stringify(candidate))
       // this.candidates = [...this.candidates, candidate]
-      device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-        //  createAnswer()
-
-        console.log("thenin içi")
-      })
-
+      if( candidate.parentUniqueId){
+        device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
+          //  createAnswer()
+  
+          console.log("thenin içi")
+        })
+  
+      }
+     
 
 
     })
@@ -328,8 +333,8 @@ const HomeParent = props => {
           socketID: socketClient.id,
           payload: sdp,
           type: "offer",
-          receiverUniqueId: choosed.uniqueId,
-          senderUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
+          childUniqueId: choosed.uniqueId,
+          //parentUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
           //parentuuid sender 
           //childuuid reciver
         })

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, View, Text, Pressable, StatusBar, Alert, Button, ActivityIndicator,Image } from 'react-native'
+import { SafeAreaView, View, Text, Pressable, StatusBar, Alert, Button, ActivityIndicator,Image,Platform } from 'react-native'
 import Context from '../../context/store'
 import styles from '../../style/parentStyle/LoginStyle'
 import {
@@ -61,22 +61,26 @@ const Login = props => {
   // }
   async function onFacebookButtonPress() {
     // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+    if (Platform.OS === "android") {
+      // LoginManager.setLoginBehavior("web_only")
+      LoginManager.setLoginBehavior("web_only")
+      }
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']).catch(err=>console.log(err,"err"))
 
     if (result.isCancelled) {
       
       throw 'User cancelled the login process';
     }
-
+    console.log(result,"sre")
     // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
+    const data = await AccessToken.getCurrentAccessToken().catch(err=>console.log(err,"errr"))
 
     if (!data) {
       throw 'Something went wrong obtaining access token';
     }
 
     // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken)
 
     console.log(data.accessToken, " -", facebookCredential)
     let responseUser = await Axios.get('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + data.accessToken)
