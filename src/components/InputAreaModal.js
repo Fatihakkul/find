@@ -5,6 +5,7 @@ import Axios from 'axios'
 import Context from '../context/store'
 import COLORS from '../style/Colors'
 import API from '../data/api'
+import strings from '../strings'
  
 const width = Dimensions.get("window").width
 const height = Dimensions.get("window").height
@@ -59,7 +60,7 @@ const InputAreaModal =props=>{
 
                     <View style={styles.inputContainer}> 
                         <TextInput 
-                            placeholder="Bölge adı yazınız"
+                            placeholder={strings.changearea}
                             onChangeText={(text)=>setArea(text)}
                             value={area}
                             style={{color : COLORS.black}}
@@ -70,7 +71,7 @@ const InputAreaModal =props=>{
                    :
                    <Pressable onPress={setLocation}>
                         <View style={styles.buttonContainer}>
-                            <Text style={styles.title}>Kaydet</Text>
+                            <Text style={styles.title}>{strings.save}</Text>
                         </View>
                     </Pressable>}
                 </View>
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer : {
         backgroundColor : COLORS.green,
-        width : width*0.2,
+        width : width*0.3,
         paddingVertical : 5,
         alignItems : "center",
         justifyContent : "center",

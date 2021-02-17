@@ -316,9 +316,7 @@ const HomeChild = props => {
         //     })
         // }, 5000);
 
-
-
-    }, [])
+}, [])
 
  
     const getChild =async()=>{

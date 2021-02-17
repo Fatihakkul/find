@@ -1,11 +1,11 @@
 import React,{useRef , useEffect ,useContext} from "react" 
-import { SafeAreaView , View ,Text ,StyleSheet, Pressable, Dimensions , Platform, PermissionsAndroid,Image} from "react-native"
+import { SafeAreaView , View ,Text ,StyleSheet, Pressable, Dimensions,Alert , Platform, PermissionsAndroid,Image} from "react-native"
 import Swiper from "react-native-swiper"
 import LottieView from "lottie-react-native"
 import COLORS from "../style/Colors"
 import Context from "../context/store"
 import ImagePicker from "react-native-image-picker"
-
+import strings from "../strings"
 
 const {width,height} = Dimensions.get('window')
 
@@ -14,6 +14,8 @@ const SwiperPage =(props)=>{
     const {state,dispatch}=useContext(Context)
     useEffect(()=>{
      Platform.OS === "android" ? requestCameraPermission() : null
+     console.log(strings.getInterfaceLanguage())
+     //de-DE  tr-TR 
     },[])
 
     

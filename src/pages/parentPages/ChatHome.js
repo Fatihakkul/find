@@ -5,6 +5,7 @@ import Axios from 'axios'
 import { ChatListItem, Header } from '../../components'
 import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
+import strings from '../../strings'
 
 const { width, height } = Dimensions.get('window')
 const ChatHome = (props) => {
@@ -78,7 +79,7 @@ const ChatHome = (props) => {
 
                     <TouchableOpacity onPressOut={() => getlocationChild(-1, -1)} >
                         <View style={[styles.listItem, childIndex === -1 ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: childIndex === -1 ? COLORS.mor : COLORS.primary }]}>
-                            <Text style={styles.family}>AİLE</Text>
+                            <Text style={styles.family}>{strings.family}</Text>
                         </View>
                     </TouchableOpacity>
                     {

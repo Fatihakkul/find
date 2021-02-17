@@ -9,7 +9,7 @@ const style = StyleSheet.create({
     family : {
         fontWeight : "bold",
         color : COLORS.white,
-        fontSize : 17
+        fontSize : 15
     },
     listItem: {
         width: 50,

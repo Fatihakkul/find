@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions, PermissionsAndroid ,Platform} from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions ,PermissionsAndroid ,Alert,Platform} from "react-native"
 import Context from '../context/store'
 import Axios from "axios"
 import Geolocation from '@react-native-community/geolocation'

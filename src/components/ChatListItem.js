@@ -42,6 +42,7 @@ const ChatListItem = (props) => {
             receiverUniqueId: props.item.uniqueId,
             limit: Math.floor(Math.random() * 13) + 4
         }).catch(err => console.log(err, "err"))
+        console.log(response.data.data.response,"rrr")
        setMessage(response.data.data.response)
         setTimeout(() => {
             setLoading(false)

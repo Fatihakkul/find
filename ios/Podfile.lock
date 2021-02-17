@@ -434,10 +434,14 @@ PODS:
     - React-jsi (= 0.63.3)
   - ReactNativeIncallManager (3.3.0):
     - React
+  - ReactNativeLocalization (2.1.6):
+    - React
   - RNCAsyncStorage (1.13.4):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPicker (1.9.11):
+    - React-Core
   - RNDeviceInfo (7.4.0):
     - React-Core
   - RNFBApp (10.8.0):
@@ -537,8 +541,10 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
+  - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
@@ -662,10 +668,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
+  ReactNativeLocalization:
+    :path: "../node_modules/react-native-localization"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFBApp:
@@ -762,8 +772,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
   ReactNativeIncallManager: db7d5f5ae281a43d7179ba24875ff477dc47f229
+  ReactNativeLocalization: 9abfb1717d6c6f2e3a4e444c4402d52acbf784cc
   RNCAsyncStorage: 0701cb7395f06d744184641241888a0eec0e2f2a
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNCPicker: 6780c753e9e674065db90d9c965920516402579d
   RNDeviceInfo: febcb25b09201a312c66c36ecc1f155c5a43eecc
   RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
   RNFBAuth: 7c6c9e7289d98709cd5d1333d829925f81823375

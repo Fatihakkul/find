@@ -29,7 +29,9 @@ import {
 import Geolocation from "@react-native-community/geolocation"
 import Axios from 'axios'
 import API from '../../data/api'
-
+import { Picker } from '@react-native-picker/picker';
+import strings from "../../strings"
+const { width, height } = Dimensions.get("window")
 
 const Settings = props => {
 
@@ -41,19 +43,19 @@ const Settings = props => {
     const [visible, setVisible] = useState(false)
     const [number, setNumber] = useState()
     const [childInfo, setChildInfo] = useState(false)
-    const [child,setChild]=useState(null)
-
+    const [child, setChild] = useState(null)
+    const [lang, setLang] = useState(strings.getLanguage())
     useEffect(() => {
         Geolocation.getCurrentPosition(succes => {
             console.log(succes, "coordinate")
         })
-      //  console.log(state.userlight.data.response.picture,"ddd")
-        state.type === 0 ?   null : getUser()
+        //  console.log(state.userlight.data.response.picture,"ddd")
+        state.type === 0 ? null : getUser()
         // getChild()
         // setCode(state.user.userData.family.parents.code )
     }, [])
 
-  
+
     const logout = async () => {
         try {
             await AsyncStoreage.clear().then(() => console.log("success"))
@@ -68,24 +70,24 @@ const Settings = props => {
     }
 
 
-    const getUser =async()=>{
-        let response = await Axios.post(API.base_url+API.get_user,{
-            id : state.user.userData[0].family.parents[0].id,
-            role : "parent"
+    const getUser = async () => {
+        let response = await Axios.post(API.base_url + API.get_user, {
+            id: state.user.userData[0].family.parents[0].id,
+            role: "parent"
         })
-        dispatch({type : "SET_USERLIGHT" , userlight : response.data})
-        console.log(response,"pranet")
+        dispatch({ type: "SET_USERLIGHT", userlight: response.data })
+        console.log(response, "pranet")
     }
 
-    const getChild =async()=>{
-        let response = await Axios.post(API.base_url+API.get_user,{
-            role : "children",
-            id : 2
+    const getChild = async () => {
+        let response = await Axios.post(API.base_url + API.get_user, {
+            role: "children",
+            id: 2
         })
-        console.log(response , "children")
+        console.log(response, "children")
     }
 
-    function showInfo(i){
+    function showInfo(i) {
         console.log("selam")
         setChild(i)
         setChildInfo(!childInfo)
@@ -102,10 +104,10 @@ const Settings = props => {
             )
         } else {
             return (
-                <Pressable onPress={()=>showInfo(item)}>
+                <Pressable onPress={() => showInfo(item)}>
                     <View style={[styles.childlist, { height: tileSize, width: tileSize }]}>
                         <View style={{ width: 70, height: 70, borderRadius: 35, overflow: "hidden" }}>
-                            <Image style={{ width: 70, height: 70 }} source={item.picture != null ? {uri : item.picture} :   require('../../assets/child.jpg')} />
+                            <Image style={{ width: 70, height: 70 }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
                         </View>
                         <Text style={{ color: COLORS.black, fontWeight: "bold" }}>{item.name}</Text>
                     </View>
@@ -115,17 +117,21 @@ const Settings = props => {
 
     }
 
+    function changeLanguage (v){
+        strings.setLanguage(v)
+        setLang(v)
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.container, { paddingBottom: 70 }]}>
                 <AddChildModal isVisible={visible} code={code} />
-                <ChildInfoModal data={child} isVisible={childInfo}  onBackdropPress={()=>setChildInfo(!childInfo)}/>
+                <ChildInfoModal data={child} isVisible={childInfo} onBackdropPress={() => setChildInfo(!childInfo)} />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.settingsTitle}>HESABIM</Text>
+                    <Text style={styles.settingsTitle}>{strings.account}</Text>
                 </View>
                 <View style={styles.infoContainer}>
                     <View style={{ width: 76, alignItems: "center", justifyContent: "center", height: 76, borderRadius: 38, overflow: "hidden" }}>
-                    <Image style={{ width: 100, height: 100, resizeMode: "stretch" }} source={state.type === 0 ? require('../../assets/child.jpg')    : state.userlight != null && state.userlight.data.response.picture != null ? {uri :  state.userlight.data.response.picture  } : state.user.userData != undefined &&state.user.userData[0].family.parents[0].picture != null ?{ uri :state.user.userData[0].family.parents[0].picture} :  require('../../assets/child.jpg')} />
+                        <Image style={{ width: 100, height: 100, resizeMode: "stretch" }} source={state.type === 0 ? require('../../assets/child.jpg') : state.userlight != null && state.userlight.data.response.picture != null ? { uri: state.userlight.data.response.picture } : state.user.userData != undefined && state.user.userData[0].family.parents[0].picture != null ? { uri: state.user.userData[0].family.parents[0].picture } : require('../../assets/child.jpg')} />
                     </View>
                     <View style={styles.info}>
                         <View style={styles.userInfoContainer}>
@@ -136,10 +142,28 @@ const Settings = props => {
                         </View>
 
                     </View>
-                    <View style={{justifyContent:"center"}}>
-                        <Icons name="chevron-forward" size={30} color={COLORS.settinText}  onPress={()=>props.navigation.navigate("editparent")}/>
+                    <View style={{ justifyContent: "center" }}>
+                        <Icons name="chevron-forward" size={30} color={COLORS.settinText} onPress={() => props.navigation.navigate("editparent")} />
                     </View>
-                </View> 
+                </View>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.settingsTitle}>{strings.language}</Text>
+                </View>
+                <View style={[styles.infoContainer, { flexDirection: "column", paddingVertical: 10, alignItems: "center" }]}>
+                    <Picker
+                        selectedValue={lang}
+                        style={{ width: width * 0.9, height: 30 }}
+                        mode="dropdown"
+                        itemStyle={{ width: width * 0.95 }}
+                        onValueChange={(value)=>changeLanguage(value)}
+                    >
+                        <Picker.Item label="TÜRKÇE" value="tr" />
+                        <Picker.Item label="ENGLISH" value="en" />
+                        <Picker.Item label="DEUTSCHE" value="de" />
+                    </Picker>
+
+
+                </View>
                 <View style={[styles.infoContainer, { paddingVertical: 0, overflow: "hidden", height: 126, marginTop: 10 }]}>
 
                     <View style={{ position: "absolute", zIndex: 2, left: 20, top: 10 }}>
@@ -154,19 +178,19 @@ const Settings = props => {
                     <Image style={{ width: screenWidth * 0.95, height: 130 }} source={require('../../assets/free.png')} />
                 </View>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.settingsTitle}>MEVCUT PLAN</Text>
+                    <Text style={styles.settingsTitle}>{strings.mypack}</Text>
                 </View>
                 <View style={[styles.infoContainer, { paddingVertical: 20, alignItems: "center" }]}>
                     <Text style={[styles.settingsTitle, { color: COLORS.settinText }]}>FREE PLAN</Text>
                     <Pressable onPress={() => props.navigation.navigate("package")}>
-                        <ImageBackground style={{ width: 150, height: 40, alignItems: "center", justifyContent: "center", borderRadius: 20, overflow: "hidden" }} source={require('../../assets/updateprice.png')}>
-                            <Text style={[styles.settingsTitle, { color: COLORS.white }]}>PAKETİ YÜKSELT</Text>
+                        <ImageBackground style={{ width: 200, height: 40, alignItems: "center", justifyContent: "center", borderRadius: 20, overflow: "hidden" }} source={require('../../assets/updateprice.png')}>
+                            <Text style={[styles.settingsTitle, { color: COLORS.white }]}>{strings.update}</Text>
                         </ImageBackground>
                     </Pressable>
 
                 </View>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.settingsTitle}>AİLE ÜYELERİ</Text>
+                    <Text style={styles.settingsTitle}>{strings.familyuser}</Text>
                 </View>
                 <View style={[styles.infoContainer]}>
 
@@ -181,7 +205,7 @@ const Settings = props => {
                 </View>
 
                 <View style={styles.titleContainer}>
-                    <Text style={styles.settingsTitle}>DESTEK</Text>
+                    <Text style={styles.settingsTitle}>{strings.support}</Text>
                 </View>
                 <View style={styles.suppport}>
                     <Text style={styles.supportText}>FAQ</Text>
@@ -191,7 +215,7 @@ const Settings = props => {
                 </View>
                 <View style={[styles.suppport, { marginTop: 10 }]}>
                     <Pressable style={styles.settingsItemContainer} onPress={logout}>
-                        <Text style={styles.supportText}>Log Out</Text>
+                        <Text style={styles.supportText}>{strings.logout}</Text>
                     </Pressable>
 
                 </View>

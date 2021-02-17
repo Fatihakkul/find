@@ -11,7 +11,8 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
-
+  Alert,
+  Linking
 } from 'react-native'
 import {
   ChildHistoryModal,
@@ -46,7 +47,7 @@ import Axios from "axios"
 import API from "../../data/api"
 import Sound from "react-native-sound"
 import BackgroundJob from "react-native-background-actions"
-
+import strings from "../../strings"
 
 
 
@@ -559,7 +560,7 @@ const HomeParent = props => {
             <ScrollView horizontal={true} contentContainerStyle={{ paddingLeft: 20, alignItems: "center" }} style={{ height: 80, borderBottomLeftRadius: 25, borderBottomRightRadius: 25, elevation: 1, width: width, backgroundColor: "rgba(255,255,255,0.85)", alignSelf: "center", position: "absolute", top: Platform.OS === "android" ? 0 : 0 }}>
               <Pressable onPress={() => getlocationChild("all", -1)} >
                 <View style={[styles.listItem, childIndex === -1 ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: childIndex === -1 ? COLORS.mor : COLORS.primary }]}>
-                  <Text style={styles.family}>AİLE</Text>
+                  <Text style={styles.family}>{strings.family}</Text>
                 </View>
               </Pressable>
               {
