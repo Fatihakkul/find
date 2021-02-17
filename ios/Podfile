@@ -1,0 +1,56 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '11.0'
+
+target 'finmyfamily' do
+  config = use_native_modules!
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
+
+  use_react_native!(:path => config["reactNativePath"])
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  
+  
+  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-community/google-signin'
+  pod 'GoogleSignIn', '~> 5.0.2'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
+  target 'finmyfamilyTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+  # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable these next few lines.
+  use_flipper!({ 'Flipper' => '0.74.0' })
+  
+  post_install do |installer|
+    flipper_post_install(installer)
+  end
+end
+
+target 'finmyfamily-tvOS' do
+  # Pods for finmyfamily-tvOS
+
+  target 'finmyfamily-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+end
