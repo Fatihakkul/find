@@ -184,6 +184,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-iap')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
         implementation 'com.android.support:multidex:1.0.3'

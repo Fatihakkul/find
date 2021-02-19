@@ -48,7 +48,7 @@ const QRCodeScannerPage = props => {
         let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
             code: parseInt(e.data)
         }).catch(err => console.log(err, "err"))
-
+        console.log(response)
         if (response.data.responseStatus === 200) {
             const decoded = jwtDecode(response.data.data.response)
             console.log(decoded.data[0].parentId)
@@ -58,6 +58,8 @@ const QRCodeScannerPage = props => {
             AsyncStorage.setItem("@CHILDTOKEN", response.data.data.response)
             props.navigation.navigate("home")
 
+        }else {
+            props.navigation.goBack()
         }
     }
 

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "987801368430",
+    "project_id": "findmyfamily-85315",
+    "storage_bucket": "findmyfamily-85315.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987801368430:android:37ce6daeabdbb71f2b737f",
+        "android_client_info": {
+          "package_name": "com.finmyfamily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987801368430-o61dk3bpitr63c9bo9vr68ch0itt2s95.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.finmyfamily",
+            "certificate_hash": "07049a9ca20d651a1335d584657d255343d98b69"
+          }
+        },
+        {
+          "client_id": "987801368430-u90jhhbb6pgq3j10kivmtmu49hguq5tp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuYvW7KjwxrlqC3P5-1RzDYJl28wxa_Tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987801368430-u90jhhbb6pgq3j10kivmtmu49hguq5tp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "987801368430-36pj4ct693jen39a1lu7q3c2btsviopf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bilisim.findmyfamily"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

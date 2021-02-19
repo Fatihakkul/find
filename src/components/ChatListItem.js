@@ -5,7 +5,7 @@ import COLORS from '../style/Colors'
 import Colors from '../style/Colors'
 import Axios from "axios"
 import API from "../data/api"
-
+import Moment from "moment"
 const width = Dimensions.get("window").width
 
 const ChatListItem = (props) => {
@@ -43,6 +43,7 @@ const ChatListItem = (props) => {
             limit: Math.floor(Math.random() * 13) + 4
         }).catch(err => console.log(err, "err"))
         console.log(response.data.data.response,"rrr")
+       //console.log(Moment(response.data.data.response[0].createdAt).fromNow().toString())
        setMessage(response.data.data.response)
         setTimeout(() => {
             setLoading(false)
@@ -71,7 +72,7 @@ const ChatListItem = (props) => {
                         </View>
 
                         <View style={styles.clock}>
-                            {message.length > 0 ? <Text style={{ color: COLORS.lightGray, fontWeight: "bold" }}>{message != undefined ? message != null && message != undefined ? message[0].time : null : null}</Text> : null}
+                            {message.length > 0 ? <Text style={{ color: COLORS.lightGray, fontWeight: "bold" }}>{message != undefined ? message != null && message != undefined ? Moment(message[0].createdAt).fromNow().toString() : null : null}</Text> : null}
                         </View>
                     </View>
                 </View>
@@ -129,7 +130,7 @@ const ChatListItem = (props) => {
                                 </View>
 
                                 <View style={styles.clock}>
-                                    {message.length > 0 ? <Text style={{ color: COLORS.lightGray, fontWeight: "bold" }}>{message != undefined ? message != null && message != undefined ? message[0].time : null : null}</Text> : null}
+                                    {message.length > 0 ? <Text style={{ color: COLORS.lightGray, fontWeight: "bold" }}>{message != undefined ? message != null && message != undefined ? Moment(message[0].createdAt).fromNow().toString() : null : null}</Text> : null}
                                 </View>
                             </View>
                         </View>
