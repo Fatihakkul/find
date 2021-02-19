@@ -28,7 +28,7 @@ const { width, height } = Dimensions.get('window')
 
 export function ChildBottom() {
     return (
-        <Tab.Navigator initialRouteName="homechild" tabBarOptions={{ tabStyle: { borderRadius: 20, paddingVertical: 5, paddingHorizontal: 10 }, style: { width: width * 0.5, paddingLeft: 3, paddingRight: 3, paddingTop: 3, paddingBottom: 3, justifyContent: "center", alignItems: "center", position: "absolute", height: 45, bottom: 10, marginHorizontal: 30, borderRadius: 20, left: width * 0.15 }, showLabel: false, keyboardHidesTabBar: true }}>
+        <Tab.Navigator initialRouteName="homechild" tabBarOptions={{ tabStyle: { borderRadius: 20, paddingVertical: 5, paddingHorizontal: 10 }, style: { zIndex:3,width: width * 0.5, paddingLeft: 3, paddingRight: 3, paddingTop: 3, paddingBottom: 3, justifyContent: "center", alignItems: "center", position: "absolute", height: 45, bottom: 10, marginHorizontal: 30, borderRadius: 20, left: width * 0.15 }, showLabel: false, keyboardHidesTabBar: true }}>
 
             <Tab.Screen
 

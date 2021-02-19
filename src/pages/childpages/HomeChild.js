@@ -40,6 +40,7 @@ import { isPointWithinRadius } from "geolib"
 import API from "../../data/api"
 import Sound from "react-native-sound"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from "moment"
 
 let isFront = true
 let error = false
@@ -81,7 +82,7 @@ let parentId = null
 const device = new RTCPeerConnection(pc_config)
 
 mediaDevices.enumerateDevices().then(sourceInfos => {
-   // console.log(sourceInfos);
+    // console.log(sourceInfos);
     let videoSourceId;
     for (let i = 0; i < sourceInfos.length; i++) {
         const sourceInfo = sourceInfos[i];
@@ -91,7 +92,7 @@ mediaDevices.enumerateDevices().then(sourceInfos => {
     }
 })
 const local = mediaDevices.getUserMedia(constraints).then(stream => {
-   // console.log(stream, "background stream")
+    // console.log(stream, "background stream")
 
 
     device.addStream(stream)
@@ -103,16 +104,16 @@ let uniqueId = null
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
 let count = 0
 const createAnswer = () => {
-    if (count === 0) {
-        device.createAnswer(sdpConstraints).then(sdp => {
-           console.log(sdp, "create answer")
-            device.setLocalDescription(sdp)
-            socketRequest("offerOranswer", sdp, "answer")
-            //senderuuid childuuid
-            //receiveruuid parentuuid
 
-        })
-    }
+    device.createAnswer(sdpConstraints).then(sdp => {
+        console.log(sdp, "create answer")
+        device.setLocalDescription(sdp)
+        socketRequest("offerOranswer", sdp, "answer")
+        //senderuuid childuuid
+        //receiveruuid parentuuid
+
+    })
+
 
 }
 const socketRequest = (type, payload, tip) => {
@@ -125,7 +126,7 @@ const socketRequest = (type, payload, tip) => {
 }
 device.onicecandidate = (e) => {
     if (e.candidate) {
-     //   console.log(e.candidate)
+        //   console.log(e.candidate)
         socketRequest("candidate", e.candidate, "candidate")
         // canidate emit yapılacak
         // local : this.socket.id,
@@ -133,10 +134,10 @@ device.onicecandidate = (e) => {
     }
 }
 device.oniceconnectionstatechange = (e) => {
- //   console.log(e)
+    //   console.log(e)
 }
 device.onaddstream = (e) => {
-  //  console.log(e.stream, "streeemmmm")
+    //  console.log(e.stream, "streeemmmm")
 
 }
 
@@ -145,11 +146,11 @@ const setRemoteDescription = (desc) => {
 
     device.setRemoteDescription(new RTCSessionDescription(desc))
 }
-const  mySound = new Sound("my_sound.mp3" , Sound.MAIN_BUNDLE , (err)=>{
-    if(err){
+const mySound = new Sound("my_sound.mp3", Sound.MAIN_BUNDLE, (err) => {
+    if (err) {
         console.log(err, "error")
         return
-    }else {
+    } else {
         console.log("ss")
     }
 })
@@ -169,67 +170,62 @@ const taskRandom = async taskData => {
             //SoundPlayer.loadUrl("http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3")
             //=====>>>>> sound player ekleyince uygulama backgroundda çalışmıyor
 
-                console.log("background")
-        
+         console.log("background")
+
 
             Geolocation.getCurrentPosition(success => {
-                console.log(success, "seuccc",{
-                    location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
-                    uniqueId:childId,
-                    parentUniqueId: parentId,
-                    level : level
-                })
+             
                 socketClient.emit("live_location", {
                     location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
-                    uniqueId:childId,
+                    uniqueId: childId,
                     parentUniqueId: parentId,
-                    level : level
+                    level: level
                 })
-            },(err)=>{
+            }, (err) => {
                 console.log(err)
 
 
-            },{
-                enableHighAccuracy : false,
+            }, {
+                enableHighAccuracy: false,
                 timeout: 2000
             })
-       
-           // console.log("merhaba", device)
+
+            // console.log("merhaba", device)
             //   socketClient.on('connection-success', (user) => {
             //     console.log(user)
             //   })
-            socketClient.on("new_sos",(data)=>{
-                console.log(data, "new sosssssss-----------------")
-                mySound.play(succes=>{
+            socketClient.on("new_sos", (data) => {
+                //  console.log(data, "new sosssssss-----------------")
+                mySound.play(succes => {
                     if (succes) {
                         console.log('successfully finished playing');
-                      } else {
+                    } else {
                         console.log('playback failed due to audio decoding errors');
-                      }
+                    }
                 })
                 //alert("errorrrrr")
             })
             socketClient.on('offerOranswer', (sdp) => {
-                console.log(sdp.childUniqueId, "=======SDP")
-                if(sdp.childUniqueId === childId){
+                //  console.log(sdp.childUniqueId, "=======SDP")
+                if (sdp.childUniqueId === childId) {
                     setRemoteDescription(sdp.payload)
                     createAnswer()
                 }
             })
 
-           
+
 
             socketClient.on('candidate', (candidate) => {
-              console.log(candidate.childUniqueId, "Candidate______________")
-              if(sdp.childUniqueId === childId ){
-                device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-                    // createAnswer()
-                })
-              }
+                //  console.log(candidate.childUniqueId, "Candidate______________")
+                if (sdp.childUniqueId === childId) {
+                    device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
+                        // createAnswer()
+                    })
+                }
             })
 
-            
-            await sleep(2000);
+
+            await sleep(delay);
         }
     });
 };
@@ -245,14 +241,14 @@ const options = {
     color: '#ff00ff',
     linkingURI: "whatsapp://send?text=" + "asdasd" + "&phone=91" + "234234",
     parameters: {
-        delay: 50000,
+        delay: 3000,
     },
 };
 
 
 function handleOpenURL(evt) {
     //Linking.openURL("whatsapp://send?text=" +"asdasd"+"&phone=91" +"234234")  
-  //  console.log(evt.url, "asdasd");
+    //  console.log(evt.url, "asdasd");
     // do something with the url
 
 
@@ -274,8 +270,7 @@ const HomeChild = props => {
     }
 
     useEffect(() => {
-        console.log(state.user.data[0])
-       
+      
         // let response = await Axios.post(API.base_url + API.getLocation, {
         //     childrenId: child.id,
         // }, {
@@ -284,6 +279,7 @@ const HomeChild = props => {
         //     }
         // })
         // getFamily()
+
         setTimeout(() => {
             childId = state.user.data[0].uniqueId
             parentId = state.family[0].parent.uniqueId
@@ -303,7 +299,7 @@ const HomeChild = props => {
             uniqueId: state.user.data[0].uniqueId
         })
 
-   
+
         // setInterval(() => {
         //     //  console.log("merhs") 
         //     Geolocation.getCurrentPosition(success => {
@@ -316,15 +312,15 @@ const HomeChild = props => {
         //     })
         // }, 5000);
 
-}, [])
+    }, [])
 
- 
-    const getChild =async()=>{
-        let response = await Axios.post(API.base_url+API.get_user,{
-            role : "children",
-            id : state.user.data[0].id
+
+    const getChild = async () => {
+        let response = await Axios.post(API.base_url + API.get_user, {
+            role: "children",
+            id: state.user.data[0].id
         })
-        console.log(response , "children")
+        console.log(response, "children")
     }
 
     const renderList = ({ item }) => {
@@ -370,7 +366,7 @@ const HomeChild = props => {
 
 
                                 >
-                                    <MyCustomMarker item={state.user.data[0]}/>
+                                    <MyCustomMarker item={state.user.data[0]} />
                                 </Marker>
                                 :
                                 null

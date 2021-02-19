@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "987801368430-o61dk3bpitr63c9bo9vr68ch0itt2s95.apps.googleusercontent.com",
+          "client_id": "987801368430-pk1v60chniucsimfuoli62ksd3bad90c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.finmyfamily",
-            "certificate_hash": "07049a9ca20d651a1335d584657d255343d98b69"
+            "certificate_hash": "30649d4f29862401e87d277e1ecdc9c0253f7aaa"
           }
         },
         {
