@@ -166,12 +166,12 @@ const HomeParent = props => {
   let isFront = true
 
   useEffect(() => { }, [location])
+  const parentUniqueId =  state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
 
   useEffect(() => {
     getLocation()
     BackgroundJob.start(taskRandom, options)
 
-    console.log(state.position, "state")
     getFamily()
     socketClient.emit("user_connected", {
       role: "parent",
@@ -185,7 +185,6 @@ const HomeParent = props => {
 
     // console.log(state.user.parentData.id,"fiifif")
     mediaDevices.enumerateDevices().then(sourceInfos => {
-      console.log(sourceInfos);
       let videoSourceId;
       for (let i = 0; i < sourceInfos.length; i++) {
         const sourceInfo = sourceInfos[i];
@@ -197,7 +196,6 @@ const HomeParent = props => {
 
 
     mediaDevices.getUserMedia(constraints).then(stream => {
-      console.log(stream, "background stream")
 
       device.addStream(stream)
       return stream
@@ -206,10 +204,9 @@ const HomeParent = props => {
 
     socketClient.on('offerOranswer', (sdp) => {
       //  this.textref.value = JSON.stringify(sdp)
-      console.log(sdp, "offer comdidmount")
-      if( sdp.parentUniqueId){
+   
         device.setRemoteDescription(new RTCSessionDescription(sdp.payload))
-      }
+      
       // set sdp as remote descriptio
 
    
@@ -219,42 +216,31 @@ const HomeParent = props => {
     })
     
     socketClient.on('candidate', (candidate) => {
-      console.log("candidate aaa--------------------", candidate.parentUniqueId)
 
       // console.log('From Peer... ', JSON.stringify(candidate))
       // this.candidates = [...this.candidates, candidate]
-      if( candidate.parentUniqueId){
+      
         device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
           //  createAnswer()
   
-          console.log("thenin içi")
         })
   
-      }
+  
      
 
 
     })
 
     device.onicecandidate = (e) => {
-      console.log(choosed, "choosssssss")
       if (e.candidate) {
-        console.log(e.candidate)
-        //  socketRequest("candidate", e.candidate, "candidate")
+      
         socketClient.emit('candidate', {
           socketID: socketClient.id,
           payload: e.candidate,
           type: "candidate",
-          // receiverUniqueId: childUn,
-          // senderUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
-          //parentuuid sender 
-          //childuuid reciver
+          uniqueId : choosed.uniqueId
         })
-        //receiveruuid parentuuid ---------------
-        //senderuuid childuuid <<<<<<----------
-        // canidate emit yapılacak
-        // local : this.socket.id,
-        // remote : socketID
+      
       }
     }
     device.oniceconnectionstatechange = (e) => {
@@ -292,7 +278,6 @@ const HomeParent = props => {
     socketClient.on("new_position", (data) => {
       dispatch({ type: "SET_LOCATION", location: data })
       setLocation(data)
-      console.log(data, "data============<<<<<<<<<", uniqueId, state.type)
       setBatteryLevel(data.level === 0.5 ? "50" : data.level.toString().substring(2, 4))
       // if(parseInt(data.level.toString().substring(2,4)) > 10 && data.parentUniqueId === uniqueId){
       //   alert("çalıştı merhsss")
@@ -312,7 +297,6 @@ const HomeParent = props => {
 
   const createAnswer = () => {
     device.createAnswer(sdpConstraints).then(sdp => {
-      console.log(sdp)
       // device.setLocalDescription(sdp)
       socketRequest("offerOranswer", sdp, "answer")
 
@@ -320,12 +304,10 @@ const HomeParent = props => {
   }
 
   const create = () => {
-    console.log('Offer', choosed.uniqueId)
     setListenVisible(true)
     device.createOffer({ offerToReceiveVideo: 1 })
       .then(sdp => {
         // console.log(JSON.stringify(sdp))
-        console.log(sdp, "sadppsdpdp")
         // set offer sdp as local description
         device.setLocalDescription(sdp)
 
@@ -334,7 +316,8 @@ const HomeParent = props => {
           socketID: socketClient.id,
           payload: sdp,
           type: "offer",
-          childUniqueId: choosed.uniqueId,
+          uniqueId :choosed.uniqueId
+         
           //parentUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
           //parentuuid sender 
           //childuuid reciver
@@ -345,13 +328,11 @@ const HomeParent = props => {
 
 
   const socketRequest = (type, payload, tip) => {
-    console.log(choosed.uniqueId)
     socketClient.emit(type, {
       socketID: socketClient.id,
       payload,
       type: tip,
-      receiverUniqueId: choosed.uniqueId,
-      senderUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
+      uniqueId : choosed.uniqueId
     })
   }
 
@@ -394,7 +375,6 @@ const HomeParent = props => {
 
 
   const getFamily = async () => {
-    console.log("-------------------")
     let response = await Axios.post(API.base_url + API.get_family, {
       parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
     })
@@ -433,7 +413,6 @@ const HomeParent = props => {
   }
 
   const sendSOS = () => {
-    console.log("merh")
     //SoundPlayer.playUrl("http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3")
 
     socketClient.emit("sos", {
@@ -444,7 +423,6 @@ const HomeParent = props => {
   }
 
   const stopConnection = () => {
-    console.log("device close")
 
     device.close()
     device = new RTCPeerConnection(pc_config)
@@ -472,7 +450,6 @@ const HomeParent = props => {
         })
 
         Geolocation.getCurrentPosition(info => {
-          console.log(info, "werwer")
           dispatch({ type: "SET_POSITION", position: info.coords })
         }, (err) => {
           console.log(err, "wwwww")

@@ -121,7 +121,7 @@ const socketRequest = (type, payload, tip) => {
         socketID: socketClient.id,
         payload,
         type: tip,
-        parentUniqueId: parentId,
+        uniqueId: parentId,
     })
 }
 device.onicecandidate = (e) => {
@@ -207,21 +207,21 @@ const taskRandom = async taskData => {
             })
             socketClient.on('offerOranswer', (sdp) => {
                 //  console.log(sdp.childUniqueId, "=======SDP")
-                if (sdp.childUniqueId === childId) {
+              
                     setRemoteDescription(sdp.payload)
                     createAnswer()
-                }
+               
             })
 
 
 
             socketClient.on('candidate', (candidate) => {
                 //  console.log(candidate.childUniqueId, "Candidate______________")
-                if (sdp.childUniqueId === childId) {
-                    device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-                        // createAnswer()
-                    })
-                }
+               
+                        device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
+                            // createAnswer()
+                        })
+                
             })
 
 
