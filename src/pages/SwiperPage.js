@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   wrapper: {},
   slide1: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop:Platform.OS === "ios"  ? 45   :  10,
     alignItems: 'center',
   },
   slide2: {

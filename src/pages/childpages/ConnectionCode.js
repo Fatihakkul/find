@@ -151,7 +151,7 @@
         <StatusBar backgroundColor={COLORS.primary} />
         <View style={styles.codeContainer}>
           <Image style={{ width: 200, height: 200 }} source={require('../../assets/Childanime.png')} />
-          <View style={{ backgroundColor: COLORS.white, width: 200, height: 40, marginTop: 30,marginBottom:40 }}>
+          <View style={{ backgroundColor: COLORS.white, width: 200, height:Platform.OS === "ios" ? 30  : 40, marginTop: 30,marginBottom:40 }}>
             <TextInput
               placeholder="Kodu giriniz"
               value={code}

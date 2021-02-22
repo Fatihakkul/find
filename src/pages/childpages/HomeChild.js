@@ -381,8 +381,6 @@ const HomeChild = props => {
                 <ChildMessageModal isVisible={visible} cancel={() => setVisible(!visible)} onBackdropPress={() => setVisible(!visible)} />
 
                 <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, marginBottom: 10 }}>
-
-
                     <Pressable onPress={consoleMethod}>
                         <View
                             style={{

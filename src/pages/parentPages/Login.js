@@ -38,27 +38,10 @@ const Login = props => {
     });
   }, []);
 
-
-  // async function signInWithPhoneNumber(phoneNumber) {
-  //   const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-  //   setConfirm(confirmation);
-  // }
-  // async function confirmCode() {
-  //   try {
-  //     await confirm.confirm(code);
-  //   } catch (error) {
-  //     console.log('Invalid code.');
-  //   }
-  // }
-
-  // if (!confirm) {
-  //   return (
-  //     <Button
-  //       title="Phone Number Sign In"
-  //       onPress={() => signInWithPhoneNumber('+1 650-555-3434')}
-  //     />
-  //   );
-  // }
+  const emailSignin =()=>{
+    props.navigation.navigate("Register")
+  }
+ 
   async function onFacebookButtonPress() {
     // Attempt login with permissions
     if (Platform.OS === "android") {
@@ -135,12 +118,7 @@ const Login = props => {
         email: data.user.email,
         name: data.user.name
       })
-      // let response = await Axios.post("https://wherismykid.herokuapp.com/api/auth/signupsignin",
-      // {
-      //   type: 0,
-      //   email: "kmngwfth@gmail.com",
-      //   name: "Fatih Akkul"
-      // })
+     
     console.log("desire")
     console.log(response.data, "response")
     if (response.data.responseStatus === 200) {
@@ -189,10 +167,10 @@ const Login = props => {
             </View>
           </Pressable>
 
-          <Pressable onPress={onFacebookButtonPress}>
+          <Pressable onPress={emailSignin}>
             <View style={[styles.googleLogin,{borderColor:COLORS.primary ,borderWidth:2}]} >
               <Icon name="sms" color={COLORS.primary} size={25} style={{ position: "absolute", left: 10 }} />
-              <Text style={[styles.title,{color : COLORS.primary}]}>SMS ile giriş yap</Text>
+              <Text style={[styles.title,{color : COLORS.primary}]}>Email ile giriş yap</Text>
             </View>
           </Pressable>
 
