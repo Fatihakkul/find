@@ -8,6 +8,8 @@ import jwt_decoded from 'jwt-decode'
 import COLORS from '../style/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 
 

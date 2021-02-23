@@ -9,6 +9,9 @@ import strings from "../strings"
 
 const { width, height } = Dimensions.get('window')
 
+import { Constants } from 'react-native-unimodules';
+
+
 
 
 
@@ -19,8 +22,11 @@ const SwiperPage = (props) => {
     Platform.OS === "android" ? requestCameraPermission() : null
     console.log(strings.getInterfaceLanguage())
     //de-DE  tr-TR 
+
+    console.log('=====ZZZZZZZ',Constants.systemFonts);
   }, [])
 
+  
 
   const getImage = () => {
     ImagePicker.showImagePicker((response) => {

@@ -40,7 +40,10 @@ import { isPointWithinRadius } from "geolib"
 import API from "../../data/api"
 import Sound from "react-native-sound"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from "moment"
+import moment from "moment";
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
 
 let isFront = true
 let error = false
@@ -256,6 +259,13 @@ function handleOpenURL(evt) {
 
 ///Linking.addEventListener('com.findmyfamily', handleOpenURL);
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return {
+            shouldShowAlert: true
+        }
+    }
+})
 
 
 const HomeChild = props => {
@@ -268,6 +278,60 @@ const HomeChild = props => {
     const consoleMethod = () => {
         setVisible(!visible)
     }
+
+
+
+
+    useEffect(() => {
+
+
+       
+        Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
+            if (statusObj.status !== 'granted') {
+                return Permissions.askAsync(Permissions.NOTIFICATIONS)
+            }
+            return statusObj;
+
+        })
+            .then((statusObj) => {
+                if (statusObj.status !== 'granted') {
+                    throw new Error('Permission not granted qsdqwd')
+                }
+            })
+            .then(() => {
+                return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
+            })
+            .then((data) => {
+                console.log('PUSHHH TOKENN',data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        // socket.on('notification', (data) => {
+        //     triggerNotificationHandler(data.title, data.message)
+        // })
+
+    }, []);
+
+    useEffect(() => {
+
+        const backgroundSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
+            console.log(response)
+        })
+
+        const foregoundSubscription = Notifications.addNotificationReceivedListener((notif) => {
+            console.log(notif)
+        })
+
+        return () => {
+            backgroundSubscription.remove();
+            foregoundSubscription.remove();
+        }
+    }, [])
+
+
+
+
 
     useEffect(() => {
       

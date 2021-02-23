@@ -1,4 +1,17 @@
 {
   "name": "finmyfamily",
-  "displayName": "finmyfamily"
+  "displayName": "finmyfamily",
+  "expo": {
+    "name": "finmyfamily",
+    "displayName": "finmyfamily",
+    "slug": "finmyfamily",
+    "ios": {
+      "bundleIdentifier": "com.finmyfamily"
+    },
+    "android": {
+      "useNextNotificationsApi": true,
+      "package": "com.finmyfamily",
+      "googleServicesFile": "./android/app/google-services.json"
+    }
+  }
 }

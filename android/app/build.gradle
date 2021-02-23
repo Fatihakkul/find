@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 import com.android.build.OutputFile
@@ -185,6 +186,7 @@ android {
 
 dependencies {
     compile project(':react-native-iap')
+    addUnimodulesDependencies()
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
         implementation 'com.android.support:multidex:1.0.3'
@@ -197,6 +199,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-base:17.2.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 

@@ -6,6 +6,11 @@ import Geolocation from '@react-native-community/geolocation'
 import AsyncStoreage from '@react-native-async-storage/async-storage'
 import jwt_decoded from 'jwt-decode'
 
+import { Constants } from 'react-native-unimodules';
+
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
 const { width, height } = Dimensions.get("window")
 
 
@@ -13,7 +18,38 @@ const SplashScreen = (props) => {
     const { state, dispatch } = useContext(Context)
     const [position, setPosition] = useState([])
 
+    useEffect(()=>{
+        registerForPushNotificationsAsync()
+    },[])
 
+   const registerForPushNotificationsAsync = async () => {
+        if (Constants.isDevice) {
+          const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+          let finalStatus = existingStatus;
+          if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+          }
+          if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+          }
+          const token = await Notifications.getExpoPushTokenAsync();
+          console.log(token);
+          this.setState({ expoPushToken: token });
+        } else {
+          alert('Must use physical device for Push Notifications');
+        }
+      
+        if (Platform.OS === 'android') {
+          Notifications.createChannelAndroidAsync('default', {
+            name: 'default',
+            sound: true,
+            priority: 'max',
+            vibrate: [0, 250, 250, 250],
+          });
+        }
+        };
     useEffect(() => {
         if(Platform.OS === "ios"){
             Geolocation.getCurrentPosition(info => {
