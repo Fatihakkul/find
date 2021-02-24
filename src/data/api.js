@@ -12,6 +12,7 @@ const API = {
     add_content : "http://yatoo.demeli.org/api/addcontent",
     update_user : "/updateuser",
     get_user : "/home/getuser",
-    getmessage_limit : "/home/getmessageslimit"
+    getmessage_limit : "/home/getmessageslimit",
+    location_history : "/parent/getlocation"
 }
 export default API

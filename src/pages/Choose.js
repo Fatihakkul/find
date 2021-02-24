@@ -8,9 +8,6 @@ import jwt_decoded from 'jwt-decode'
 import COLORS from '../style/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-
 
 
 
@@ -21,6 +18,7 @@ const Choose = props => {
   const { state, dispatch } = useContext(Context)
   const [position, setPosition] = useState([])
 
+  
   useEffect(() => {
     if (Platform.OS === "android") {
       Alert.alert(

@@ -92,6 +92,10 @@ export function reducer(state, action) {
             const userlight = action.userlight
             state.userlight = userlight
             return { ...state }
+        case "SET_LOCATIONHISTORY":
+            const locationHistory = action.locationHistory
+            state.locationHistory = locationHistory
+            return { ...state }
         default:
             return state
     }

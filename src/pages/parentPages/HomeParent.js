@@ -49,6 +49,17 @@ import Sound from "react-native-sound"
 import BackgroundJob from "react-native-background-actions"
 import strings from "../../strings"
 
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true
+    }
+  }
+})
 
 
 const { width, height } = Dimensions.get('window')
@@ -73,7 +84,7 @@ const taskRandom = async taskData => {
 
     const { delay } = taskData;
     for (let i = 0; BackgroundJob.isRunning(); i++) {
-      
+
       socketClient.on('new_sos', (sos) => {
         mySound.play()
       })
@@ -161,18 +172,50 @@ const HomeParent = props => {
   const [childIndex, setChildIndex] = useState()
   const [choosed, setChoosed] = useState()
   const [listenVisible, setListenVisible] = useState(false)
-
+  const [locationHistory, setLocationHistory] = useState([])
+  const [loading,setLoading]=useState(false)
 
   let isFront = true
 
+  useEffect(() => {
+
+
+
+    Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
+      if (statusObj.status !== 'granted') {
+        return Permissions.askAsync(Permissions.NOTIFICATIONS)
+      }
+      return statusObj;
+
+    })
+      .then((statusObj) => {
+        if (statusObj.status !== 'granted') {
+          throw new Error('Permission not granted qsdqwd')
+        }
+      })
+      .then(() => {
+        return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
+      })
+      .then((data) => {
+        console.log('PUSHHH TOKENN', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    // socket.on('notification', (data) => {
+    //     triggerNotificationHandler(data.title, data.message)
+    // })
+
+  }, []);
+  useEffect(() => { }, [locationHistory])
   useEffect(() => { }, [location])
-  const parentUniqueId =  state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
+  const parentUniqueId = state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
 
   useEffect(() => {
     getLocation()
     BackgroundJob.start(taskRandom, options)
-
     getFamily()
+
     socketClient.emit("user_connected", {
       role: "parent",
       id: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id,
@@ -183,7 +226,7 @@ const HomeParent = props => {
 
     })
 
-    // console.log(state.user.parentData.id,"fiifif")
+
     mediaDevices.enumerateDevices().then(sourceInfos => {
       let videoSourceId;
       for (let i = 0; i < sourceInfos.length; i++) {
@@ -203,44 +246,25 @@ const HomeParent = props => {
     })
 
     socketClient.on('offerOranswer', (sdp) => {
-      //  this.textref.value = JSON.stringify(sdp)
-   
-        device.setRemoteDescription(new RTCSessionDescription(sdp.payload))
-      
-      // set sdp as remote descriptio
-
-   
-
-
-
+      device.setRemoteDescription(new RTCSessionDescription(sdp.payload))
     })
-    
+
     socketClient.on('candidate', (candidate) => {
+      device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
 
-      // console.log('From Peer... ', JSON.stringify(candidate))
-      // this.candidates = [...this.candidates, candidate]
-      
-        device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-          //  createAnswer()
-  
-        })
-  
-  
-     
-
-
+      })
     })
 
     device.onicecandidate = (e) => {
       if (e.candidate) {
-      
+
         socketClient.emit('candidate', {
           socketID: socketClient.id,
           payload: e.candidate,
           type: "candidate",
-          uniqueId : choosed.uniqueId
+          uniqueId: choosed.uniqueId
         })
-      
+
       }
     }
     device.oniceconnectionstatechange = (e) => {
@@ -260,7 +284,7 @@ const HomeParent = props => {
 
 
 
-    // getLocation()
+
 
     setTimeout(() => {
       if (location === null) {
@@ -273,15 +297,12 @@ const HomeParent = props => {
       }
     }, 5000);
 
-    // console.log(state.user.userData[0].family)
+
 
     socketClient.on("new_position", (data) => {
       dispatch({ type: "SET_LOCATION", location: data })
       setLocation(data)
       setBatteryLevel(data.level === 0.5 ? "50" : data.level.toString().substring(2, 4))
-      // if(parseInt(data.level.toString().substring(2,4)) > 10 && data.parentUniqueId === uniqueId){
-      //   alert("çalıştı merhsss")
-      // }
     })
 
     setInterval(() => {
@@ -289,8 +310,6 @@ const HomeParent = props => {
         mapRef.current.animateToRegion({ latitude: data.location.latitude, longitude: data.location.longitude, latitudeDelta: 0.002, longitudeDelta: 0.002 }, 2000)
       }
     }, 10000);
-
-
 
   }, [listenVisible])
 
@@ -307,20 +326,12 @@ const HomeParent = props => {
     setListenVisible(true)
     device.createOffer({ offerToReceiveVideo: 1 })
       .then(sdp => {
-        // console.log(JSON.stringify(sdp))
-        // set offer sdp as local description
         device.setLocalDescription(sdp)
-
-        //  socketRequest('offerOranswer', sdp , "offer")
         socketClient.emit('offerOranswer', {
           socketID: socketClient.id,
           payload: sdp,
           type: "offer",
-          uniqueId :choosed.uniqueId
-         
-          //parentUniqueId: state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId,
-          //parentuuid sender 
-          //childuuid reciver
+          uniqueId: choosed.uniqueId
         })
 
       })
@@ -332,11 +343,11 @@ const HomeParent = props => {
       socketID: socketClient.id,
       payload,
       type: tip,
-      uniqueId : choosed.uniqueId
+      uniqueId: choosed.uniqueId
     })
   }
 
-  //borderColor: childIndex % 2 === 1 && childIndex % 3 != 0 ? COLORS.red : childIndex % 3 === 0 ? COLORS.mor : COLORS.primary 
+
   const renderEvents = ({ item, index }) => {
     return (
       <View style={{ paddingHorizontal: 20, alignItems: "center", height: 90 }}>
@@ -392,7 +403,7 @@ const HomeParent = props => {
 
   }
 
-  function getlocationChild(child, i) {
+  async function getlocationChild(child, i) {
     console.log(child.uniqueId)
     setChildIndex(i)
     setChoosed(child)
@@ -403,7 +414,18 @@ const HomeParent = props => {
         , latitudeDelta: 0.002, longitudeDelta: 0.002
       }, 2000)
     }, 1000);
-    //  childuniqueId = child.uniqueId
+
+    let response = await Axios.post(API.base_url + API.location_history, {
+      childUniqueId: child.uniqueId
+    })
+    console.log(response.data.data.length)
+    //setLocationHistory(response.data.data)
+    if(response.data.data.length > 0){
+      dispatch({ type: "SET_LOCATIONHISTORY", locationHistory: response.data.data })
+      setLoading(true)
+    }
+    
+
   }
 
 
@@ -413,8 +435,6 @@ const HomeParent = props => {
   }
 
   const sendSOS = () => {
-    //SoundPlayer.playUrl("http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3")
-
     socketClient.emit("sos", {
       receiverUniqueId: choosed.uniqueId,
       senderUniqueId: state.user.userData[0].family.parents[0].uniqueId
@@ -427,7 +447,9 @@ const HomeParent = props => {
     device.close()
     device = new RTCPeerConnection(pc_config)
     setListenVisible(false)
-}
+  }
+
+
   const getLocation = async () => {
     try {
       const granted = Platform.OS === "android" ? await PermissionsAndroid.request(
@@ -499,7 +521,8 @@ const HomeParent = props => {
             >
 
               <Polyline
-                coordinates={(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)}
+
+                coordinates={[...state.locationHistory.map((item) => item.location), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
                 strokeColor={Colors.primary}
                 strokeColors={[
                   '#7F0000',
@@ -512,14 +535,33 @@ const HomeParent = props => {
                 strokeWidth={3}
               />
               {
+                  location.uniqueId === undefined ?
+                  <Marker
+                  coordinate={{
+                    latitude : state.locationHistory[state.locationHistory.length - 1 ].location.latitude,
+                    longitude : state.locationHistory[state.locationHistory.length - 1 ].location.longitude
+                  }}
+                  tracksInfoWindowChanges={true}
+                >
+
+                  <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
+                    <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
+                  </View>
+                  <MyCustomMarker />
+                </Marker>
+                :
+                null
+              }
+              {
                 location.uniqueId != undefined && choosed != -1 ?
                   <Marker
                     coordinate={{
-                      latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : state.position.latitude,
-                      longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : state.position.longitude
+                      latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ?  location.location.latitude :loading ? state.position.latitude : state.position.latitude,
+                      longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : loading ? state.position.longitude : state.position.longitude,
                     }}
                     tracksInfoWindowChanges={true}
                   >
+
                     <View style={{ width: 40, height: 40, position: "absolute", top: 0, left: 26 }}>
                       <Icon name="battery-dead-outline" size={30} color={parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red} />
                       <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 9, top: 10, left: 6, fontWeight: "bold" }}>{`${batteryLevel}%`}</Text>
@@ -527,19 +569,12 @@ const HomeParent = props => {
                     <MyCustomMarker />
                   </Marker>
                   :
+
                   null
               }
-
-
-
             </MapView>
 
             <ScrollView horizontal={true} contentContainerStyle={{ paddingLeft: 20, alignItems: "center" }} style={{ height: 80, borderBottomLeftRadius: 25, borderBottomRightRadius: 25, elevation: 1, width: width, backgroundColor: "rgba(255,255,255,0.85)", alignSelf: "center", position: "absolute", top: Platform.OS === "android" ? 0 : 0 }}>
-              <Pressable onPress={() => getlocationChild("all", -1)} >
-                <View style={[styles.listItem, childIndex === -1 ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: childIndex === -1 ? COLORS.mor : COLORS.primary }]}>
-                  <Text style={styles.family}>{strings.family}</Text>
-                </View>
-              </Pressable>
               {
                 (state.family).map((item, index) => {
                   return (

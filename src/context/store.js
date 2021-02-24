@@ -12,7 +12,8 @@ export const initialState = {
      messageList : [],
      type : null,
      location : [],
-     userlight : null
+     userlight : null,
+     locationHistory : []
     
 }
 
