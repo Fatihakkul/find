@@ -36,7 +36,7 @@ const ChatChild = (props) => {
         socketClient.on("new_message", newMessage => {
             console.log("asdsad")
             dispatch({ type: "SET_MESSAGELIST", messageList: newMessage })
-            console.log(newMessage, "messageChild")
+           
             scrollIndex();
         })
        

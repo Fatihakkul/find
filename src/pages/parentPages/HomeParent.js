@@ -50,7 +50,7 @@ import BackgroundJob from "react-native-background-actions"
 import strings from "../../strings"
 
 
-
+import geolib from "geolib"
 
 
 const { width, height } = Dimensions.get('window')
@@ -169,7 +169,6 @@ const HomeParent = props => {
 
   let isFront = true
 
- 
 
   useEffect(() => { }, [locationHistory])
   useEffect(() => { }, [location])

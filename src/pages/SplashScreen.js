@@ -86,6 +86,7 @@ const SplashScreen = (props) => {
                 const decodeddChild = jwt_decoded(data)
                 console.log(decodeddChild.data[0], "decoded")
                 connection(decodeddChild.data[0].code, decodeddChild)
+                dispatch({type :"SET_TOKEN" , token : data })
             } else {
 
                 AsyncStoreage.getItem("@TYPE").then(data => {

@@ -37,20 +37,19 @@ import Geolocation from "@react-native-community/geolocation"
 import DeviceInfo from "react-native-device-info"
 import { socketClient } from "../../socket/socket"
 import BackgroundJob from 'react-native-background-actions';
-import { isPointWithinRadius } from "geolib"
 import API from "../../data/api"
 import Sound from "react-native-sound"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from "moment";
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
-
+import {isPointWithinRadius} from "geolib"
 
 let isFront = true
 let error = false
 
 
-
+let areaList = [];
 const pc_config = {
     "iceServers": [
         // {
@@ -73,6 +72,7 @@ const constraints = {
         }
 
     }
+    
 }
 const sdpConstraints = {
     "mandatory": {
@@ -144,7 +144,7 @@ device.onaddstream = (e) => {
     //  console.log(e.stream, "streeemmmm")
 
 }
-
+let current = null
 
 const setRemoteDescription = (desc) => {
 
@@ -175,10 +175,28 @@ const taskRandom = async taskData => {
             //=====>>>>> sound player ekleyince uygulama backgroundda çalışmıyor
 
             console.log("background")
-
-
+            
+        
+            console.log(current)
             Geolocation.getCurrentPosition(success => {
-               
+             //   const konum = geolib.isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , sdfsdf, 10 )
+                for (let i = 0; i < areaList.length; i++) {
+                   
+                    const element = areaList[i];
+                    if(current ===true && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === false ){
+                        console.log(`${element.name} çıktı `)
+                        
+                    }
+                    if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
+                        console.log("alana girdi")
+                    }
+
+                    current = isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10)
+
+                    console.log( "konummmm======>>>>",areaList.length >0 ? isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) : "Area gelmedi====")
+                    
+                }
+
                 socketClient.emit("live_location", {
                     location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
                     uniqueId: childId,
@@ -193,6 +211,9 @@ const taskRandom = async taskData => {
                 enableHighAccuracy: false,
                 timeout: 2000
             })
+
+
+            
 
             // console.log("merhaba", device)
             //   socketClient.on('connection-success', (user) => {
@@ -239,7 +260,7 @@ const options = {
     color: '#ff00ff',
     linkingURI: "whatsapp://send?text=" + "asdasd" + "&phone=91" + "234234",
     parameters: {
-        delay: 3000,
+        delay: 5000,
     },
 };
 
@@ -309,7 +330,7 @@ const HomeChild = props => {
     }, []);
 
     useEffect(() => {
-
+        
         const backgroundSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
             console.log(response)
         })
@@ -345,7 +366,7 @@ const HomeChild = props => {
         // getFamily()
 
 
-
+        console.log(state.token , "tokennnnn")
         getChild()
         setArr(state.message)
         BackgroundJob.start(taskRandom, options)
@@ -373,8 +394,23 @@ const HomeChild = props => {
         //     })
         // }, 5000);
 
+        getArea()
     }, [])
 
+
+    const getArea =async()=>{
+        let response = await Axios.post(API.base_url + API.getLocation, {
+            childrenId: state.user.data[0].id,
+        }, {
+            headers: {
+                'Authorization': `bearer ${state.token}`
+            }
+        })
+        areaList = response.data.data.response[0].addresses
+        console.log(response.data.data.response[0].addresses  , " <<<<<<<<<========")
+        dispatch({ type: "ADD_AREA", get: response.data.data.response[0].addresses })
+
+    }
 
     const getChild = async () => {
         let response = await Axios.post(API.base_url + API.get_user, {

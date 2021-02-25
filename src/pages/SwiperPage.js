@@ -23,10 +23,10 @@ const SwiperPage = (props) => {
     console.log(strings.getInterfaceLanguage())
     //de-DE  tr-TR 
 
-    console.log('=====ZZZZZZZ',Constants.systemFonts);
+    console.log('=====ZZZZZZZ', Constants.systemFonts);
   }, [])
 
-  
+
 
   const getImage = () => {
     ImagePicker.showImagePicker((response) => {
@@ -76,9 +76,9 @@ const SwiperPage = (props) => {
     <View style={{ flex: 1 }}>
       <Image style={{ width: width, height: height, zIndex: 0, position: "absolute" }} source={require('../assets/background.png')} />
       <Swiper ref={swiper} style={styles.wrapper} showsButtons={false} showsPagination={true} dotColor={COLORS.demoPrimary} activeDotColor={COLORS.demoSecondary}    >
-        <View style={styles.slide1}>
-          <View style={styles.lottieConatiner}>
-          <LottieView
+        <View style={[styles.slide1, { justifyContent: "center" }]}>
+
+          {/* <LottieView
               source={require('../lottie/family.json')}
               autoPlay
               loop
@@ -87,65 +87,51 @@ const SwiperPage = (props) => {
                 height: 200,
 
               }}
-            />
-
-          </View>
-          <Text style={styles.title}>Sevdiklerinizin nerede olduğunu </Text>
-          <Text style={styles.title}>her an görün</Text>
+            /> */}
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slideone.png')} />
+          <View style={{ alignItems: "center", marginTop: 70 }}>
 
 
+            <Text style={styles.title}>Sevdiklerinizin nerede olduğunu </Text>
+            <Text style={styles.title}>her an görün</Text>
 
 
 
-          <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>Çocuklarınızın, engelli yakınlarınızın ya da her zaman yardıma </Text>
-            <Text style={styles.descriptions}>ihtiyacı olanlarin (alzhemier vb) sizin belirlediğiniz konuma ulaştığında, </Text>
-            <Text style={styles.descriptions}>konuma gittiğinde ya da konumdan ayrıldığında, bildirim alın. </Text>
-            <Text style={styles.descriptions}>Anlık olarak nerede olduklarını görün, geriye </Text>
-            <Text style={styles.descriptions}>dönük konumlarını FindMyFamily ile takip edin.</Text>
+
+
+            <View style={styles.textContainer}>
+              <Text style={styles.descriptions}>Çocuklarınızın, engelli yakınlarınızın ya da her zaman yardıma </Text>
+              <Text style={styles.descriptions}>ihtiyacı olanlarin (alzhemier vb) sizin belirlediğiniz konuma ulaştığında, </Text>
+              <Text style={styles.descriptions}>konuma gittiğinde ya da konumdan ayrıldığında, bildirim alın. </Text>
+              <Text style={styles.descriptions}>Anlık olarak nerede olduklarını görün, geriye </Text>
+              <Text style={styles.descriptions}>dönük konumlarını FindMyFamily ile takip edin.</Text>
+            </View>
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
             <Text style={{ color: COLORS.white }}>NEXT</Text>
           </Pressable>
         </View>
         <View style={styles.slide2}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/family.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
-          <Text style={styles.title}>Sevdiklerinizin güvende </Text>
-          <Text style={styles.title}>olduklarından emin olun</Text>
-          <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>Aramalarınıza cevap vermediklerinde, canlı olarak nerede olduklarını görün, </Text>
-            <Text style={styles.descriptions}>bulunduğu ortamda tehlikede olduğunu düşünüyorsanız,</Text>
-            <Text style={styles.descriptions}>FindMyFamily ile etrafındaki sesleri dinleyin </Text>
-            <Text style={styles.descriptions}>  ve güvende olduklarından emin olun.</Text>
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slidetwo.png')} />
+          <View style={{ alignItems: "center", marginTop: 70 }}>
+            <Text style={styles.title}>Sevdiklerinizin güvende </Text>
+            <Text style={styles.title}>olduklarından emin olun</Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.descriptions}>Aramalarınıza cevap vermediklerinde, canlı olarak nerede olduklarını görün, </Text>
+              <Text style={styles.descriptions}>bulunduğu ortamda tehlikede olduğunu düşünüyorsanız,</Text>
+              <Text style={styles.descriptions}>FindMyFamily ile etrafındaki sesleri dinleyin </Text>
+              <Text style={styles.descriptions}>  ve güvende olduklarından emin olun.</Text>
+            </View>
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
             <Text style={{ color: COLORS.white }}>NEXT</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/phone.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
+          <Image style={{ width: width, height: height * 0.28, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slidetree.png')} />
+
 
 
 
@@ -163,18 +149,9 @@ const SwiperPage = (props) => {
           </Pressable>
         </View>
         <View style={styles.slide3}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/phone.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slidefour.png')} />
+
 
 
 
@@ -192,18 +169,9 @@ const SwiperPage = (props) => {
           </Pressable>
         </View>
         <View style={styles.slide3}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/phone.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slidefive.png')} />
+
 
 
 
@@ -221,18 +189,9 @@ const SwiperPage = (props) => {
           </Pressable>
         </View>
         <View style={styles.slide3}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/phone.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slideseven.png')} />
+
 
 
 
@@ -252,25 +211,8 @@ const SwiperPage = (props) => {
           </Pressable>
         </View>
         <View style={styles.slide3}>
-          <View style={styles.lottieConatiner}>
-            <LottieView
-              source={require('../lottie/phone.json')}
-              autoPlay
-              loop
-              style={{
-                width: 200,
-                height: 200,
 
-              }}
-            />
-          </View>
-
-
-
-
-
-
-
+          <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slide.png')} />
           <Text style={styles.title}>3 gün ücretsiz deneyin</Text>
           <View style={styles.textContainer}>
             <Text style={styles.descriptions}>3 gün boyunca tüm özellikleri deneyin, </Text>
@@ -289,10 +231,10 @@ const SwiperPage = (props) => {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {},
+
   slide1: {
     flex: 1,
-    paddingTop:Platform.OS === "ios"  ? 45   :  10,
+    paddingTop: Platform.OS === "ios" ? 45 : 10,
     alignItems: 'center',
   },
   slide2: {
@@ -343,7 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: COLORS.demoPrimary,
     borderRadius: 22,
-    marginBottom: 20
+
   }
 })
 export { SwiperPage }

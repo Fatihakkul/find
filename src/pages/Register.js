@@ -11,7 +11,7 @@ const Register = props => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordAgain, setPasswordAgain] = useState("")
-    const [visible, setVisible] = useState(true)
+    const [visible, setVisible] = useState(false)
 
     const validate = (text) => {
 

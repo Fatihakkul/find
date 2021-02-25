@@ -8,8 +8,16 @@ import { socketClient } from "../../socket/socket"
 import API from "../../data/api"
 import Axios from 'axios'
 import COLORS from '../../style/Colors'
+import * as Notifications from 'expo-notifications';
 
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+      return {
+        shouldShowAlert: false
+      }
+    }
+  })
 
 const Chat = (props) => {
 
@@ -68,6 +76,7 @@ const Chat = (props) => {
         if (userMessage.message != "") {
 
             socketClient.emit("send_message", {
+                name :state.type === 1 ? state.user.userData[0].name : state.user.userData.name ,
                 receiver: props.route.params.message.id,
                 sender: state.type === 1 ? state.user.userData[0].id : state.user.userData.id,
                 senderRole: "parent",
