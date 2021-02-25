@@ -14,11 +14,11 @@ const ChatChild = (props) => {
     const [userMessage, setUserMessage] = useState({ senderUniqueId: state.user.data[0].uniqueId, message: "", time: "" })
     const [sendTo, setSendTo] = useState()
     const [receiverName,setReceiverName]=useState("")
-    const [child,setChild] = useState(false)
+    const [child,setChild] = useState(props.route.params.child)
     const list = useRef()
 
     useEffect(() => {
-     
+        console.log(props.route.params.message)
         if (props.route.params.message != undefined) {
             console.log("message undifned değilllllllll" ,props.route.params.message)
             setSendTo(props.route.params.message)
@@ -34,6 +34,7 @@ const ChatChild = (props) => {
        
         console.log(props.route.params, "params")
         socketClient.on("new_message", newMessage => {
+            console.log("asdsad")
             dispatch({ type: "SET_MESSAGELIST", messageList: newMessage })
             console.log(newMessage, "messageChild")
             scrollIndex();
@@ -68,7 +69,7 @@ const ChatChild = (props) => {
 
     }
 
-
+    
 
 
     const getTime = () => {
@@ -84,10 +85,11 @@ const ChatChild = (props) => {
         if (userMessage.message != "") {
             socketClient.emit("send_message", {
                 // receiver : state.family[0].parent.id,
+                name :state.user.data[0].name ,
                 receiver: state.family[0].parent.id,
                 sender: sendTo.id ,
                 senderRole: "child",
-                receiverRole:child ?   "child"  :  "parent",
+                receiverRole:child ?   "parent"  :"child"  ,
                 message: userMessage.message,
                 time: userMessage.time,
                 uniqueId:  sendTo.uniqueId ,
@@ -96,6 +98,10 @@ const ChatChild = (props) => {
             })
             dispatch({ type: "SET_MESSAGELIST", messageList: userMessage })
             setUserMessage({message:""})
+            setTimeout(() => {
+                scrollIndex()
+            }, 1000);
+           
         }
         else {
             null

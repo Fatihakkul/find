@@ -50,6 +50,7 @@ export function reducer(state, action) {
         case "SET_FAMILY":
             const family = action.family
             state.family = family
+            state.login = true
 
             return { ...state }
         case "SET_SOCKET":

@@ -13,8 +13,8 @@ export const initialState = {
      type : null,
      location : [],
      userlight : null,
-     locationHistory : []
-    
+     locationHistory : [],
+     login : false
 }
 
 export default Context = createContext(initialState);

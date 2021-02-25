@@ -12,7 +12,8 @@ import {
     PermissionsAndroid,
     BackHandler,
     Linking,
-    Platform
+    Platform,
+    ActivityIndicator
 } from 'react-native'
 import {
     RTCPeerConnection,
@@ -173,11 +174,11 @@ const taskRandom = async taskData => {
             //SoundPlayer.loadUrl("http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3")
             //=====>>>>> sound player ekleyince uygulama backgroundda çalışmıyor
 
-         console.log("background")
+            console.log("background")
 
 
             Geolocation.getCurrentPosition(success => {
-             
+               
                 socketClient.emit("live_location", {
                     location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
                     uniqueId: childId,
@@ -199,32 +200,26 @@ const taskRandom = async taskData => {
             //   })
             socketClient.on("new_sos", (data) => {
                 //  console.log(data, "new sosssssss-----------------")
-                mySound.play(succes => {
-                    if (succes) {
-                        console.log('successfully finished playing');
-                    } else {
-                        console.log('playback failed due to audio decoding errors');
-                    }
-                })
+                mySound.play()
                 //alert("errorrrrr")
             })
             socketClient.on('offerOranswer', (sdp) => {
                 //  console.log(sdp.childUniqueId, "=======SDP")
-              
-                    setRemoteDescription(sdp.payload)
-                    createAnswer()
-               
+
+                setRemoteDescription(sdp.payload)
+                createAnswer()
+
             })
 
 
 
             socketClient.on('candidate', (candidate) => {
                 //  console.log(candidate.childUniqueId, "Candidate______________")
-               
-                        device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-                            // createAnswer()
-                        })
-                
+
+                device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
+                    // createAnswer()
+                })
+
             })
 
 
@@ -285,7 +280,7 @@ const HomeChild = props => {
     useEffect(() => {
 
 
-       
+
         Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
             if (statusObj.status !== 'granted') {
                 return Permissions.askAsync(Permissions.NOTIFICATIONS)
@@ -302,7 +297,7 @@ const HomeChild = props => {
                 return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
             })
             .then((data) => {
-                console.log('PUSHHH TOKENN',data)
+                console.log('PUSHHH TOKENN', data)
             })
             .catch((err) => {
                 console.log(err)
@@ -331,10 +326,15 @@ const HomeChild = props => {
 
 
 
-
+    useEffect(() => {
+        if (state.login) {
+            childId = state.user.data[0].uniqueId
+            parentId = state.family[0].parent.uniqueId
+        }
+    }, [state.login])
 
     useEffect(() => {
-      
+
         // let response = await Axios.post(API.base_url + API.getLocation, {
         //     childrenId: child.id,
         // }, {
@@ -344,10 +344,7 @@ const HomeChild = props => {
         // })
         // getFamily()
 
-        setTimeout(() => {
-            childId = state.user.data[0].uniqueId
-            parentId = state.family[0].parent.uniqueId
-        }, 3000);
+
 
         getChild()
         setArr(state.message)
@@ -400,93 +397,105 @@ const HomeChild = props => {
 
 
 
+
+
     return (
+
         <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar backgroundColor={COLORS.primary} />
-            {
-                state.position != null ?
-                    <View style={{ position: "absolute" }}>
+            {  state.login ?
+                <View style={{ flex: 1 }}>
 
 
-                        <MapView
-
-                            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                            initialRegion={{
-                                latitude: state.position != null ? state.position.latitude : 0.000000,
-                                longitude: state.position != null ? state.position.longitude : 0.000000,
-                                latitudeDelta: state.position != null ? 0.0022 : 100,
-                                longitudeDelta: state.position != null ? 0.0021 : 200,
-                                //buraya itemın lat ve long değerleri gelecek
-                            }}
+                    <StatusBar backgroundColor={COLORS.primary} />
+                    {
+                        state.position != null ?
+                            <View style={{ position: "absolute" }}>
 
 
-                        >
-                            {state.position != null ?
-                                <Marker
-                                    coordinate={{
-                                        latitude: state.position.latitude,
-                                        longitude: state.position.longitude,
+                                <MapView
+
+                                    style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                                    initialRegion={{
+                                        latitude: state.position != null ? state.position.latitude : 0.000000,
+                                        longitude: state.position != null ? state.position.longitude : 0.000000,
+                                        latitudeDelta: state.position != null ? 0.0022 : 100,
+                                        longitudeDelta: state.position != null ? 0.0021 : 200,
+                                        //buraya itemın lat ve long değerleri gelecek
                                     }}
 
 
                                 >
-                                    <MyCustomMarker item={state.user.data[0]} />
-                                </Marker>
-                                :
-                                null
+                                    {state.position != null ?
+                                        <Marker
+                                            coordinate={{
+                                                latitude: state.position.latitude,
+                                                longitude: state.position.longitude,
+                                            }}
 
-                            }
-                        </MapView>
-                    </View>
-                    : null
-            }
 
-            <View style={styles.container}>
-                <ChildMessageModal isVisible={visible} cancel={() => setVisible(!visible)} onBackdropPress={() => setVisible(!visible)} />
+                                        >
+                                            <MyCustomMarker item={state.user.data[0]} />
+                                        </Marker>
+                                        :
+                                        null
 
-                <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, marginBottom: 10 }}>
-                    <Pressable onPress={consoleMethod}>
-                        <View
-                            style={{
-                                backgroundColor: COLORS.transparentWhite,
-                                width: 45,
-                                height: 40,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: COLORS.mor,
-                                left: 10,
-                                // right : 30,
-                                // top : 30,
-                                alignItems: "center",
-                                justifyContent: "center"
+                                    }
+                                </MapView>
+                            </View>
+                            : null
+                    }
 
-                            }}>
+                    <View style={styles.container}>
+                        <ChildMessageModal isVisible={visible} cancel={() => setVisible(!visible)} onBackdropPress={() => setVisible(!visible)} />
 
-                            <Icons name="add" color={COLORS.mor} size={30} />
+                        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, marginBottom: 10 }}>
+                            <Pressable onPress={consoleMethod}>
+                                <View
+                                    style={{
+                                        backgroundColor: COLORS.transparentWhite,
+                                        width: 45,
+                                        height: 40,
+                                        borderRadius: 10,
+                                        borderWidth: 1,
+                                        borderColor: COLORS.mor,
+                                        left: 10,
+                                        // right : 30,
+                                        // top : 30,
+                                        alignItems: "center",
+                                        justifyContent: "center"
 
+                                    }}>
+
+                                    <Icons name="add" color={COLORS.mor} size={30} />
+
+                                </View>
+                            </Pressable>
                         </View>
-                    </Pressable>
-                </View>
 
-                <FlatList
-                    data={arr}
-                    keyExtractor={(_, index) => index.toString()}
-                    renderItem={renderList}
-                    contentContainerStyle={{
-                        marginLeft: 10,
-                        padding: 5
-                    }}
-                    numColumns={2}
+                        <FlatList
+                            data={arr}
+                            keyExtractor={(_, index) => index.toString()}
+                            renderItem={renderList}
+                            contentContainerStyle={{
+                                marginLeft: 10,
+                                padding: 5
+                            }}
+                            numColumns={2}
 
-                />
+                        />
 
-                <Pressable style={{ position: "absolute", left: 85, top: 15 }} onPress={() => props.navigation.navigate('soschild')}>
-                    <View style={styles.sosContainer}>
-                        <Image style={{ width: 65, height: 66 }} source={require('../../assets/SOS.png')} />
+                        <Pressable style={{ position: "absolute", left: 85, top: 15 }} onPress={() => props.navigation.navigate('soschild')}>
+                            <View style={styles.sosContainer}>
+                                <Image style={{ width: 65, height: 66 }} source={require('../../assets/SOS.png')} />
+                            </View>
+                        </Pressable>
+
                     </View>
-                </Pressable>
+                </View>
+                :
+                <ActivityIndicator color={COLORS.primary} size={25} />
 
-            </View>
+            }
         </SafeAreaView>
     )
 }

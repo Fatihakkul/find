@@ -15,8 +15,8 @@ const QRCodeScannerPage = props => {
 
 
     const { state, dispatch } = useContext(Context)
-
-   
+    const pushToken = props.route.params.puhstoken
+    
 
     useEffect(() => {
         getLocation()
@@ -46,7 +46,8 @@ const QRCodeScannerPage = props => {
     const connection = async (e) => {
         console.log(e)
         let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
-            code: parseInt(e.data)
+            code: parseInt(e.data),
+            pushToken  : pushToken
         }).catch(err => console.log(err, "err"))
         console.log(response)
         if (response.data.responseStatus === 200) {

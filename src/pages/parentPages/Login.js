@@ -16,6 +16,19 @@ import Axios from 'axios'
 import API from "../../data/api"
 import COLORS from '../../style/Colors';
 import config from "../../../config"
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true
+    }
+  }
+})
+
 const Login = props => {
 
   const { state, dispatch } = useContext(Context)
@@ -23,8 +36,41 @@ const Login = props => {
   const [password, setPassword] = useState("")
   const [confirm, setConfirm] = useState(null);
   const [loading, setLoading] = useState(false)
+  const [pushTokenUser,setPushTokenUser] = useState(null)
 
   const [code, setCode] = useState('');
+
+
+
+  useEffect(() => {
+    Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
+      if (statusObj.status !== 'granted') {
+        return Permissions.askAsync(Permissions.NOTIFICATIONS)
+      }
+      return statusObj;
+
+    })
+      .then((statusObj) => {
+        if (statusObj.status !== 'granted') {
+          throw new Error('Permission not granted qsdqwd')
+        }
+      })
+      .then(() => {
+        return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
+      })
+      .then((data) => {
+        setPushTokenUser(data.data)
+        console.log('PUSHHH TOKENN', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    // socket.on('notification', (data) => {
+    //     triggerNotificationHandler(data.title, data.message)
+    // })
+
+  }, []);
+
 
 
   useEffect(() => {
@@ -72,7 +118,8 @@ const Login = props => {
       {
         type: 1,
         email: responseUser.data.email,
-        name: responseUser.data.name
+        name: responseUser.data.name,
+        pushToken : pushTokenUser
       })
       console.log(responsePost, "userdata")
     if (responsePost.data.responseStatus === 200) {
@@ -116,7 +163,8 @@ const Login = props => {
       {
         type: 0,
         email: data.user.email,
-        name: data.user.name
+        name: data.user.name,
+        pushToken : pushTokenUser
       })
      
     console.log("desire")

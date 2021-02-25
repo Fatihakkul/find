@@ -49,21 +49,13 @@ import Sound from "react-native-sound"
 import BackgroundJob from "react-native-background-actions"
 import strings from "../../strings"
 
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldShowAlert: true
-    }
-  }
-})
 
 
 const { width, height } = Dimensions.get('window')
 const sleep = time => new Promise(resolve => setTimeout(() => resolve(), time));
+
 const mySound = new Sound("my_sound.mp3", Sound.MAIN_BUNDLE, (err) => {
   if (err) {
     console.log(err, "error")
@@ -173,42 +165,15 @@ const HomeParent = props => {
   const [choosed, setChoosed] = useState()
   const [listenVisible, setListenVisible] = useState(false)
   const [locationHistory, setLocationHistory] = useState([])
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
 
   let isFront = true
 
-  useEffect(() => {
+ 
 
-
-
-    Permissions.getAsync(Permissions.NOTIFICATIONS).then((statusObj) => {
-      if (statusObj.status !== 'granted') {
-        return Permissions.askAsync(Permissions.NOTIFICATIONS)
-      }
-      return statusObj;
-
-    })
-      .then((statusObj) => {
-        if (statusObj.status !== 'granted') {
-          throw new Error('Permission not granted qsdqwd')
-        }
-      })
-      .then(() => {
-        return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
-      })
-      .then((data) => {
-        console.log('PUSHHH TOKENN', data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    // socket.on('notification', (data) => {
-    //     triggerNotificationHandler(data.title, data.message)
-    // })
-
-  }, []);
   useEffect(() => { }, [locationHistory])
   useEffect(() => { }, [location])
+
   const parentUniqueId = state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
 
   useEffect(() => {
@@ -420,11 +385,11 @@ const HomeParent = props => {
     })
     console.log(response.data.data.length)
     //setLocationHistory(response.data.data)
-    if(response.data.data.length > 0){
+    if (response.data.data.length > 0) {
       dispatch({ type: "SET_LOCATIONHISTORY", locationHistory: response.data.data })
       setLoading(true)
     }
-    
+
 
   }
 
@@ -439,7 +404,6 @@ const HomeParent = props => {
       receiverUniqueId: choosed.uniqueId,
       senderUniqueId: state.user.userData[0].family.parents[0].uniqueId
     })
-
   }
 
   const stopConnection = () => {
@@ -519,7 +483,7 @@ const HomeParent = props => {
 
               }}
             >
-
+            
               <Polyline
 
                 coordinates={[...state.locationHistory.map((item) => item.location), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
@@ -535,28 +499,28 @@ const HomeParent = props => {
                 strokeWidth={3}
               />
               {
-                  location.uniqueId === undefined ?
+                location.uniqueId === undefined && state.locationHistory.length > 0 ?
                   <Marker
-                  coordinate={{
-                    latitude : state.locationHistory[state.locationHistory.length - 1 ].location.latitude,
-                    longitude : state.locationHistory[state.locationHistory.length - 1 ].location.longitude
-                  }}
-                  tracksInfoWindowChanges={true}
-                >
+                    coordinate={{
+                      latitude: state.locationHistory[state.locationHistory.length - 1].location.latitude,
+                      longitude: state.locationHistory[state.locationHistory.length - 1].location.longitude
+                    }}
+                    tracksInfoWindowChanges={true}
+                  >
 
-                  <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
-                    <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
-                  </View>
-                  <MyCustomMarker />
-                </Marker>
-                :
-                null
+                    <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
+                      <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
+                    </View>
+                    <MyCustomMarker />
+                  </Marker>
+                  :
+                  null
               }
               {
                 location.uniqueId != undefined && choosed != -1 ?
                   <Marker
                     coordinate={{
-                      latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ?  location.location.latitude :loading ? state.position.latitude : state.position.latitude,
+                      latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : loading ? state.position.latitude : state.position.latitude,
                       longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : loading ? state.position.longitude : state.position.longitude,
                     }}
                     tracksInfoWindowChanges={true}

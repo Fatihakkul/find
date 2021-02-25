@@ -21,9 +21,9 @@ const ChatHomeChild =(props)=>{
         console.log(state.user)
     },[])
 
-    function goPage(item){
+    function goPage(item , i){
         dispatch({ type: "SET_LIST", list: []})
-        props.navigation.navigate("chatchild" , { message : item})
+        props.navigation.navigate("chatchild" , { message : item , child : i})
     }
 
     const renderChat=({item})=>{
@@ -34,7 +34,7 @@ const ChatHomeChild =(props)=>{
             }else {
                 
                 return(
-                            <ChatChildListItem  item={item} picture={item.picture} name={item.name} onPress={()=>goPage(item)}/>
+                            <ChatChildListItem  item={item} picture={item.picture} name={item.name} onPress={()=>goPage(item , false)}/>
                         )
             }
     
@@ -56,7 +56,7 @@ const ChatHomeChild =(props)=>{
             <View style={styles.headerTitle}>
                 <Text style={styles.title}>MESAJLAR</Text>
             </View>    
-            <ChatChildListItem name="Parent" item={parent} picture={parent.picture} onPress={()=>goPage(parent)} />
+            <ChatChildListItem name="Parent" item={parent} picture={parent.picture} onPress={()=>goPage(parent , true)} />
                {childArray.length != 0 ?  
                <FlatList 
                     keyExtractor={(_,index)=>index.toString()}

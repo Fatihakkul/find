@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions ,PermissionsAndroid ,Alert,Platform} from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions, PermissionsAndroid, Alert, Platform } from "react-native"
 import Context from '../context/store'
 import Axios from "axios"
 import Geolocation from '@react-native-community/geolocation'
@@ -18,42 +18,47 @@ const SplashScreen = (props) => {
     const { state, dispatch } = useContext(Context)
     const [position, setPosition] = useState([])
 
-    useEffect(()=>{
-        registerForPushNotificationsAsync()
-    },[])
-
-   const registerForPushNotificationsAsync = async () => {
-        if (Constants.isDevice) {
-          const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-          let finalStatus = existingStatus;
-          if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-          }
-          if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-          }
-          const token = await Notifications.getExpoPushTokenAsync();
-          console.log(token);
-          this.setState({ expoPushToken: token });
-        } else {
-          alert('Must use physical device for Push Notifications');
-        }
-      
-        if (Platform.OS === 'android') {
-          Notifications.createChannelAndroidAsync('default', {
-            name: 'default',
-            sound: true,
-            priority: 'max',
-            vibrate: [0, 250, 250, 250],
-          });
-        }
-        };
     useEffect(() => {
-        if(Platform.OS === "ios"){
+        registerForPushNotificationsAsync()
+    }, [])
+
+    const registerForPushNotificationsAsync = async () => {
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            const token = await Notifications.getExpoPushTokenAsync();
+            console.log(token);
+           // this.setState({ expoPushToken: token });
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
+
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('default', {
+                name: 'default',
+                sound: true,
+                priority: 'max',
+                vibrate: [0, 250, 250, 250],
+            });
+        }
+    };
+
+
+
+
+
+    useEffect(() => {
+        if (Platform.OS === "ios") {
             Geolocation.getCurrentPosition(info => {
-                console.log(info,"info")
+                console.log(info, "info")
                 dispatch({ type: "SET_POSITION", position: info.coords })
             }, (err) => {
                 console.log(err, "wwwww")
@@ -80,7 +85,7 @@ const SplashScreen = (props) => {
                 getLocation()
                 const decodeddChild = jwt_decoded(data)
                 console.log(decodeddChild.data[0], "decoded")
-                connection(decodeddChild.data[0].code,decodeddChild)
+                connection(decodeddChild.data[0].code, decodeddChild)
             } else {
 
                 AsyncStoreage.getItem("@TYPE").then(data => {
@@ -118,7 +123,7 @@ const SplashScreen = (props) => {
     }, [])
 
 
-    const connection = async (e,decoded) => {
+    const connection = async (e, decoded) => {
         console.log(e)
         let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
             code: parseInt(e)
@@ -162,7 +167,7 @@ const SplashScreen = (props) => {
                 })
 
                 Geolocation.getCurrentPosition(info => {
-                    console.log(info,"info")
+                    console.log(info, "info")
                     dispatch({ type: "SET_POSITION", position: info.coords })
                 }, (err) => {
                     console.log(err, "wwwww")
@@ -190,7 +195,7 @@ const SplashScreen = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Image style={Platform.OS === "android" ? { flex: 1, zIndex: 0, position: "absolute" } : {flex : 1,position:"absolute"}} source={require('../assets/background.png')} />
+            <Image style={Platform.OS === "android" ? { flex: 1, zIndex: 0, position: "absolute" } : { flex: 1, position: "absolute" }} source={require('../assets/background.png')} />
             <View style={styles.imageContainer}>
                 <Image style={{ width: 300, height: 300 }} source={require('../assets/logo.png')} />
             </View>
