@@ -5,6 +5,7 @@ import Axios from 'axios'
 import {ChatListItem,ChatChildListItem} from '../../components'
 import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
+import * as Notifications from "expo-notifications"
 
 const ChatHomeChild =(props)=>{
 
@@ -13,6 +14,23 @@ const ChatHomeChild =(props)=>{
     const [childArray , setChildArray] = useState([])
     const [parent,setParent]=useState(state.family[0].parent)
    
+
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => {
+                  return {
+                    shouldShowAlert: true,
+                    shouldPlaySound : true
+                  }
+                }
+              })
+        });
+    
+        return unsubscribe;
+      }, [props.navigation]);
+
 
     useEffect(()=>{
         getFamily()

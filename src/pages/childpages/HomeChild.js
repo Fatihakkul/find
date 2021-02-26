@@ -193,7 +193,7 @@ const taskRandom = async taskData => {
                         })
                         console.log(response, "post response ======")
                     }
-                    if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === false){
+                    if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
                         console.log("alana girdi")
                         let response = await Axios.post(API.base_url + API.push_notification_child,{
                             parentUniqueId : parentId,
@@ -287,14 +287,6 @@ function handleOpenURL(evt) {
 
 ///Linking.addEventListener('com.findmyfamily', handleOpenURL);
 
-Notifications.setNotificationHandler({
-    handleNotification: async () => {
-        return {
-            shouldShowAlert: true
-        }
-    }
-})
-
 
 const HomeChild = props => {
 
@@ -308,7 +300,18 @@ const HomeChild = props => {
     }
 
 
-
+    useEffect(()=>{
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => {
+                  return {
+                    shouldShowAlert: true,
+                    shouldPlaySound : true
+                  }
+                }
+              })
+        });
+    },[])
 
     useEffect(() => {
 

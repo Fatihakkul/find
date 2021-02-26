@@ -159,6 +159,7 @@ const HomeParent = props => {
 
   const history = [{ time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "17:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" },]
   
+  const route = useRoute()
   const mapRef = useRef(null)
   const { state, dispatch } = useContext(Context)
   const [batteryLevel, setBatteryLevel] = useState("")
@@ -172,7 +173,8 @@ const HomeParent = props => {
   const [listenVisible, setListenVisible] = useState(false)
   const [locationHistory, setLocationHistory] = useState([])
   const [loading, setLoading] = useState(false)
-  const route = useRoute()
+  const [childNotification,setChildNotification] = useState([])
+ 
 
   let isFront = true
 
@@ -187,6 +189,7 @@ const HomeParent = props => {
 
 
   useEffect(() => {
+    getChildNotifications()
     getLocation()
     BackgroundJob.start(taskRandom, options)
     getFamily()
@@ -346,6 +349,8 @@ const HomeParent = props => {
 }, [])
 
 
+
+
   const renderEvents = ({ item, index }) => {
     return (
       <View style={{ paddingHorizontal: 20, alignItems: "center", height: 90 }}>
@@ -366,7 +371,7 @@ const HomeParent = props => {
             }}></View>
         <Text style={{ letterSpacing: 0.5, color: COLORS.transparentBlack }}>{item.notification}</Text>
         <View style={{ padding: 5, backgroundColor: COLORS.transparentBlack, borderRadius: 20, marginTop: 5 }}>
-          <Text style={{ fontSize: 10, fontWeight: "bold", color: COLORS.white }}>{choosed.name}</Text>
+          <Text style={{ fontSize: 10, fontWeight: "bold", color: COLORS.white }}>{item.time}</Text>
         </View>
         <View style={{
           width: 30, height: 30, borderRadius: 15, backgroundColor:
@@ -392,7 +397,13 @@ const HomeParent = props => {
   }
 
 
-
+  const getChildNotifications =async()=>{
+    console.log(state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id,"sdfsd")
+    let response = await Axios.post(API.base_url + API.get_children_area_notifications,{
+      parentId : state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
+    })
+    setChildNotification(response.data.data.response)
+  }
 
   const showHistory = () => {
 
@@ -600,7 +611,12 @@ const HomeParent = props => {
               <View style={styles.childInfo}>
                 <FlatList
                   horizontal={true}
-                  data={history}
+                  data={childNotification.filter((item)=>item.title === choosed.name).map((child)=>{
+                    return {
+                      notification : child.message,
+                      time : child.createdAt.substring(child.createdAt.lastIndexOf("T")+1 ,child.createdAt.lastIndexOf(".")-3)
+                    }
+                  })}
                   keyExtractor={(_, index) => index.toString()}
                   renderItem={renderEvents}
                 />

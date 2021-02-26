@@ -14,6 +14,7 @@ const API = {
     get_user : "/home/getuser",
     getmessage_limit : "/home/getmessageslimit",
     location_history : "/parent/getlocation",
-    push_notification_child : "/children/pushnotificationlocation"
+    push_notification_child : "/children/pushnotificationlocation",
+    get_children_area_notifications : "/parent/getparentnotification"
 }
 export default API

@@ -9,7 +9,7 @@ import API from "../../data/api"
 import Axios from "axios"
 import COLORS from '../../style/Colors'
 import {useIsFocused} from "@react-navigation/native"
-
+import * as Notifications from "expo-notifications";
 const ChatChild = (props) => {
     const { state, dispatch } = useContext(Context)
     const [userMessage, setUserMessage] = useState({ senderUniqueId: state.user.data[0].uniqueId, message: "", time: "" })
@@ -18,6 +18,18 @@ const ChatChild = (props) => {
     const [child,setChild] = useState(props.route.params.child)
     const list = useRef()
     const isFocus = useIsFocused()
+
+
+    useEffect(()=>{
+        Notifications.setNotificationHandler({
+            handleNotification: async () => {
+              return {
+                shouldShowAlert: false
+              }
+            }
+          })
+    },[])
+
     useEffect(() => {
         console.log(props.route.params.message)
         if (props.route.params.message != undefined) {

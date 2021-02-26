@@ -22,6 +22,7 @@ const SwiperPage = (props) => {
     Platform.OS === "android" ? requestCameraPermission() : null
     console.log(strings.getInterfaceLanguage())
     //de-DE  tr-TR 
+    
 
     console.log('=====ZZZZZZZ', Constants.systemFonts);
   }, [])
