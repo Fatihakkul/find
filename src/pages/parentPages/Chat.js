@@ -9,15 +9,9 @@ import API from "../../data/api"
 import Axios from 'axios'
 import COLORS from '../../style/Colors'
 import * as Notifications from 'expo-notifications';
+import { useRoute } from "@react-navigation/native"
 
 
-Notifications.setNotificationHandler({
-    handleNotification: async () => {
-      return {
-        shouldShowAlert: false
-      }
-    }
-  })
 
 const Chat = (props) => {
 
@@ -26,32 +20,41 @@ const Chat = (props) => {
     const [messageTo, setMessageTo] = useState(props.route.params.message)
     const [userMessage, setUserMessage] = useState({ senderUniqueId: uniqueId, message: "", time: "" })
     const [uniqueId, setUniqueId] = useState(state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.uniqueId)
+    const [noti,setNoti] = useState(null)
     const list = useRef()
+    const isFocus = useRoute()
+
+    
+    
 
     useEffect(() => {
+        Notifications.setNotificationHandler({
+            handleNotification: async () => {
+              return {
+                shouldShowAlert: false
+              }
+            }
+          })
         getMessage()
         getmessagesLimit()
         socketClient.on("new_message", newMessage => {
-
+            console.log(newMessage , "new mesaage")
             dispatch({ type: "SET_MESSAGELIST", messageList: newMessage })
-            console.log(newMessage, "list")
             setTimeout(() => {
-                scrollIndex()
+                isFocus.name ===  "ParentChat" ? scrollIndex() :null
             }, 1000);
 
 
         })
         setTimeout(() => {
-            scrollIndex()
+            isFocus.name ===  "ParentChat" ?  scrollIndex() : null
         }, 1000);
-
+       
     }, [])
 
     const renderMessage = ({ item, index }) => {
 
-        console.log(item)
         if (item.senderUniqueId === uniqueId) {
-            console.log(item.message, index)
             return (
                 <MessageComponent data={item} />
             )
@@ -90,30 +93,26 @@ const Chat = (props) => {
 
             dispatch({ type: "SET_MESSAGELIST", messageList: userMessage })
             setTimeout(() => {
-                scrollIndex()
-            }, 1000);
+                isFocus.name ===  "ParentChat" ? scrollIndex() : null
+            }, 1500);
             setUserMessage({ message: "" })
         }
     }
 
     const scrollIndex = () => {
-        console.log(list, "______________liast")
-         list.current.scrollToEnd({animated : true}) 
+        list.current !== null ?   list.current.scrollToEnd({animated : true})  : null
     }
 
     const getMessage = async () => {
-        console.log(props.route.params.message.uniqueId, "-----", uniqueId)
         let response = await Axios.post(API.base_url + API.get_message, {
             senderUniqueId: uniqueId,
             receiverUniqueId: props.route.params.message.uniqueId,
             limit: 20
         })
-        console.log(response.data.response, "se")
         dispatch({ type: "SET_LIST", list: response.data.data.response })
         setTimeout(() => {
             scrollIndex()
         }, 1000);
-        console.log("merhaba")
     }
 
     const getmessagesLimit = async () => {
@@ -122,7 +121,6 @@ const Chat = (props) => {
             receiverUniqueId: props.route.params.message.uniqueId,
             limit: 2
         }).catch(err => console.log(err, "err"))
-        console.log(response, "limit")
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>

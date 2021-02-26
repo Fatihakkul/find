@@ -8,6 +8,7 @@ import { socketClient } from "../../socket/socket"
 import API from "../../data/api"
 import Axios from "axios"
 import COLORS from '../../style/Colors'
+import {useIsFocused} from "@react-navigation/native"
 
 const ChatChild = (props) => {
     const { state, dispatch } = useContext(Context)
@@ -16,7 +17,7 @@ const ChatChild = (props) => {
     const [receiverName,setReceiverName]=useState("")
     const [child,setChild] = useState(props.route.params.child)
     const list = useRef()
-
+    const isFocus = useIsFocused()
     useEffect(() => {
         console.log(props.route.params.message)
         if (props.route.params.message != undefined) {
@@ -127,7 +128,7 @@ const ChatChild = (props) => {
     }
 
     const scrollIndex = () => {
-        list.current.scrollToEnd({ animated: true })
+      isFocus ?  list.current.scrollToEnd({ animated: true }) : null
     }
 
     return (

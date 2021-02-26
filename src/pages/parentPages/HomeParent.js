@@ -51,6 +51,12 @@ import strings from "../../strings"
 
 
 import geolib from "geolib"
+import { useRoute} from "@react-navigation/native"
+import * as Notifications from "expo-notifications"
+ 
+
+
+
 
 
 const { width, height } = Dimensions.get('window')
@@ -152,7 +158,7 @@ let device = new RTCPeerConnection(pc_config)
 const HomeParent = props => {
 
   const history = [{ time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "17:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" },]
-
+  
   const mapRef = useRef(null)
   const { state, dispatch } = useContext(Context)
   const [batteryLevel, setBatteryLevel] = useState("")
@@ -166,6 +172,7 @@ const HomeParent = props => {
   const [listenVisible, setListenVisible] = useState(false)
   const [locationHistory, setLocationHistory] = useState([])
   const [loading, setLoading] = useState(false)
+  const route = useRoute()
 
   let isFront = true
 
@@ -174,6 +181,10 @@ const HomeParent = props => {
   useEffect(() => { }, [location])
 
   const parentUniqueId = state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
+
+
+
+
 
   useEffect(() => {
     getLocation()
@@ -310,6 +321,29 @@ const HomeParent = props => {
       uniqueId: choosed.uniqueId
     })
   }
+
+
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => {
+        return {
+          shouldShowAlert: true
+        }
+      }
+  })
+    const backgroundSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response)
+    })
+
+    const foregoundSubscription = Notifications.addNotificationReceivedListener((notif) => {
+        console.log(notif)
+    })
+
+    return () => {
+        backgroundSubscription.remove();
+        foregoundSubscription.remove();
+    }
+}, [])
 
 
   const renderEvents = ({ item, index }) => {

@@ -13,6 +13,7 @@ const API = {
     update_user : "/updateuser",
     get_user : "/home/getuser",
     getmessage_limit : "/home/getmessageslimit",
-    location_history : "/parent/getlocation"
+    location_history : "/parent/getlocation",
+    push_notification_child : "/children/pushnotificationlocation"
 }
 export default API

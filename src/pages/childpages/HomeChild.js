@@ -47,7 +47,7 @@ import {isPointWithinRadius} from "geolib"
 
 let isFront = true
 let error = false
-
+let childName = "";
 
 let areaList = [];
 const pc_config = {
@@ -178,7 +178,7 @@ const taskRandom = async taskData => {
             
         
             console.log(current)
-            Geolocation.getCurrentPosition(success => {
+            Geolocation.getCurrentPosition(async success => {
              //   const konum = geolib.isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , sdfsdf, 10 )
                 for (let i = 0; i < areaList.length; i++) {
                    
@@ -186,9 +186,21 @@ const taskRandom = async taskData => {
                     if(current ===true && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === false ){
                         console.log(`${element.name} çıktı `)
                         
+                        let response = await Axios.post(API.base_url + API.push_notification_child,{
+                            parentUniqueId : parentId,
+                            title : childName,
+                            message : `${element.name} geldi` 
+                        })
+                        console.log(response, "post response ======")
                     }
-                    if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
+                    if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === false){
                         console.log("alana girdi")
+                        let response = await Axios.post(API.base_url + API.push_notification_child,{
+                            parentUniqueId : parentId,
+                            title : childName,
+                            message : `${element.name} çıktı` 
+                        })
+                        console.log(response, "post response >>>>======")
                     }
 
                     current = isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10)
@@ -349,6 +361,7 @@ const HomeChild = props => {
 
     useEffect(() => {
         if (state.login) {
+            childName = state.user.data[0].name
             childId = state.user.data[0].uniqueId
             parentId = state.family[0].parent.uniqueId
         }
@@ -409,6 +422,7 @@ const HomeChild = props => {
         areaList = response.data.data.response[0].addresses
         console.log(response.data.data.response[0].addresses  , " <<<<<<<<<========")
         dispatch({ type: "ADD_AREA", get: response.data.data.response[0].addresses })
+        
 
     }
 

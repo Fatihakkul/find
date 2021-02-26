@@ -6,8 +6,14 @@ import { ChatListItem, Header } from '../../components'
 import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
 import strings from '../../strings'
-
+import * as Notifications from "expo-notifications"
+import { useIsFocused  } from "@react-navigation/native";
+ 
 const { width, height } = Dimensions.get('window')
+
+
+
+
 const ChatHome = (props) => {
 
     const { state, dispatch } = useContext(Context)
@@ -16,10 +22,27 @@ const ChatHome = (props) => {
     const [childIndex, setChildIndex] = useState(null)
     const [choosed, setChoosed] = useState(-1)
     const [bol, setBol] = useState(false)
+    const isFocus = useIsFocused()
 
 
     useEffect(() => {
-       
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => {
+                  return {
+                    shouldShowAlert: true,
+                    shouldPlaySound : true
+                  }
+                }
+              })
+        });
+    
+        return unsubscribe;
+      }, [props.navigation]);
+
+
+    useEffect(() => {
+        
         getFamily()
         childIndex === null ? setChildIndex(-1) : null 
        
@@ -32,6 +55,7 @@ const ChatHome = (props) => {
         )
     }
     const getFamily = async () => {
+        console.log("err")
         setLoading(true)
         let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
             parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
@@ -42,7 +66,7 @@ const ChatHome = (props) => {
     }
 
     function getlocationChild(child, i) {
-
+        console.log("ewwe")
         setChildIndex(i)
         setChoosed(child)
         i != -1 ? setBol(true) : setBol(false)
