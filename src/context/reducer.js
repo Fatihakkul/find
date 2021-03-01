@@ -97,6 +97,10 @@ export function reducer(state, action) {
             const locationHistory = action.locationHistory
             state.locationHistory = locationHistory
             return { ...state }
+        case "SET_PACKAGE":
+            const userPackage = action.package
+            state.userPackage = userPackage
+            return { ...state }
         default:
             return state
     }

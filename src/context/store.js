@@ -14,7 +14,8 @@ export const initialState = {
      location : [],
      userlight : null,
      locationHistory : [],
-     login : false
+     login : false,
+     userPackage : null
 }
 
 export default Context = createContext(initialState);

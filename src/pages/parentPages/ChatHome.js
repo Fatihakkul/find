@@ -7,8 +7,8 @@ import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
 import strings from '../../strings'
 import * as Notifications from "expo-notifications"
-import { useIsFocused  } from "@react-navigation/native";
- 
+import { useIsFocused } from "@react-navigation/native";
+
 const { width, height } = Dimensions.get('window')
 
 
@@ -22,6 +22,7 @@ const ChatHome = (props) => {
     const [childIndex, setChildIndex] = useState(null)
     const [choosed, setChoosed] = useState(-1)
     const [bol, setBol] = useState(false)
+    const [userPackage, setPackage] = useState(state.userPackage)
     const isFocus = useIsFocused()
 
 
@@ -29,27 +30,27 @@ const ChatHome = (props) => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             Notifications.setNotificationHandler({
                 handleNotification: async () => {
-                  return {
-                    shouldShowAlert: true,
-                    shouldPlaySound : true
-                  }
+                    return {
+                        shouldShowAlert: true,
+                        shouldPlaySound: true
+                    }
                 }
-              })
+            })
         });
-    
+
         return unsubscribe;
-      }, [props.navigation]);
+    }, [props.navigation]);
 
 
     useEffect(() => {
-        
+
         getFamily()
-        childIndex === null ? setChildIndex(-1) : null 
-       
+        childIndex === null ? setChildIndex(-1) : null
+
     }, [])
 
     const renderChat = ({ item, index }) => {
-       
+
         return (
             <ChatListItem picture={item.picture} oneMessage={bol} index={index} name={item.name} item={item} onPress={() => props.navigation.navigate("ParentChat", { message: item })} />
         )
@@ -75,16 +76,16 @@ const ChatHome = (props) => {
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ alignItems: "center", flex: 1 }}>
+            {userPackage || userPackage != null ? <View style={{ alignItems: "center", flex: 1 }}>
                 {childArray.length != 0 ?
 
-                    <View style={{paddingBottom:40}}>
+                    <View style={{ paddingBottom: 40 }}>
 
                         <FlatList
                             contentContainerStyle={{ paddingTop: 100 }}
                             keyExtractor={(_, index) => index.toString()}
                             renderItem={renderChat}
-                            data={choosed === -1 ? childArray :  childArray.filter((item)=>item === choosed)}
+                            data={choosed === -1 ? childArray : childArray.filter((item) => item === choosed)}
                         />
                     </View>
 
@@ -119,6 +120,25 @@ const ChatHome = (props) => {
                     }
                 </ScrollView>
             </View>
+                :
+                <View style={{ flex: 1, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center" }}>
+
+                    <View style={{ width: width * 0.9, height: height * 0.4, backgroundColor: COLORS.white, borderRadius: 20, alignItems: "center", justifyContent: "space-around" }}>
+                        <View style={{ alignItems: "center" }}>
+                            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>Uygulamayı kullanmaya </Text>
+                            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>devam edebilmek için </Text>
+                            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>lütfen paket alınız</Text>
+                        </View>
+
+                        <TouchableOpacity onPress={() => props.navigation.navigate('package')}  >
+                            <View style={{ width: width * 0.5, height: 40, borderRadius: 20, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
+                                <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>PAKET SATIN AL</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            }
         </SafeAreaView>
     )
 }

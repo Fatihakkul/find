@@ -196,7 +196,7 @@ const SplashScreen = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Image style={Platform.OS === "android" ? { flex: 1, zIndex: 0, position: "absolute" } : { flex: 1, position: "absolute" }} source={require('../assets/background.png')} />
+            <Image style={{position: "absolute" ,width : width,height:height}} source={require('../assets/background.png')} />
             <View style={styles.imageContainer}>
                 <Image style={{ width: 300, height: 300 }} source={require('../assets/logo.png')} />
             </View>

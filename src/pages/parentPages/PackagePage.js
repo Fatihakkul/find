@@ -27,32 +27,32 @@ const PackagePage = (props) => {
 
     const [product,setProduct]=useState([])
 
-    useEffect(() => {
-        RNIap.initConnection()
-        setTimeout(() => {
-            RNIap.getSubscriptions(itemSkus).then(data=>console.log(data,"data")).catch(err=>console.log(err, ))
-        }, 2000);
+//     useEffect(() => {
+//         RNIap.initConnection()
+//         setTimeout(() => {
+//             RNIap.getSubscriptions(itemSkus).then(data=>console.log(data,"data")).catch(err=>console.log(err, ))
+//         }, 2000);
      
-    //   RNIap.initConnection().then(conn => {
-    //       console.log(conn)
-    //         RNIap.getProducts(itemSkus).then(res=>{
-    //             console.log(res, "product")
-    //         }).catch(err=>console.log(err))
-    //     //   RNIap.getSubscriptions(itemSkus).then(res => {
-    //     //       setProduct(res)
-    //     //       console.log(res,"errr",itemSkus)
-    //     //    //   alert("success")
-    //     //   }).catch(err => {
-    //     //       console.log(err,"ic") 
-    //     //   })
-    //       RNIap.endConnection()
-    //   }).catch(err => {
-    //       console.log(err , "ca") 
-    //       alert("ERROR")
-    //   })
+//     //   RNIap.initConnection().then(conn => {
+//     //       console.log(conn)
+//     //         RNIap.getProducts(itemSkus).then(res=>{
+//     //             console.log(res, "product")
+//     //         }).catch(err=>console.log(err))
+//     //     //   RNIap.getSubscriptions(itemSkus).then(res => {
+//     //     //       setProduct(res)
+//     //     //       console.log(res,"errr",itemSkus)
+//     //     //    //   alert("success")
+//     //     //   }).catch(err => {
+//     //     //       console.log(err,"ic") 
+//     //     //   })
+//     //       RNIap.endConnection()
+//     //   }).catch(err => {
+//     //       console.log(err , "ca") 
+//     //       alert("ERROR")
+//     //   })
 
      
-  }, [])
+//   }, [])
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

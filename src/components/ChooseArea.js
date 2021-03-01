@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { SafeAreaView, View, Text, Dimensions, StyleSheet, Pressable, FlatList, ScrollView, Alert, Platform, Image } from 'react-native'
+import { SafeAreaView, View, Text, Dimensions, StyleSheet, Pressable, FlatList, ScrollView, Alert, Platform, TouchableOpacity,Image } from 'react-native'
 import Modal from 'react-native-modal'
 import Context from '../context/store'
 import MApView, { Marker, Circle } from 'react-native-maps'
@@ -28,7 +28,8 @@ const ChooseArea = props => {
     const [deleted, setDeleted] = useState(false)
     const [item, setItem] = useState()
     const [childIndex, setChildIndex] = useState()
-
+    const [userPackage, setPackage] = useState(state.userPackage)
+    
     useEffect(() => {
         console.log("merhaba")
     }, [state.area])
@@ -104,7 +105,10 @@ const ChooseArea = props => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+       <SafeAreaView style={{flex : 1}}>
+{
+        userPackage || userPackage  != null ?
+       <View style={styles.container}>
 
             <MApView
 
@@ -193,7 +197,29 @@ const ChooseArea = props => {
                 :
                 null
             }
-        </SafeAreaView>
+        </View>
+        :
+        <View style={{ flex: 1, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center" }}>
+
+        <View style={{ width: width * 0.9, height: height * 0.4, backgroundColor: COLORS.white, borderRadius: 20, alignItems: "center", justifyContent: "space-around" }}>
+          <View style={{alignItems : "center"}}>
+            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>Uygulamayı kullanmaya </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>devam edebilmek için </Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>lütfen paket alınız</Text>
+          </View>
+
+          <TouchableOpacity onPress={()=>props.navigation.navigate('package')}  >
+            <View style={{ width: width * 0.5, height: 40, borderRadius: 20, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
+              <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>PAKET SATIN AL</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+
+        
+    }
+        </SafeAreaView> 
     )
 }
 

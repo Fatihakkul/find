@@ -12,7 +12,8 @@ import {
   Image,
   ScrollView,
   Alert,
-  Linking
+  Linking,
+  TouchableOpacity
 } from 'react-native'
 import {
   ChildHistoryModal,
@@ -51,9 +52,9 @@ import strings from "../../strings"
 
 
 import geolib from "geolib"
-import { useRoute} from "@react-navigation/native"
+import { useRoute } from "@react-navigation/native"
 import * as Notifications from "expo-notifications"
- 
+
 
 
 
@@ -157,8 +158,7 @@ const sdpConstraints = {
 let device = new RTCPeerConnection(pc_config)
 const HomeParent = props => {
 
-  const history = [{ time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "17:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" }, { time: "16:30", notification: "sadasd" },]
-  
+
   const route = useRoute()
   const mapRef = useRef(null)
   const { state, dispatch } = useContext(Context)
@@ -173,8 +173,9 @@ const HomeParent = props => {
   const [listenVisible, setListenVisible] = useState(false)
   const [locationHistory, setLocationHistory] = useState([])
   const [loading, setLoading] = useState(false)
-  const [childNotification,setChildNotification] = useState([])
- 
+  const [childNotification, setChildNotification] = useState([])
+  const [userPackage, setPackage] = useState(null)
+
 
   let isFront = true
 
@@ -182,11 +183,15 @@ const HomeParent = props => {
   useEffect(() => { }, [locationHistory])
   useEffect(() => { }, [location])
 
+
   const parentUniqueId = state.type === 1 ? state.user.userData[0].family.parents[0].uniqueId : state.user.parentData.id.uniqueId
 
 
 
-
+  useEffect(() => {
+    dispatch({ type: "SET_PACKAGE", package: true })
+    setPackage(true)
+  }, [])
 
   useEffect(() => {
     getChildNotifications()
@@ -327,26 +332,27 @@ const HomeParent = props => {
 
 
   useEffect(() => {
+
     Notifications.setNotificationHandler({
       handleNotification: async () => {
         return {
           shouldShowAlert: true
         }
       }
-  })
+    })
     const backgroundSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response)
+      console.log(response)
     })
 
     const foregoundSubscription = Notifications.addNotificationReceivedListener((notif) => {
-        console.log(notif)
+      console.log(notif)
     })
 
     return () => {
-        backgroundSubscription.remove();
-        foregoundSubscription.remove();
+      backgroundSubscription.remove();
+      foregoundSubscription.remove();
     }
-}, [])
+  }, [])
 
 
 
@@ -358,7 +364,7 @@ const HomeParent = props => {
           left: 40, top: 70, position: "absolute", width: 80, height: 1,
           borderColor: childIndex % 2 === 1 && childIndex % 3 != 0 ? COLORS.red : childIndex % 3 === 0 ? COLORS.mor : COLORS.primary
           , borderWidth: 1
-        } : index === history.length - 1 ? {
+        } : index === childNotification.length - 1 ? {
           right: 40, top: 70, position: "absolute", width: 80, height: 1,
           borderColor:
             childIndex % 2 === 1 && childIndex % 3 != 0 ? COLORS.red : childIndex % 3 === 0 ? COLORS.mor : COLORS.primary
@@ -397,10 +403,10 @@ const HomeParent = props => {
   }
 
 
-  const getChildNotifications =async()=>{
-    console.log(state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id,"sdfsd")
-    let response = await Axios.post(API.base_url + API.get_children_area_notifications,{
-      parentId : state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
+  const getChildNotifications = async () => {
+    console.log(state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id, "sdfsd")
+    let response = await Axios.post(API.base_url + API.get_children_area_notifications, {
+      parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
     })
     setChildNotification(response.data.data.response)
   }
@@ -506,127 +512,153 @@ const HomeParent = props => {
   }
 
   return (
+
+
     <SafeAreaView style={{ flex: 1 }}>
-      {
-        location != null ?
+      { userPackage || userPackage != null ?
+        <View style={{ flex: 1 }}>
 
 
-          <View style={styles.container}>
-            <ChildHistoryModal press={goMessage} name={choosed != null ? choosed.name : null} level={batteryLevel} isVisible={visible} onBackdropPress={() => setVisible(false)} />
-            <ListenModal onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
-            <MapView
-
-              ref={mapRef}
-
-              style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, position: "absolute" }}
-              initialRegion={{
-                latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : state.position.latitude,
-                longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : state.position.longitude,
-                latitudeDelta: 0.0022,
-                longitudeDelta: 0.0021,
-
-              }}
-            >
-            
-              <Polyline
-
-                coordinates={[...state.locationHistory.map((item) => item.location), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
-                strokeColor={Colors.primary}
-                strokeColors={[
-                  '#7F0000',
-                  '#00000000',
-                  '#B24112',
-                  '#E5845C',
-                  '#238C23',
-                  '#7F0000'
-                ]}
-                strokeWidth={3}
-              />
-              {
-                location.uniqueId === undefined && state.locationHistory.length > 0 ?
-                  <Marker
-                    coordinate={{
-                      latitude: state.locationHistory[state.locationHistory.length - 1].location.latitude,
-                      longitude: state.locationHistory[state.locationHistory.length - 1].location.longitude
-                    }}
-                    tracksInfoWindowChanges={true}
-                  >
-
-                    <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
-                      <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
-                    </View>
-                    <MyCustomMarker />
-                  </Marker>
-                  :
-                  null
-              }
-              {
-                location.uniqueId != undefined && choosed != -1 ?
-                  <Marker
-                    coordinate={{
-                      latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : loading ? state.position.latitude : state.position.latitude,
-                      longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : loading ? state.position.longitude : state.position.longitude,
-                    }}
-                    tracksInfoWindowChanges={true}
-                  >
-
-                    <View style={{ width: 40, height: 40, position: "absolute", top: 0, left: 26 }}>
-                      <Icon name="battery-dead-outline" size={30} color={parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red} />
-                      <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 9, top: 10, left: 6, fontWeight: "bold" }}>{`${batteryLevel}%`}</Text>
-                    </View>
-                    <MyCustomMarker />
-                  </Marker>
-                  :
-
-                  null
-              }
-            </MapView>
-
-            <ScrollView horizontal={true} contentContainerStyle={{ paddingLeft: 20, alignItems: "center" }} style={{ height: 80, borderBottomLeftRadius: 25, borderBottomRightRadius: 25, elevation: 1, width: width, backgroundColor: "rgba(255,255,255,0.85)", alignSelf: "center", position: "absolute", top: Platform.OS === "android" ? 0 : 0 }}>
-              {
-                (state.family).map((item, index) => {
-                  return (
-                    <Pressable key={index} onPress={() => getlocationChild(item, index)} >
-                      <View style={[styles.listItem, childIndex === index ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>
-                        <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
-                      </View>
-                    </Pressable>
-                  )
-                })
-              }
-            </ScrollView>
-
-            {childIndex === -1 ? null :
-              <Pressable onPress={create} style={[styles.circleButton]} >
-                <Image style={{ width: 58, height: 58, marginTop: 4 }} source={require('../../assets/Hear.png')} />
-              </Pressable>}
+          {
+            location != null ?
 
 
-            {childIndex === -1 ? null :
-              <Pressable style={[styles.circleButton, { left: 60, backgroundColor: Colors.red }]} onPress={sendSOS}>
-                <Image style={{ width: 58, height: 58, marginTop: 4 }} source={require('../../assets/SOS.png')} />
-              </Pressable>}
+              <View style={styles.container}>
+                <ChildHistoryModal press={goMessage} name={choosed != null ? choosed.name : null} level={batteryLevel} isVisible={visible} onBackdropPress={() => setVisible(false)} />
+                <ListenModal onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
+                <MapView
 
-            {childIndex === -1 ? null :
-              <View style={styles.childInfo}>
-                <FlatList
-                  horizontal={true}
-                  data={childNotification.filter((item)=>item.title === choosed.name).map((child)=>{
-                    return {
-                      notification : child.message,
-                      time : child.createdAt.substring(child.createdAt.lastIndexOf("T")+1 ,child.createdAt.lastIndexOf(".")-3)
-                    }
-                  })}
-                  keyExtractor={(_, index) => index.toString()}
-                  renderItem={renderEvents}
-                />
-              </View>}
+                  ref={mapRef}
+
+                  style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, position: "absolute" }}
+                  initialRegion={{
+                    latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : state.position.latitude,
+                    longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : state.position.longitude,
+                    latitudeDelta: 0.0022,
+                    longitudeDelta: 0.0021,
+
+                  }}
+                >
+
+                  <Polyline
+
+                    coordinates={[...state.locationHistory.map((item) => item.location), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
+                    strokeColor={Colors.primary}
+                    strokeColors={[
+                      '#7F0000',
+                      '#00000000',
+                      '#B24112',
+                      '#E5845C',
+                      '#238C23',
+                      '#7F0000'
+                    ]}
+                    strokeWidth={3}
+                  />
+                  {
+                    location.uniqueId === undefined && state.locationHistory.length > 0 ?
+                      <Marker
+                        coordinate={{
+                          latitude: state.locationHistory[state.locationHistory.length - 1].location.latitude,
+                          longitude: state.locationHistory[state.locationHistory.length - 1].location.longitude
+                        }}
+                        tracksInfoWindowChanges={true}
+                      >
+
+                        <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
+                          <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
+                        </View>
+                        <MyCustomMarker />
+                      </Marker>
+                      :
+                      null
+                  }
+                  {
+                    location.uniqueId != undefined && choosed != -1 ?
+                      <Marker
+                        coordinate={{
+                          latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : loading ? state.position.latitude : state.position.latitude,
+                          longitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.longitude : loading ? state.position.longitude : state.position.longitude,
+                        }}
+                        tracksInfoWindowChanges={true}
+                      >
+
+                        <View style={{ width: 40, height: 40, position: "absolute", top: 0, left: 26 }}>
+                          <Icon name="battery-dead-outline" size={30} color={parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red} />
+                          <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 9, top: 10, left: 6, fontWeight: "bold" }}>{`${batteryLevel}%`}</Text>
+                        </View>
+                        <MyCustomMarker />
+                      </Marker>
+                      :
+
+                      null
+                  }
+                </MapView>
+
+                <ScrollView horizontal={true} contentContainerStyle={{ paddingLeft: 20, alignItems: "center" }} style={{ height: 80, borderBottomLeftRadius: 25, borderBottomRightRadius: 25, elevation: 1, width: width, backgroundColor: "rgba(255,255,255,0.85)", alignSelf: "center", position: "absolute", top: Platform.OS === "android" ? 0 : 0 }}>
+                  {
+                    (state.family).map((item, index) => {
+                      return (
+                        <Pressable key={index} onPress={() => getlocationChild(item, index)} >
+                          <View style={[styles.listItem, childIndex === index ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>
+                            <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
+                          </View>
+                        </Pressable>
+                      )
+                    })
+                  }
+                </ScrollView>
+
+                {childIndex === -1 ? null :
+                  <Pressable onPress={create} style={[styles.circleButton]} >
+                    <Image style={{ width: 58, height: 58, marginTop: 4 }} source={require('../../assets/Hear.png')} />
+                  </Pressable>}
 
 
+                {childIndex === -1 ? null :
+                  <Pressable style={[styles.circleButton, { left: 60, backgroundColor: Colors.red }]} onPress={sendSOS}>
+                    <Image style={{ width: 58, height: 58, marginTop: 4 }} source={require('../../assets/SOS.png')} />
+                  </Pressable>}
+
+                {childIndex === -1 ? null :
+                  <View style={styles.childInfo}>
+                    <FlatList
+                      horizontal={true}
+                      data={childNotification.filter((item) => item.title === choosed.name).map((child) => {
+                        return {
+                          notification: child.message,
+                          time: child.createdAt.substring(child.createdAt.lastIndexOf("T") + 1, child.createdAt.lastIndexOf(".") - 3)
+                        }
+                      })}
+                      keyExtractor={(_, index) => index.toString()}
+                      renderItem={renderEvents}
+                    />
+                  </View>}
+
+
+              </View>
+              :
+              <ActivityIndicator color={COLORS.primary} size="large" />
+          }
+        </View>
+        :
+        <View style={{ flex: 1, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center" }}>
+
+          <View style={{ width: width * 0.9, height: height * 0.4, backgroundColor: COLORS.white, borderRadius: 20, alignItems: "center", justifyContent: "space-around" }}>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>Uygulamayı kullanmaya </Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>devam edebilmek için </Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>lütfen paket alınız</Text>
+            </View>
+
+            <TouchableOpacity onPress={() => props.navigation.navigate('package')}  >
+              <View style={{ width: width * 0.5, height: 40, borderRadius: 20, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
+                <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>PAKET SATIN AL</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          :
-          <ActivityIndicator color={COLORS.primary} size="large" />
+        </View>
       }
+
     </SafeAreaView>
   )
 }
