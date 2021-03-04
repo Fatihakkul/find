@@ -45,7 +45,7 @@ const ChatChildListItem = (props) => {
                     <View style={{ paddingHorizontal: 5 }}>
                         <View style={styles.container}>
                             <View style={styles.image}>
-                                <Image style={{ width: 40, height: 40 }} source={props.picture != undefined ? props.picture != null ? { uri: props.picture } : require('../assets/child.jpg') : require('../assets/child.jpg')} />
+                                <Image style={{ width: 40, height: 40 }} source={props.picture != undefined ? props.picture != null ? { uri: props.picture } : require('../assets/childface.png') : require('../assets/childface.png')} />
                             </View>
                             <View>
                                 <Text style={[styles.nameText, { color: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>{props.name}</Text>
@@ -62,7 +62,7 @@ const ChatChildListItem = (props) => {
                         <View style={styles.container}>
                             {console.log(message)}
                             <View style={styles.image}>
-                                <Image style={{ width: 40, height: 40 }} source={props.picture != undefined ? props.picture != null ? { uri: props.picture } : require('../assets/child.jpg') : require('../assets/child.jpg')} />
+                                <Image style={{ width: 40, height: 40 }} source={props.picture != undefined ? props.picture != null ? { uri: props.picture } : require('../assets/childface.png') : require('../assets/childface.png')} />
                             </View>
                             <View>
                                 <Text style={[styles.nameText, { color: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>{props.name}</Text>

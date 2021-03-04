@@ -20,7 +20,8 @@
 		70149EA5534DEB1213E84A35 /* libPods-finmyfamily-finmyfamilyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124D5DD68A407C1E7548DAF5 /* libPods-finmyfamily-finmyfamilyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9A11799F25DC4F2700603632 /* Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11799E25DC4F2700603632 /* Find.swift */; };
-		9A1180B525E5382900603632 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A1180B425E5382900603632 /* GoogleService-Info.plist */; };
+		9A907B3325ED3508009FF517 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A907B3225ED3508009FF517 /* GoogleService-Info.plist */; };
+		9A907D7725F10EF2009FF517 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A907D7625F10EF1009FF517 /* StoreKit.framework */; };
 		EACBA90B98D2E587AED22A2D /* libPods-finmyfamily-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD42600325921EA123BADA0D /* libPods-finmyfamily-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -75,8 +76,10 @@
 		9A11799D25DC4F2600603632 /* finmyfamily-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "finmyfamily-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A11799E25DC4F2700603632 /* Find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Find.swift; sourceTree = "<group>"; };
 		9A117CA825E4087400603632 /* finmyfamily.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = finmyfamily.entitlements; path = finmyfamily/finmyfamily.entitlements; sourceTree = "<group>"; };
-		9A1180B425E5382900603632 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A61425242F4409C7631B7B1 /* Pods-finmyfamily-finmyfamilyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-finmyfamily-finmyfamilyTests.release.xcconfig"; path = "Target Support Files/Pods-finmyfamily-finmyfamilyTests/Pods-finmyfamily-finmyfamilyTests.release.xcconfig"; sourceTree = "<group>"; };
+		9A907B3225ED3508009FF517 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9A907C1A25EF78C3009FF517 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
+		9A907D7625F10EF1009FF517 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A8ED55246AC2C59DDA590BEF /* Pods-finmyfamily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-finmyfamily.release.xcconfig"; path = "Target Support Files/Pods-finmyfamily/Pods-finmyfamily.release.xcconfig"; sourceTree = "<group>"; };
 		AF9BADF2302141D7BCFAE8C8 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		BDDFCCF0083E73DE898F9804 /* Pods-finmyfamily-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-finmyfamily-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-finmyfamily-tvOSTests/Pods-finmyfamily-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C30F4DAE6B7F1028C61870 /* libPods-finmyfamily.a in Frameworks */,
+				9A907D7725F10EF2009FF517 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,7 +178,7 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				9A1180B425E5382900603632 /* GoogleService-Info.plist */,
+				9A907B3225ED3508009FF517 /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -186,6 +190,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9A907D7625F10EF1009FF517 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				DAC2D8EECB6513B888B38F69 /* libPods-finmyfamily.a */,
@@ -206,6 +211,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9A907C1A25EF78C3009FF517 /* Configuration.storekit */,
 				9A11799E25DC4F2700603632 /* Find.swift */,
 				13B07FAE1A68108700A75B9A /* finmyfamily */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -346,7 +352,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 45Y7TRJAPD;
+						DevelopmentTeam = 64977YZYK3;
 						LastSwiftMigration = 1200;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -395,7 +401,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				9A1180B525E5382900603632 /* GoogleService-Info.plist in Resources */,
+				9A907B3325ED3508009FF517 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,7 +846,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = finmyfamily/finmyfamily.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 45Y7TRJAPD;
+				DEVELOPMENT_TEAM = 64977YZYK3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = finmyfamily/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -849,7 +855,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.finmyfamily;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ezfamilysafety;
 				PRODUCT_NAME = finmyfamily;
 				SWIFT_OBJC_BRIDGING_HEADER = "finmyfamily-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -866,7 +872,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = finmyfamily/finmyfamily.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 45Y7TRJAPD;
+				DEVELOPMENT_TEAM = 64977YZYK3;
 				INFOPLIST_FILE = finmyfamily/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -874,7 +880,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.finmyfamily;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ezfamilysafety;
 				PRODUCT_NAME = finmyfamily;
 				SWIFT_OBJC_BRIDGING_HEADER = "finmyfamily-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

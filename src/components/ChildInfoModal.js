@@ -72,7 +72,7 @@ const ChildInfoModal = (props) => {
 
             <View style={styles.container}>
                 <View style={styles.imageCont}>
-                    <Image style={{ borderRadius: 40, width: 80, height: 80 }} source={props.data === undefined || props.data === null ?  require('../assets/child.jpg')   : props.data.picture != null && props.data.picture != "" && props.data.picture != undefined?  photo != null  ? { uri: photo.uri } : { uri :props.data.picture} : require('../assets/child.jpg')} />
+                    <Image style={{ borderRadius: 40, width: 80, height: 80 }} source={props.data === undefined || props.data === null ?  require('../assets/childface.png')   : props.data.picture != null && props.data.picture != "" && props.data.picture != undefined?  photo != null  ? { uri: photo.uri } : { uri :props.data.picture} : require('../assets/childface.png')} />
                     <Icon style={{ position: "absolute", top: 50, zIndex: 1, left: 50 }} name="construct" size={30} onPress={() => uploadImage()} color={COLORS.lightGreen} />
                 </View>
                 <View style={[styles.info, { justifyContent: "center",marginVertical:10 }]}>

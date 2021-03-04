@@ -107,7 +107,7 @@ const Settings = props => {
                 <Pressable onPress={() => showInfo(item)}>
                     <View style={[styles.childlist, { height: tileSize, width: tileSize }]}>
                         <View style={{ width: 70, height: 70, borderRadius: 35, overflow: "hidden" }}>
-                            <Image style={{ width: 70, height: 70 }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
+                            <Image style={{ width: 70, height: 70 }} source={item.picture != null ? { uri: item.picture } : require('../../assets/childface.png')} />
                         </View>
                         <Text style={{ color: COLORS.black, fontWeight: "bold" }}>{item.name}</Text>
                     </View>
@@ -131,7 +131,7 @@ const Settings = props => {
                 </View>
                 <View style={styles.infoContainer}>
                     <View style={{ width: 76, alignItems: "center", justifyContent: "center", height: 76, borderRadius: 38, overflow: "hidden" }}>
-                        <Image style={{ width: 100, height: 100, resizeMode: "stretch" }} source={state.type === 0 ? require('../../assets/child.jpg') : state.userlight != null && state.userlight.data.response.picture != null ? { uri: state.userlight.data.response.picture } : state.user.userData != undefined && state.user.userData[0].family.parents[0].picture != null ? { uri: state.user.userData[0].family.parents[0].picture } : require('../../assets/child.jpg')} />
+                        <Image style={{ width: 100, height: 100, resizeMode: "stretch" }} source={state.type === 0 ? require('../../assets/childface.png') : state.userlight != null && state.userlight.data.response.picture != null ? { uri: state.userlight.data.response.picture } : state.user.userData != undefined && state.user.userData[0].family.parents[0].picture != null ? { uri: state.user.userData[0].family.parents[0].picture } : require('../../assets/childface.png')} />
                     </View>
                     <View style={styles.info}>
                         <View style={styles.userInfoContainer}>

@@ -17,7 +17,7 @@ const ChildEvents =(props)=>{
     return(
         <SafeAreaView style={{flex : 1,alignItems : "center"}}>
             <View style={styles.signalConatiner}>
-                <Image style={styles.image} source={require('../../assets/child.jpg')}/>
+                <Image style={styles.image} source={require('../../assets/childface.png')}/>
                 <View style={styles.infoContainer}>
                     <Icons name="bell" size={30} color={Colors.primary} />
                     <Text style={styles.infoTitle}>Yüksek Sesli Sinyal</Text>

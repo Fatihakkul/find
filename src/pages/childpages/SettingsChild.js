@@ -39,7 +39,7 @@ const SettingsChild =props=>{
                 </View>
                 <View style={styles.account}>
                     <View style={styles.imageCont}>
-                     <Image  style={{width: 70,height:70}} source={state.user.data[0].picture != null ||state.user.data[0].picture != undefined?{  uri :state.user.data[0].picture } :require('../../assets/child.jpg')} />
+                     <Image  style={{width: 70,height:70}} source={state.user.data[0].picture != null ||state.user.data[0].picture != undefined?{  uri :state.user.data[0].picture } :require('../../assets/childface.png')} />
                     </View>
                     <View style={{marginLeft :10,height:"100%"}}>
                         <Text style={[styles.title,{color :COLORS.black}]}>{state.user.data[0].name}</Text>

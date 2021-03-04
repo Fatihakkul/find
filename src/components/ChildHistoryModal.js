@@ -21,7 +21,7 @@ const ChildHistoryModal =(props)=>{
               <View style={styles.container}>
                <View  style={styles.sosContainer}>
                     <View style={styles.imageCont}>
-                        <Image style={{width:85,height:85}} source={require('../assets/child.jpg')} />
+                        <Image style={{width:85,height:85}} source={require('../assets/childface.png')} />
                     </View>
                     <View style={styles.childInfo}>
                         <Text style={[styles.text,{fontWeight :"bold"}]}>{props.name}</Text>

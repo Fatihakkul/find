@@ -88,7 +88,7 @@ const EditUser = (props) => {
             </View>
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingTop: 20 }}>
                 <View style={styles.image}>
-                    <Image style={{ width: 100, height: 100, borderRadius: 50 }} source={state.type === 0 ? require('../../assets/child.jpg')   : picture != null ?   {uri : picture.uri}    :  state.user.userData[0].family.parents[0].picture != undefined && picture === null ?{ uri :state.user.userData[0].family.parents[0].picture} :state.userlight != null && state.userlight.data.response.picture != null ? {uri :state.userlight.data.response.picture } :  require('../../assets/child.jpg')} />
+                    <Image style={{ width: 100, height: 100, borderRadius: 50 }} source={state.type === 0 ? require('../../assets/childface.png')   : picture != null ?   {uri : picture.uri}    :  state.user.userData[0].family.parents[0].picture != undefined && picture === null ?{ uri :state.user.userData[0].family.parents[0].picture} :state.userlight != null && state.userlight.data.response.picture != null ? {uri :state.userlight.data.response.picture } :  require('../../assets/childface.png')} />
                     <Icon style={{ position: "absolute", top: 70, zIndex: 1, left: 70 }} name="construct" size={30} onPress={()=>uploadImage()} color={COLORS.lightGreen} />
                 </View>
                 <View style={{marginTop : 40}}>

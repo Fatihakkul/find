@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb696337794642401</string>
+				<string>fb3800374890028892</string>
 			</array>
 		</dict>
 		<dict>
@@ -42,9 +42,9 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>696337794642401</string>
+	<string>3800374890028892</string>
 	<key>FacebookDisplayName</key>
-	<string>FindMyfamily</string>
+	<string>Find My family</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

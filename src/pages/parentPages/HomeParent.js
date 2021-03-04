@@ -93,9 +93,9 @@ const taskRandom = async taskData => {
 };
 
 const options = {
-  taskName: 'Konum belirleme',
-  taskTitle: 'Konum Belirleme Aktif',
-  taskDesc: 'Ailenin seni görebilmesi için konum bilgilerin alınıyor...',
+  taskName: 'Konum Alınıyor',
+  taskTitle: 'Konum Takibi Aktif',
+  taskDesc: 'Ailenin görebilmen için konum bilgileri alınıyor...',
   taskIcon: {
     name: 'ic_launcher',
     type: 'mipmap',
@@ -169,7 +169,7 @@ const HomeParent = props => {
   const [location, setLocation] = useState(null)
   const [visible, setVisible] = useState(false)
   const [childIndex, setChildIndex] = useState()
-  const [choosed, setChoosed] = useState()
+  const [choosed, setChoosed] = useState(null)
   const [listenVisible, setListenVisible] = useState(false)
   const [locationHistory, setLocationHistory] = useState([])
   const [loading, setLoading] = useState(false)
@@ -239,16 +239,19 @@ const HomeParent = props => {
     })
 
     device.onicecandidate = (e) => {
-      if (e.candidate) {
+      if(choosed != null || choosed != undefined){
+        if (e.candidate ) {
 
-        socketClient.emit('candidate', {
-          socketID: socketClient.id,
-          payload: e.candidate,
-          type: "candidate",
-          uniqueId: choosed.uniqueId
-        })
-
+          socketClient.emit('candidate', {
+            socketID: socketClient.id,
+            payload: e.candidate,
+            type: "candidate",
+            uniqueId: choosed.uniqueId
+          })
+  
+        }
       }
+     
     }
     device.oniceconnectionstatechange = (e) => {
       console.log(e)
@@ -306,8 +309,10 @@ const HomeParent = props => {
   }
 
   const create = () => {
+    console.log(choosed.uniqueId)
     setListenVisible(true)
-    device.createOffer({ offerToReceiveVideo: 1 })
+    if(choosed.uniqueId != undefined){
+      device.createOffer(sdpConstraints)
       .then(sdp => {
         device.setLocalDescription(sdp)
         socketClient.emit('offerOranswer', {
@@ -318,6 +323,8 @@ const HomeParent = props => {
         })
 
       })
+    }
+   
   }
 
 
@@ -600,7 +607,7 @@ const HomeParent = props => {
                       return (
                         <Pressable key={index} onPress={() => getlocationChild(item, index)} >
                           <View style={[styles.listItem, childIndex === index ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>
-                            <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
+                            <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/childface.png')} />
                           </View>
                         </Pressable>
                       )

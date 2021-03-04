@@ -330,7 +330,7 @@ const HomeChild = props => {
                 }
             })
             .then(() => {
-                return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
+                return Notifications.getExpoPushTokenAsync(Platform.OS === "android" ? { experienceId: '@fatihakkul/finmyfamily' } :{ experienceId: '@findmyfamily/finmyfamily' });
             })
             .then((data) => {
                 console.log('PUSHHH TOKENN', data)

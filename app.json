@@ -6,7 +6,7 @@
     "displayName": "finmyfamily",
     "slug": "finmyfamily",
     "ios": {
-      "bundleIdentifier": "com.finmyfamily"
+      "bundleIdentifier": "com.ezfamilysafety"
     },
     "android": {
       "useNextNotificationsApi": true,

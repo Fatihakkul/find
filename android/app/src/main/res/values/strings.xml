@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">findmyfamily</string>
-    <string name="facebook_app_id">696337794642401</string>
-<string name="fb_login_protocol_scheme">fb696337794642401</string>
+    <string name="facebook_app_id">3800374890028892</string>
+<string name="fb_login_protocol_scheme">fb3800374890028892</string>
+
 </resources>
 

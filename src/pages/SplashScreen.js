@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions, PermissionsAndroid, Alert, Platform } from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, Image, Dimensions, PermissionsAndroid, Alert, Platform, Linking } from "react-native"
 import Context from '../context/store'
 import Axios from "axios"
 import Geolocation from '@react-native-community/geolocation'
@@ -56,6 +56,7 @@ const SplashScreen = (props) => {
 
 
     useEffect(() => {
+        
         if (Platform.OS === "ios") {
             Geolocation.getCurrentPosition(info => {
                 console.log(info, "info")
@@ -70,7 +71,7 @@ const SplashScreen = (props) => {
 
                         {
                             text: 'Ayarlara git',
-                            onPress: () => Linking.openSettings(),
+                            onPress: () => Linking.openURL('app-settings:'),
                             style: 'default'
                         },
                     ]

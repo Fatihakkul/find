@@ -24,7 +24,7 @@ const Header = (props) => {
        
         return (
             <Pressable onPress={props.child} style={[styles.listItem, {borderColor : index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary} ]}>
-                <Image style={{ width: 100, height: 100, resizeMode: "contain" }} source={item.picture != null ? {uri : item.picture} : require('../assets/child.jpg')} />
+                <Image style={{ width: 100, height: 100, resizeMode: "contain" }} source={item.picture != null ? {uri : item.picture} : require('../assets/childface.png')} />
             </Pressable>
         )
     }

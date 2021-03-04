@@ -8,7 +8,7 @@ import { socketClient } from "../../socket/socket"
 import API from "../../data/api"
 import Axios from "axios"
 import COLORS from '../../style/Colors'
-import {useIsFocused} from "@react-navigation/native"
+import {useIsFocused , useRoute} from "@react-navigation/native"
 import * as Notifications from "expo-notifications";
 const ChatChild = (props) => {
     const { state, dispatch } = useContext(Context)
@@ -18,6 +18,16 @@ const ChatChild = (props) => {
     const [child,setChild] = useState(props.route.params.child)
     const list = useRef()
     const isFocus = useIsFocused()
+    const route = useRoute()
+   let interval=null
+
+   useEffect(() => {
+    const unsubscribe = props.navigation.addListener('blur', () => {
+        clearInterval(interval)
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
 
 
     useEffect(()=>{
@@ -31,8 +41,10 @@ const ChatChild = (props) => {
     },[])
 
     useEffect(() => {
-        console.log(props.route.params.message)
-        if (props.route.params.message != undefined) {
+        interval=setInterval(()=>{  isFocus ?  list.current.scrollToEnd({ animated: true }) : null}, 1000);
+       
+      
+       if (props.route.params.message != undefined) {
             console.log("message undifned değilllllllll" ,props.route.params.message)
             setSendTo(props.route.params.message)
             getMessage(props.route.params.message.uniqueId)
@@ -47,10 +59,13 @@ const ChatChild = (props) => {
        
         console.log(props.route.params, "params")
         socketClient.on("new_message", newMessage => {
+            
             console.log("asdsad")
             dispatch({ type: "SET_MESSAGELIST", messageList: newMessage })
            
-            scrollIndex();
+            setTimeout(() => {
+               // scrollIndex();
+            }, 900);
         })
        
         if (props.route.params.send != undefined) {

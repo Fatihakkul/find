@@ -1,0 +1,59 @@
+{
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "D4FCFA26",
+      "localizations" : [
+        {
+          "description" : "onemonthconsonemonthcons",
+          "displayName" : "onemonthcons",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "onemonthcons",
+      "referenceName" : "onemonthcons",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "2C029D3E",
+      "localizations" : [
+
+      ],
+      "name" : "onemonth",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "2.29",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "1DEE08B3",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "onemonth onemonth onemonth",
+              "displayName" : "onemonth",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "onemonth",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "onemonth",
+          "subscriptionGroupID" : "2C029D3E",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 0
+  }
+}

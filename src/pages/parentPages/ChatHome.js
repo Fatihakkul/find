@@ -112,7 +112,7 @@ const ChatHome = (props) => {
                             return (
                                 <Pressable key={index} onPress={() => getlocationChild(item, index)} >
                                     <View style={[styles.listItem, childIndex === index ? { width: 60, height: 60, borderRadius: 30 } : { width: 50, height: 50, borderRadius: 25 }, { borderColor: index % 2 === 1 && index % 3 != 0 ? COLORS.red : index % 3 === 0 ? COLORS.mor : COLORS.primary }]}>
-                                        <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/child.jpg')} />
+                                        <Image style={{ width: 100, height: 100, resizeMode: "cover" }} source={item.picture != null ? { uri: item.picture } : require('../../assets/childface.png')} />
                                     </View>
                                 </Pressable>
                             )

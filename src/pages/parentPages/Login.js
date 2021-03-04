@@ -56,7 +56,7 @@ const Login = props => {
         }
       })
       .then(() => {
-        return Notifications.getExpoPushTokenAsync({ experienceId: '@fatihakkul/finmyfamily' });
+        return Notifications.getExpoPushTokenAsync(Platform.OS === "android" ? { experienceId: '@fatihakkul/finmyfamily' } :{ experienceId: '@findmyfamily/finmyfamily' });
       })
       .then((data) => {
         setPushTokenUser(data.data)
@@ -159,7 +159,7 @@ const Login = props => {
     console.log(googleCredential, "google")
     // // Sign-in the user with the credential
 
-    let response = await Axios.post("https://wherismykid.herokuapp.com/api/auth/signupsignin",
+    let response = await Axios.post("https://findmyfamily.app/api/auth/signupsignin",
       {
         type: 0,
         email: data.user.email,
