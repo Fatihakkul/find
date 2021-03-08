@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, version } from 'react'
-import { SafeAreaView, View, Text, Pressable, ImageBackground, PermissionsAndroid, Keyboard, Linking, Dimensions, Image, TextInput, Platform, StatusBar } from 'react-native'
+import { SafeAreaView, View, Text, Pressable, ImageBackground, PermissionsAndroid, Keyboard, Linking, Dimensions, Image, TextInput, Platform, StatusBar, Alert } from 'react-native'
 import Axios from 'axios'
 import Geolocation from '@react-native-community/geolocation'
 import Context from '../../context/store'
@@ -13,7 +13,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import * as Animatable from 'react-native-animatable';
 import Icon from "react-native-vector-icons/Ionicons"
 import { RNCamera } from 'react-native-camera';
-
+import strings from "../../strings"
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
@@ -46,6 +46,8 @@ const ConnectionCode = props => {
     console.log(e.data)
     setVisible(false)
   };
+
+
 
 
 
@@ -101,9 +103,10 @@ const ConnectionCode = props => {
   };
 
   const getFamily = async (id) => {
+    console.log(id,"asd")
     let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
       parentId: id
-    })
+    }).catch(err=>console.log(err, "-----"))
     console.log(response.data.data.response, "family")
     dispatch({ type: "SET_FAMILY", family: response.data.data.response })
   }
@@ -181,9 +184,17 @@ const ConnectionCode = props => {
       pushToken: pushUserToken
     }).catch(err => console.log(err, "err"))
 
+     
+
+
+    console.log(response,"====")
     if (response.data.responseStatus === 200) {
       const decoded = jwtDecode(response.data.data.response)
       console.log(response.data.data.response, "okeee")
+      if(decoded.data.length === 0){
+        
+        Alert.alert("Geçersiz Kod" ,"Girdiğiniz kod geçersiz. Lütfen çocuğu kaydettiğinizden emin olun")
+      }
       getFamily(decoded.data[0].parentId)
       setVisible(false)
       dispatch({ type: "SET_USER", user: decoded })
@@ -201,7 +212,7 @@ const ConnectionCode = props => {
         <Image style={{ width: 200, height: 200 }} source={require('../../assets/Childanime.png')} />
         <View style={{ backgroundColor: COLORS.white, width: 200, height: Platform.OS === "ios" ? 30 : 40, marginTop: 30, marginBottom: 40 }}>
           <TextInput
-            placeholder="Kodu giriniz"
+            placeholder={strings.login_code}
             value={code}
             onChangeText={(text) => setCode(text)}
             style={{ width: 200 }}
@@ -209,12 +220,12 @@ const ConnectionCode = props => {
         </View>
       </View>
       <View style={{ marginBottom: 40 }}>
-        <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: "bold", letterSpacing: 1 }}>VEYA</Text>
+        <Text style={{ color: COLORS.white, fontSize: 18, fontWeight: "bold", letterSpacing: 1 }}>{strings.or}</Text>
       </View>
       <Pressable onPress={() => props.navigation.navigate("QR", { puhstoken: pushUserToken })}>
         <View style={{ width: 180, paddingVertical: 10, borderColor: COLORS.white, borderWidth: 2, borderRadius: 15, alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
           <Icon name="qr-code-outline" size={25} color={COLORS.white} />
-          <Text style={{ fontSize: 16, fontWeight: "bold", color: COLORS.white, letterSpacing: 1, marginLeft: 20 }}>QR TARA</Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: COLORS.white, letterSpacing: 1, marginLeft: 20 }}>{strings.qr}</Text>
         </View>
       </Pressable>
 

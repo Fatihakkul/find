@@ -55,6 +55,8 @@ import geolib from "geolib"
 import { useRoute } from "@react-navigation/native"
 import * as Notifications from "expo-notifications"
 
+import moment from "moment"
+import RNSwitchAudioOutput from 'react-native-switch-audio-output';
 
 
 
@@ -83,7 +85,7 @@ const taskRandom = async taskData => {
 
     const { delay } = taskData;
     for (let i = 0; BackgroundJob.isRunning(); i++) {
-
+      console.log("asd")
       socketClient.on('new_sos', (sos) => {
         mySound.play()
       })
@@ -175,12 +177,13 @@ const HomeParent = props => {
   const [loading, setLoading] = useState(false)
   const [childNotification, setChildNotification] = useState([])
   const [userPackage, setPackage] = useState(null)
+  const [connectLoading , setConnectLoading] = useState(true)
 
 
   let isFront = true
 
-
-  useEffect(() => { }, [locationHistory])
+  useEffect(()=>{moment.locale("de")},[])
+  useEffect(() => { }, [state.locationHistory])
   useEffect(() => { }, [location])
 
 
@@ -209,7 +212,7 @@ const HomeParent = props => {
 
     })
 
-
+    RNSwitchAudioOutput.selectAudioOutput(RNSwitchAudioOutput.AUDIO_SPEAKER);
     mediaDevices.enumerateDevices().then(sourceInfos => {
       let videoSourceId;
       for (let i = 0; i < sourceInfos.length; i++) {
@@ -234,8 +237,8 @@ const HomeParent = props => {
 
     socketClient.on('candidate', (candidate) => {
       device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-
-      })
+          setConnectLoading(false)
+       })
     })
 
     device.onicecandidate = (e) => {
@@ -440,12 +443,12 @@ const HomeParent = props => {
     let response = await Axios.post(API.base_url + API.location_history, {
       childUniqueId: child.uniqueId
     })
-    console.log(response.data.data.length)
+    console.log(response.data.data.length,"========>>>>>>")
     //setLocationHistory(response.data.data)
-    if (response.data.data.length > 0) {
+   // if (response.data.data.length > 0) {
       dispatch({ type: "SET_LOCATIONHISTORY", locationHistory: response.data.data })
       setLoading(true)
-    }
+  //  }
 
 
   }
@@ -522,9 +525,9 @@ const HomeParent = props => {
 
 
     <SafeAreaView style={{ flex: 1 }}>
-      { userPackage || userPackage != null ?
+      { userPackage === true && userPackage != null ?
         <View style={{ flex: 1 }}>
-
+          {console.log(userPackage === true || userPackage != null, "sdf" ,)}
 
           {
             location != null ?
@@ -532,7 +535,7 @@ const HomeParent = props => {
 
               <View style={styles.container}>
                 <ChildHistoryModal press={goMessage} name={choosed != null ? choosed.name : null} level={batteryLevel} isVisible={visible} onBackdropPress={() => setVisible(false)} />
-                <ListenModal onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
+                <ListenModal loading={connectLoading}  onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
                 <MapView
 
                   ref={mapRef}
@@ -562,7 +565,7 @@ const HomeParent = props => {
                     strokeWidth={3}
                   />
                   {
-                    location.uniqueId === undefined && state.locationHistory.length > 0 ?
+                    location.uniqueId === undefined  && state.locationHistory.length > 0 ?
                       <Marker
                         coordinate={{
                           latitude: state.locationHistory[state.locationHistory.length - 1].location.latitude,
@@ -578,9 +581,18 @@ const HomeParent = props => {
                       </Marker>
                       :
                       null
+                     
                   }
-                  {
-                    location.uniqueId != undefined && choosed != -1 ?
+
+
+
+                  
+                  {choosed != null ?
+
+
+                    location.uniqueId != undefined && choosed.uniqueId === location.uniqueId?
+                    
+
                       <Marker
                         coordinate={{
                           latitude: location.uniqueId != uniqueId && choosed != null && location.uniqueId === choosed.uniqueId ? location.location.latitude : loading ? state.position.latitude : state.position.latitude,
@@ -595,8 +607,11 @@ const HomeParent = props => {
                         </View>
                         <MyCustomMarker />
                       </Marker>
+                    
                       :
 
+                      null
+                      :
                       null
                   }
                 </MapView>

@@ -20,26 +20,62 @@ const Choose = props => {
 
   
   useEffect(() => {
-    if (Platform.OS === "android") {
-      Alert.alert(
-        'BİLGİLENDİRME',
-        'UygulamayI sağlıklı kullanabilmek için ayarlardan konum iznine "Her zaman izin ver"i seçmelisiniz aksi takdirde uygulama doğru çalışmayacaktır',
-        [
-
-          {
-            text: 'Ayarlara git',
-            onPress: () => Linking.openSettings(),
-            style: 'default'
-          },
-        ]
-      )
-    }
-
-    AsyncStoreage.clear().then(() => console.log("success"))
+    getCameraPermission()
+    AsyncStoreage.getItem("@FIRST").then(data=>{
+      console.log(data, "=====")
+      if(data !== "1"){
+        if (Platform.OS === "android") {
+          Alert.alert(
+            'BİLGİLENDİRME',
+            'UygulamayI sağlıklı kullanabilmek için ayarlardan konum iznine "Her zaman izin ver"i seçmelisiniz aksi takdirde uygulama doğru çalışmayacaktır',
+            [
+    
+              {
+                text: 'Ayarlara git',
+                onPress: () => Linking.openSettings(),
+                style: 'default'
+              },
+              {
+                text: 'İptal'
+                
+              }
+            ]
+          )
+        }
+      }
+    })
+   
+    setTimeout(() => {
+      //AsyncStoreage.clear().then(() => console.log("success"))
+    }, 1000);
     getLocation()
   }, [])
 
 
+  const getCameraPermission = async () => {
+    try {
+        const granted = Platform.OS === "android" ? await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: "Cool Photo App Camera Permission",
+                message:
+                    "Cool Photo App needs access to your camera " +
+                    "so you can take awesome pictures.",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
+            }
+        ) : true
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log(granted)
+          
+        } else {
+            console.log("Camera permission denied");
+        }
+    } catch (err) {
+        console.warn(err);
+    }
+}
 
   const getLocation = async () => {
     try {
@@ -89,13 +125,18 @@ const Choose = props => {
     }
   }
 
+  async function goPage(e,t){
+    await  AsyncStorage.setItem("@FIRST","1")
+    props.navigation.navigate(e , { position: t })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
-      <Pressable style={styles.buttons} onPress={() => props.navigation.navigate("Parent")}>
+      <Pressable style={styles.buttons} onPress={() =>goPage("Parent")}>
         <Image style={{ width: width * 0.7, resizeMode: "contain", height: height * 0.35 }} source={require('../assets/Family.png')} />
       </Pressable>
-      <Pressable style={styles.buttons} onPress={() => props.navigation.navigate("Child", { position: position })}>
+      <Pressable style={styles.buttons} onPress={() =>goPage("Child", position )}>
         <Image style={{ width: width * 0.7, resizeMode: "contain", height: height * 0.35 }} source={require('../assets/Childanime.png')} />
       </Pressable>
 

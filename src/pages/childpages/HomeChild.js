@@ -44,6 +44,7 @@ import moment from "moment";
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import {isPointWithinRadius} from "geolib"
+import RNSwitchAudioOutput from "react-native-switch-audio-output"
 
 let isFront = true
 let error = false
@@ -174,38 +175,38 @@ const taskRandom = async taskData => {
             //SoundPlayer.loadUrl("http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3")
             //=====>>>>> sound player ekleyince uygulama backgroundda çalışmıyor
 
-            console.log("background")
+         //   console.log("background")
             
         
-            console.log(current)
+          //  console.log(current)
             Geolocation.getCurrentPosition(async success => {
              //   const konum = geolib.isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , sdfsdf, 10 )
                 for (let i = 0; i < areaList.length; i++) {
-                   
+                    console.log("merhaba")
                     const element = areaList[i];
                     if(current ===true && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === false ){
-                        console.log(`${element.name} çıktı `)
+                       // console.log(`${element.name} çıktı `)
                         
                         let response = await Axios.post(API.base_url + API.push_notification_child,{
                             parentUniqueId : parentId,
                             title : childName,
                             message : `${element.name} geldi` 
                         })
-                        console.log(response, "post response ======")
+                     //   console.log(response, "post response ======")
                     }
                     if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
-                        console.log("alana girdi")
+                     //   console.log("alana girdi")
                         let response = await Axios.post(API.base_url + API.push_notification_child,{
                             parentUniqueId : parentId,
                             title : childName,
                             message : `${element.name} çıktı` 
                         })
-                        console.log(response, "post response >>>>======")
+                    //    console.log(response, "post response >>>>======")
                     }
 
                     current = isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10)
 
-                    console.log( "konummmm======>>>>",areaList.length >0 ? isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) : "Area gelmedi====")
+                   // console.log( "konummmm======>>>>",areaList.length >0 ? isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) : "Area gelmedi====")
                     
                 }
 
@@ -232,7 +233,8 @@ const taskRandom = async taskData => {
             //     console.log(user)
             //   })
             socketClient.on("new_sos", (data) => {
-                //  console.log(data, "new sosssssss-----------------")
+                RNSwitchAudioOutput.selectAudioOutput(RNSwitchAudioOutput.AUDIO_SPEAKER);
+                console.log(data, "new sosssssss-----------------")
                 mySound.play()
                 //alert("errorrrrr")
             })
@@ -469,8 +471,8 @@ const HomeChild = props => {
 
                                     style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                                     initialRegion={{
-                                        latitude: state.position != null ? state.position.latitude : 0.000000,
-                                        longitude: state.position != null ? state.position.longitude : 0.000000,
+                                        latitude: state.position != null ? state.position.latitude : 47.516232,
+                                        longitude: state.position != null ? state.position.longitude :14.550072,
                                         latitudeDelta: state.position != null ? 0.0022 : 100,
                                         longitudeDelta: state.position != null ? 0.0021 : 200,
                                         //buraya itemın lat ve long değerleri gelecek
@@ -518,7 +520,6 @@ const HomeChild = props => {
                                         justifyContent: "center"
 
                                     }}>
-
                                     <Icons name="add" color={COLORS.mor} size={30} />
 
                                 </View>

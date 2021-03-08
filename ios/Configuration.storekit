@@ -14,6 +14,36 @@
       "productID" : "onemonthcons",
       "referenceName" : "onemonthcons",
       "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "16.99",
+      "familyShareable" : false,
+      "internalID" : "A2087B41",
+      "localizations" : [
+        {
+          "description" : "oneyearoneyearoneyear",
+          "displayName" : "oneyear",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "oneyear",
+      "referenceName" : "oneyear",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "66DDC06F",
+      "localizations" : [
+        {
+          "description" : "sixmonthconssixmonthconssixmonthcons",
+          "displayName" : "sixmonthcons",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "sixmonthcons",
+      "referenceName" : "sixmonthcons",
+      "type" : "Consumable"
     }
   ],
   "settings" : {

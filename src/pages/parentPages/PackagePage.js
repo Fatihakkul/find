@@ -12,10 +12,11 @@ import styles from "../../style/parentStyle/PackageStyle"
 import Icon from "react-native-vector-icons/Ionicons"
 import COLORS from "../../style/Colors"
 import * as RNIap from 'react-native-iap';
+import strings from "../../strings"
 
 const itemSkus = Platform.select({
     ios: [
-       "onemonth","onemonthcons"
+       "onemonth","onemonthcons","sixmonthcons","oneyear"
     ],
     android: [
         'one_month'
@@ -44,6 +45,7 @@ const PackagePage = (props) => {
           })
      
       })
+    
 
      
   }, [])
@@ -55,7 +57,13 @@ const PackagePage = (props) => {
                     <Text style={styles.title}>MEVCUT PLAN</Text>
                 </View>
             <ScrollView style={{flex:1}} contentContainerStyle={styles.container}>
-               
+               {
+                   product.map((item)=>{
+                       return(
+                           <Text>{item.title}</Text>
+                       )
+                   })
+               }
                 <View style={styles.content}>
                     <Text style={styles.contentTitle}>FREE PLAN</Text>
                     <Text style={styles.text}>Belirli süre ücretsiz</Text>
@@ -64,7 +72,7 @@ const PackagePage = (props) => {
                     <Text style={[styles.text, { fontWeight: "bold", fontSize: 17 }]}>0$</Text>
                 </View>
                 <View style={{ width: "100%", marginTop: 20 }}>
-                    <Text style={[styles.title, { color: COLORS.black }]}>PAKET YÜKSELT</Text>
+                    <Text style={[styles.title, { color: COLORS.black }]}>{strings.update}</Text>
                 </View>
                 <View style={styles.packageContent} >
                 <ImageBackground style={styles.packageContent} source={require('../../assets/plan1.png')}>

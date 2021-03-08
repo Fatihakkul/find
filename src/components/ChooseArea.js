@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 60,
-        marginRight: 20
+        marginBottom: 90,
+        marginRight: 30
     },
     container: {
         flex: 1,

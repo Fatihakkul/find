@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { SafeAreaView, View, Text, StatusBar, Pressable, TextInput, FlatList, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { SafeAreaView, View, Text, StatusBar, Pressable, TextInput, FlatList, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import { InputToolBar, MessageComponent, LeftMessageComponent } from '../../components'
 import Context from "../../context/store"
 import styles from '../../style/childStyle/ChatChildStyle'
@@ -16,18 +16,14 @@ const ChatChild = (props) => {
     const [sendTo, setSendTo] = useState()
     const [receiverName,setReceiverName]=useState("")
     const [child,setChild] = useState(props.route.params.child)
+    const [loading,setLoading] = useState(null)
+    
     const list = useRef()
     const isFocus = useIsFocused()
     const route = useRoute()
    let interval=null
 
-   useEffect(() => {
-    const unsubscribe = props.navigation.addListener('blur', () => {
-        clearInterval(interval)
-    });
-
-    return unsubscribe;
-  }, [props.navigation]);
+ 
 
 
     useEffect(()=>{
@@ -40,27 +36,30 @@ const ChatChild = (props) => {
           })
     },[])
 
+    useEffect(()=>{
+        if(loading === true){
+            setTimeout(() => {
+              list.current != null ?  list.current.scrollToEnd({ animated: true }) : null
+            }, 2000);}
+          
+    },[loading])
+
     useEffect(() => {
-        interval=setInterval(()=>{  isFocus ?  list.current.scrollToEnd({ animated: true }) : null}, 1000);
        
-      
        if (props.route.params.message != undefined) {
-            console.log("message undifned değilllllllll" ,props.route.params.message)
+            console.log(props.route.params.message ,"=======")
             setSendTo(props.route.params.message)
             getMessage(props.route.params.message.uniqueId)
             setReceiverName(props.route.params.message.name)
             setChild(true)
 
         }else {
-            console.log("merhaba")
             getMessage(state.family[0].parent.uniqueId)
             setSendTo(state.family[0].parent)
         }
        
-        console.log(props.route.params, "params")
         socketClient.on("new_message", newMessage => {
             
-            console.log("asdsad")
             dispatch({ type: "SET_MESSAGELIST", messageList: newMessage })
            
             setTimeout(() => {
@@ -69,11 +68,22 @@ const ChatChild = (props) => {
         })
        
         if (props.route.params.send != undefined) {
-            
-            console.log("--------------", { senderUniqueId: state.user.data[0].uniqueId, message: props.route.params.send, hour: getTime() })
-            setUserMessage({ senderUniqueId: state.user.data[0].uniqueId, message: props.route.params.send, hour: getTime() })
-            dispatch({ type: "SET_MESSAGELIST", messageList: { senderUniqueId: state.user.data[0].uniqueId, message: props.route.params.send, hour: getTime() } })
-            sendMessage()
+            getMessage(state.family[0].parent.uniqueId )
+            socketClient.emit("send_message", {
+                // receiver : state.family[0].parent.id,
+                name :state.user.data[0].name ,
+                receiver: state.family[0].parent.id,
+                sender: state.user.data[0].id ,
+                senderRole: "child",
+                receiverRole:  "parent"   ,
+                message:props.route.params.send,
+                time: getTime(),
+                uniqueId: state.family[0].parent.uniqueId  ,
+                senderUniqueId: state.user.data[0].uniqueId,
+                // date :d
+            })
+             dispatch({ type: "SET_MESSAGELIST", messageList: { senderUniqueId: state.user.data[0].uniqueId, message: props.route.params.send, hour: getTime() } })
+         
         } else {
             null
         }
@@ -108,19 +118,20 @@ const ChatChild = (props) => {
         return time
     }
     const sendMessage = () => {
+        console.log(userMessage ,">>>>>>=====<<<<<<")
         const d = new Date()
 
         if (userMessage.message != "") {
             socketClient.emit("send_message", {
                 // receiver : state.family[0].parent.id,
                 name :state.user.data[0].name ,
-                receiver: state.family[0].parent.id,
-                sender: sendTo.id ,
+                receiver: sendTo.id,
+                sender: state.user.data[0].id ,
                 senderRole: "child",
                 receiverRole:child ?   "parent"  :"child"  ,
                 message: userMessage.message,
                 time: userMessage.time,
-                uniqueId:  sendTo.uniqueId ,
+                uniqueId:props.route.params.message != undefined ?  state.family[0].parent.uniqueId   :  sendTo.uniqueId ,
                 senderUniqueId: state.user.data[0].uniqueId,
                 // date :d
             })
@@ -140,22 +151,23 @@ const ChatChild = (props) => {
     }
 
     const getMessage = async (receiverUn) => {
-        console.log(receiverUn,"reciver")
-        let response = await Axios.post(API.base_url + API.get_message, {
+        setLoading(false)
+        let response = await Axios.post(API.base_url + API.getmessage_limit, {
             senderUniqueId: state.user.data[0].uniqueId,
-            receiverUniqueId:receiverUn
+            receiverUniqueId:receiverUn,
+            limit: 40
         }
         ).catch(err=>{
             console.log(err,"err")
         })
-        console.log(response.data, "sqqe")
+        console.log(response)
         dispatch({ type: "SET_LIST", list: response.data.data.response })
+        setLoading(true)
         scrollIndex()
-        console.log("merhaba")
     }
 
     const scrollIndex = () => {
-      isFocus ?  list.current.scrollToEnd({ animated: true }) : null
+      list.current != null ?  list.current.scrollToEnd({ animated: true }) : null
     }
 
     return (
@@ -167,7 +179,7 @@ const ChatChild = (props) => {
                 </Pressable>
                 <Text style={styles.title}>{receiverName}</Text>
             </View>
-            <View style={styles.container}>
+           {loading ? <View style={styles.container}>
                 <View style={{flex:1,justifyContent:"flex-end",alignItems:"flex-end",flexDirection:"row"}}>
                     <FlatList
                         ref={list}
@@ -183,7 +195,9 @@ const ChatChild = (props) => {
                 
                 <InputToolBar value={userMessage.message} onChangeText={(text) => setUserMessage({ message: text, senderUniqueId: state.user.data[0].uniqueId, time: getTime() })} onPress={sendMessage} />
             </View>
-
+            :
+            <ActivityIndicator color={COLORS.primary} size="large" />
+}
         </SafeAreaView>
     )
 }

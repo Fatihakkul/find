@@ -87,29 +87,37 @@ const AddChildModal = props => {
     }
 
     const saveData = async () => {
-
-        setLoading(true)
-        const form = new FormData()
-        //dispatch({type : "SET_MESSAGE" , message : value})
-        let response = await Axios.post(API.base_url + API.addChild, {
-            parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id,
-            name: name,
-            age: (age),
-            code: parseInt(code),
-            picture: addContenResponse === null ? null : `http://yatoo.demeli.org/uploads/${addContenResponse.data}`
-        }, {
-            headers: {
-                'Authorization': `bearer ${state.token}`
+        if(name !== ""){
+            if(age !== ""){
+                setLoading(true)
+                const form = new FormData()
+                //dispatch({type : "SET_MESSAGE" , message : value})
+                let response = await Axios.post(API.base_url + API.addChild, {
+                    parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id,
+                    name: name,
+                    age: (age),
+                    code: parseInt(code),
+                    picture: addContenResponse === null ? null : `http://yatoo.demeli.org/uploads/${addContenResponse.data}`
+                }, {
+                    headers: {
+                        'Authorization': `bearer ${state.token}`
+                    }
+                })
+                console.log(response)
+                console.log(name, age)
+                setAge("")
+                setName("")
+                getFamily()
+                setPhoto(null)
+                setVisible(!visible)
+                setLoading(false)
+            }else {
+                alert("Lütfen yaş aralığı seçiniz")
             }
-        })
-        console.log(response)
-        console.log(name, age)
-        setAge("")
-        setName("")
-        getFamily()
-        setPhoto(null)
-        setVisible(!visible)
-        setLoading(false)
+        }else {
+            alert("Lütfen çocuğun ismini giriniz")
+        }
+       
     }
 
     const getFamily = async () => {

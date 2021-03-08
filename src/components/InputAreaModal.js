@@ -51,10 +51,7 @@ const InputAreaModal =props=>{
 
             <View style={styles.container}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>Çocuğunuzun bulunabileceği</Text>
-                    <Text style={styles.text}>konumlar kaydedip bu bölgelere </Text>
-                    <Text style={styles.text}>geldiğinde veya bu bölgelerden </Text>
-                    <Text style={styles.text}> ayrıldığında bildirim alabilirsiniz</Text>
+                    <Text style={styles.text}>{strings.inputAreaText}</Text>
                 </View>
                <View style={{flexDirection : "row" }}>
 
@@ -129,7 +126,8 @@ const styles = StyleSheet.create({
         fontSize : 16,
         fontWeight : "bold",
         marginBottom : 2,
-        letterSpacing : 0.2
+        letterSpacing : 0.2,
+        textAlign :"center"
        
     }
 })

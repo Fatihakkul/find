@@ -22,7 +22,7 @@ const SwiperPage = (props) => {
     Platform.OS === "android" ? requestCameraPermission() : null
     console.log(strings.getInterfaceLanguage())
     //de-DE  tr-TR 
-    
+
 
     console.log('=====ZZZZZZZ', Constants.systemFonts);
   }, [])
@@ -76,7 +76,7 @@ const SwiperPage = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <Image style={{ width: width, height: height, zIndex: 0, position: "absolute" }} source={require('../assets/background.png')} />
-      <Swiper ref={swiper} style={styles.wrapper} showsButtons={false} showsPagination={true} dotColor={COLORS.demoPrimary} activeDotColor={COLORS.demoSecondary}    >
+      <Swiper scrollEnabled={false} ref={swiper} style={styles.wrapper} showsButtons={false} showsPagination={true} dotColor={COLORS.demoPrimary} activeDotColor={COLORS.demoSecondary}    >
         <View style={[styles.slide1, { justifyContent: "center" }]}>
 
           {/* <LottieView
@@ -93,40 +93,33 @@ const SwiperPage = (props) => {
           <View style={{ alignItems: "center", marginTop: 70 }}>
 
 
-            <Text style={styles.title}>Sevdiklerinizin nerede olduğunu </Text>
-            <Text style={styles.title}>her an görün</Text>
+            <Text style={styles.title}>{strings.swipperText}</Text>
+            <Text style={styles.title}>{strings.swipperTextOne}</Text>
 
 
 
 
 
             <View style={styles.textContainer}>
-              <Text style={styles.descriptions}>Çocuklarınızın, engelli yakınlarınızın ya da her zaman yardıma </Text>
-              <Text style={styles.descriptions}>ihtiyacı olanlarin (alzhemier vb) sizin belirlediğiniz konuma ulaştığında, </Text>
-              <Text style={styles.descriptions}>konuma gittiğinde ya da konumdan ayrıldığında, bildirim alın. </Text>
-              <Text style={styles.descriptions}>Anlık olarak nerede olduklarını görün, geriye </Text>
-              <Text style={styles.descriptions}>dönük konumlarını FindMyFamily ile takip edin.</Text>
+              <Text style={styles.descriptions}>{strings.swipperOne}</Text>
             </View>
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide2}>
 
           <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slidetwo.png')} />
           <View style={{ alignItems: "center", marginTop: 70 }}>
-            <Text style={styles.title}>Sevdiklerinizin güvende </Text>
-            <Text style={styles.title}>olduklarından emin olun</Text>
+            <Text style={styles.title}>{strings.swippertitle} </Text>
+            <Text style={styles.title}>{strings.swippertitleOne}</Text>
             <View style={styles.textContainer}>
-              <Text style={styles.descriptions}>Aramalarınıza cevap vermediklerinde, canlı olarak nerede olduklarını görün, </Text>
-              <Text style={styles.descriptions}>bulunduğu ortamda tehlikede olduğunu düşünüyorsanız,</Text>
-              <Text style={styles.descriptions}>FindMyFamily ile etrafındaki sesleri dinleyin </Text>
-              <Text style={styles.descriptions}>  ve güvende olduklarından emin olun.</Text>
+              <Text style={styles.descriptions}>{strings.swipper}</Text>
             </View>
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
@@ -136,17 +129,13 @@ const SwiperPage = (props) => {
 
 
 
-          <Text style={styles.title}> Anında haberdar olun</Text>
+          <Text style={styles.title}>{strings.swipperTwoTitle}</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>Konum paylaşımını kapattığında anlık olarak bildirim alın,</Text>
-            <Text style={styles.descriptions}> cihazın şarj süresini sürekli takip edin. </Text>
-            <Text style={styles.descriptions}>Telefonu sessizde ise veya aramalarınızı duymuyor ise, </Text>
-            <Text style={styles.descriptions}> titreşimli uyarı gönderin. Böylece telefon </Text>
-            <Text style={styles.descriptions}> kaybolduğunda, bulunmasına da yardımcı olun.</Text>
+            <Text style={styles.descriptions}>{strings.swipperTwo}</Text>
 
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
@@ -158,15 +147,14 @@ const SwiperPage = (props) => {
 
 
 
-          <Text style={styles.title}>Aileniz ile sohbetin tadını çıkarın</Text>
+          <Text style={styles.title}>{strings.swipperFourTitle}</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>FindMyFamily sohbet özelliği ile </Text>
-            <Text style={styles.descriptions}>sevdiklerinizle istediğiniz zaman sohbet edin. </Text>
+            <Text style={styles.descriptions}>{strings.swipperTree} </Text>
 
 
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
@@ -178,15 +166,14 @@ const SwiperPage = (props) => {
 
 
 
-          <Text style={styles.title}>Akıllı saatler (GPS Watch, Apple Watch)</Text>
-          <Text style={styles.title}> ile uyumlu</Text>
+          <Text style={styles.title}>{strings.swipperTreeTitle}</Text>
+          <Text style={styles.title}> {strings.swipperTreeTitleTwo}</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>Akıllı telefon kullanamayan küçük çocuklar,</Text>
-            <Text style={styles.descriptions}>  yardıma ihtiyacı olan yetişkinler de FindMyFamily ile güvende kalsın.</Text>
+            <Text style={styles.descriptions}>{strings.swipperFour}</Text>
 
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
@@ -200,28 +187,25 @@ const SwiperPage = (props) => {
 
 
 
-          <Text style={styles.title}>Acil durum SOS sinyali</Text>
+          <Text style={styles.title}>{strings.swipperFiveTitle}</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>Sevdiklerinizin her zaman güvende olduklarını hissetmeleri için,</Text>
-            <Text style={styles.descriptions}>FindMyFamily SOS ile konum bilgisi alin.</Text>
-            <Text style={styles.descriptions}>  Size en çok ihtiyacı olduğu anda hızlıca yanında olun.</Text>
+            <Text style={styles.descriptions}>{strings.swipperFive}</Text>
 
           </View>
           <Pressable style={styles.buttons} onPress={() => swiper.current.scrollBy(1)} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.later}</Text>
           </Pressable>
         </View>
         <View style={styles.slide3}>
 
           <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slide.png')} />
-          <Text style={styles.title}>3 gün ücretsiz deneyin</Text>
+          <Text style={styles.title}>{strings.swipperSixTitle}</Text>
           <View style={styles.textContainer}>
-            <Text style={styles.descriptions}>3 gün boyunca tüm özellikleri deneyin, </Text>
-            <Text style={styles.descriptions}>FindMyFamily ile sevdiklerinize her zaman daha yakın olun.</Text>
+            <Text style={styles.descriptions}>{strings.swipperSix}</Text>
 
           </View>
           <Pressable style={styles.buttons} onPress={() => props.navigation.navigate('Choose')} >
-            <Text style={{ color: COLORS.white }}>NEXT</Text>
+            <Text style={{ color: COLORS.white }}>{strings.next}</Text>
           </Pressable>
         </View>
       </Swiper>

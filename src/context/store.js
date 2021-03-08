@@ -2,7 +2,7 @@ import {createContext} from 'react'
 
 export const initialState = {
     
-     message : ["eve gidiyorum" , "merhaba" , "selam" , "sadfasd","asdfsdf","asdfsdf","asdfsdf","eve gidiyorum" ],
+     message : ["eve gidiyorum" , "merhaba" , "selam" ,"okula gidiyorum" ],
      position : null,
      token : "",
      user : {},

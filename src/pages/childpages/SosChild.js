@@ -6,6 +6,7 @@ import Iconss from 'react-native-vector-icons/MaterialIcons'
 import COLORS from '../../style/Colors'
 import Context from "../../context/store"
 import { socketClient } from '../../socket/socket'
+import strings from '../../strings'
 
 const SosChild =(props)=>{
 
@@ -24,11 +25,11 @@ const SosChild =(props)=>{
             <View style={styles.container}>
                <View  style={styles.sosContainer}>
                    <Iconss name="online-prediction" size={70} color="white" />
-                   <Text style={{fontSize : 25 ,fontWeight : "bold" , color : "white"}}>ALARM VERİLİR</Text>
+                   <Text style={{fontSize : 25 ,fontWeight : "bold" , color : "white"}}>{strings.alarm}</Text>
                    <View style={[styles.sosContainer,{marginTop : 10}]}>
-                       <Text style={styles.text}>Ebeveynler nerede olduğunu görebilir</Text>
-                       <Text style={styles.text}>kurtarmaya gelebilir. Her şey yolundaysa</Text>
-                       <Text style={styles.text}>alarmı kapat</Text>
+                       <Text style={styles.text}>{strings.alarmOneText}</Text>
+                       <Text style={styles.text}>{strings.alarmTwoText}</Text>
+                       <Text style={styles.text}>{strings.alarmTreeText}</Text>
                    </View>
                </View>
              
@@ -39,7 +40,7 @@ const SosChild =(props)=>{
                                 <Icons name="close" size={25} color="#ff0d00" />
                             </View>
                         </Pressable>
-                        <Text style={{color : "white" , marginTop : 10}}>İptal et</Text>
+                        <Text style={{color : "white" , marginTop : 10}}>{strings.cancel}</Text>
                     </View>
                 </View>
                

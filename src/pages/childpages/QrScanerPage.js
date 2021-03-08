@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { SafeAreaView, View, Dimensions, PermissionsAndroid } from 'react-native'
+import React, { useEffect, useState, useContext,useRef } from 'react'
+import { SafeAreaView, View, Dimensions, PermissionsAndroid ,Text} from 'react-native'
 import Axios from 'axios'
 import Context from '../../context/store'
 import styles from '../../style/parentStyle/connectionCodeStyle'
@@ -7,7 +7,10 @@ import jwtDecode from 'jwt-decode'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import * as Animatable from 'react-native-animatable';
-import { useIsFocused } from "@react-navigation/native"
+import { useIsFocused  } from "@react-navigation/native"
+import {withNavigationFocus} from "@react-navigation/compat"
+
+
 const { width, height } = Dimensions.get("window")
 
 const QRCodeScannerPage = props => {
@@ -15,12 +18,17 @@ const QRCodeScannerPage = props => {
 
 
     const { state, dispatch } = useContext(Context)
+    const [vis,setVis]=useState(null)
     const pushToken = props.route.params.puhstoken
-    
+    const isFocus = useIsFocused()
+    const cameraRef = useRef()
+
+
+
 
     useEffect(() => {
         getLocation()
-     
+        console.log(cameraRef.current)
     }, [])
 
     const getFamily = async (id) => {
@@ -70,7 +78,7 @@ const QRCodeScannerPage = props => {
 
     const getLocation = async () => {
         try {
-            const granted = Platform.OS === "android" ? await PermissionsAndroid.request(
+            const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.CAMERA,
                 {
                     title: "Cool Photo App Camera Permission",
@@ -81,9 +89,10 @@ const QRCodeScannerPage = props => {
                     buttonNegative: "Cancel",
                     buttonPositive: "OK"
                 }
-            ) : true
+            ) 
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log(granted)
+            
+               setVis(true)
               
             } else {
                 console.log("Camera permission denied");
@@ -94,15 +103,23 @@ const QRCodeScannerPage = props => {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <View
+           {isFocus ? <View
                 style={{ flex: 1, backgroundColor: "white" }}
 
             >
+              
                 
-                      <QRCodeScanner
+                <QRCodeScanner
                         cameraStyle={{ height: "100%", width: "100%" }}
                         onRead={connection}
-                    />
+                        ref={cameraRef}
+                        permissionDialogMessage={"needddd"}
+                       // checkAndroid6Permissions={(value)=>value === false ? getLocation() : null}
+                        permissionDialogTitle={"ned"}
+                        />
+                                               
+
+
 
                 <View style={{ position: "absolute", width: 200, height: 250, top: "50%", right: "25%", alignItems: "center", justifyContent: "center" }}>
                  
@@ -133,10 +150,13 @@ const QRCodeScannerPage = props => {
                     </View>
                 </View>
             </View>
+            :
+            <Text>Selam</Text>
 
 
-
+}
         </SafeAreaView>
+              
     )
 }
-export default QRCodeScannerPage
+export default withNavigationFocus(QRCodeScannerPage)

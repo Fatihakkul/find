@@ -18,6 +18,7 @@ import Context from "../../context/store"
 import Axios from "axios"
 import API from "../../data/api"
 import { launchImageLibrary } from "react-native-image-picker"
+import strings from "../../strings"
 
 
 const { width, height } = Dimensions.get('window')
@@ -84,7 +85,7 @@ const EditUser = (props) => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.header}>
                 <Icon onPress={() => props.navigation.goBack()} name="arrow-back-outline" size={25} color={COLORS.settinText} />
-                <Text style={styles.title}>HESABIM</Text>
+                <Text style={styles.title}>{strings.account}</Text>
             </View>
             <ScrollView style={{ flex: 1 }} contentContainerStyle={{ alignItems: "center", paddingTop: 20 }}>
                 <View style={styles.image}>
@@ -109,10 +110,10 @@ const EditUser = (props) => {
                     
                 </View>
                 <View style={styles.package}>
-                        <Text style={[styles.update,{color : COLORS.settinText,fontSize:16}]}>PAKETİM : PREMIUM</Text>
+                        <Text style={[styles.update,{color : COLORS.settinText,fontSize:14}]}>{`${strings.mypack} : PREMIUM`}</Text>
                         <Pressable onPress={()=>props.navigation.navigate("package")}>
-                            <ImageBackground style={{ width: 100, height: 35, alignItems: "center", justifyContent: "center", borderRadius: 20, overflow: "hidden" }} source={require('../../assets/updateprice.png')}>
-                                <Text style={styles.update}>PAKETİ YÜKSELT</Text>
+                            <ImageBackground style={{ width: 130, height: 35, alignItems: "center", justifyContent: "center", borderRadius: 20, overflow: "hidden" }} source={require('../../assets/updateprice.png')}>
+                                <Text style={styles.update}>{strings.update}</Text>
                             </ImageBackground>
                         </Pressable>
                        
@@ -121,7 +122,7 @@ const EditUser = (props) => {
                    {loading ? <ActivityIndicator color={COLORS.primary} size={"large"} /> :
                     <Pressable onPress={saveUpdate}>
                         <View style={styles.button}>
-                            <Text style={{color :COLORS.white,fontWeight:"bold",fontSize:16,letterSpacing:1}}>KAYDET</Text>
+                            <Text style={{color :COLORS.white,fontWeight:"bold",fontSize:16,letterSpacing:1}}>{strings.save}</Text>
                         </View>
                     </Pressable>}
                 </View>

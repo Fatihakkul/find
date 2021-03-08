@@ -167,9 +167,9 @@ const Settings = props => {
                 <View style={[styles.infoContainer, { paddingVertical: 0, overflow: "hidden", height: 126, marginTop: 10 }]}>
 
                     <View style={{ position: "absolute", zIndex: 2, left: 20, top: 10 }}>
-                        <Text style={styles.free}>7 GÜN</Text>
-                        <Text style={styles.free}>ÜCRETSİZ</Text>
-                        <Text style={styles.free}>DENE</Text>
+                        <Text style={styles.free}>{strings.treeDay}</Text>
+                        <Text style={styles.free}>{strings.free}</Text>
+                        <Text style={styles.free}>{strings.try}</Text>
                     </View>
                     <Text style={styles.price}>29.99$</Text>
                     <View style={styles.premiumButton}>

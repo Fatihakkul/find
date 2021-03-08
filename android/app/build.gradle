@@ -197,6 +197,9 @@ dependencies {
         exclude group: 'com.google.android.gms', module: 'play-services-maps'
     }
 
+
+      implementation 'com.google.mlkit:barcode-scanning:16.1.1'
+
     implementation 'com.google.android.gms:play-services-base:17.2.1'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 

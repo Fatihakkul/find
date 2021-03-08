@@ -9,6 +9,7 @@ import QRCode from 'react-native-qrcode-svg';
 import Axios from "axios"
 import API from "../data/api"
 import { launchImageLibrary } from "react-native-image-picker"
+import strings from '../strings'
 
 
 const { width, height } = Dimensions.get("window")
@@ -76,7 +77,7 @@ const ChildInfoModal = (props) => {
                     <Icon style={{ position: "absolute", top: 50, zIndex: 1, left: 50 }} name="construct" size={30} onPress={() => uploadImage()} color={COLORS.lightGreen} />
                 </View>
                 <View style={[styles.info, { justifyContent: "center",marginVertical:10 }]}>
-                    <View style={{ flexDirection: "row", alignItems: "center" ,justifyContent:"space-evenly",width:width*0.4}}>
+                    <View style={{ flexDirection: "row", alignItems: "center" ,justifyContent:"space-evenly",width:width*0.8}}>
 
 
                         <Text style={styles.nameText}>{props.data != null ? props.data.name : ""}</Text>
@@ -96,7 +97,7 @@ const ChildInfoModal = (props) => {
                 {loading ? <ActivityIndicator color={COLORS.primary} /> :
                     <Pressable onPress={saveData}>
                         <View style={styles.button}>
-                            <Text style={styles.text}>KAYDET</Text>
+                            <Text style={styles.text}>{strings.save}</Text>
                         </View>
                     </Pressable>
                 }

@@ -3,6 +3,7 @@ import { SafeAreaView,View,Text ,StyleSheet,Dimensions, Image, Pressable} from '
 import Context from "../../context/store"
 import COLORS from '../../style/Colors'
 import AsyncStoreage from "@react-native-async-storage/async-storage"
+import strings from '../../strings'
 
 const {width,height} =Dimensions.get('window')
 const SettingsChild =props=>{
@@ -35,7 +36,7 @@ const SettingsChild =props=>{
         <SafeAreaView style={{flex  :1}}>
             <View style={styles.container}>
                 <View style={{width : width,marginVertical:15}}>
-                    <Text style={styles.title}>HESABIM</Text>
+                    <Text style={styles.title}>{strings.account}</Text>
                 </View>
                 <View style={styles.account}>
                     <View style={styles.imageCont}>
@@ -47,7 +48,7 @@ const SettingsChild =props=>{
                     </View>
                 </View>
                 <View style={{width : width,marginVertical:15}}>
-                    <Text style={styles.title}>DESTEK</Text>
+                    <Text style={styles.title}>{strings.support}</Text>
                 </View>
                 <View style={styles.support}>
                     <Text style={styles.setting}>FAQ</Text>
@@ -56,7 +57,7 @@ const SettingsChild =props=>{
                 </View>
                 <Pressable onPress={logout}>
                     <View style={styles.support}>
-                        <Text style={styles.setting}>Log Out</Text>
+                        <Text style={styles.setting}>{strings.logout}</Text>
                     
                     </View>
                 </Pressable>

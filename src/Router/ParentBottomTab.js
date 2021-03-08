@@ -20,6 +20,7 @@ import COLORS from '../style/Colors'
 import { ChooseArea } from '../components'
 import { Pressable, Text, View } from 'react-native'
 import * as Animatable from 'react-native-animatable';
+import strings from "../strings"
 
 
 
@@ -67,7 +68,7 @@ function BottomTab() {
                      tabBarLabel: "Chat", tabBarIcon: ({ tintColor, focused }) => focused ?
                         <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
                             <Icons name="comment-dots" style={{marginRight : 5}} size={20} color={COLORS.white} />
-                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 12,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">Chat</Animatable.Text>
+                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 10,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">{strings.chat}</Animatable.Text>
 
 
                         </View>
@@ -82,7 +83,7 @@ function BottomTab() {
                    tabBarLabel: "Home", tabBarIcon: ({ tintColor, focused }) => focused ?
                         <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
                             <Icons name="map-marker-alt" style={{marginRight : 5}} size={20} color={COLORS.white} />
-                            <Animatable.Text animation="rubberBand" iterationCount={1000000} delay={100} style={{fontSize : 12,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">Home</Animatable.Text>
+                            <Animatable.Text animation="rubberBand" iterationCount={1000000} delay={100} style={{fontSize : 10,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">{strings.home}</Animatable.Text>
 
 
                         </View>
@@ -98,7 +99,7 @@ function BottomTab() {
                         <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }}>
 
                             <Icon name="map-outline" style={{marginRight : 5}} size={20} color={COLORS.white} />
-                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 12,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">Area</Animatable.Text>
+                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 10,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">{strings.area}</Animatable.Text>
 
                         </View>
                         :
@@ -113,7 +114,7 @@ function BottomTab() {
                     tabBarLabel: "Profile", tabBarIcon: ({ tintColor, focused }) => focused ?
                         <View style={{ flexDirection: "row", flex: 1, alignItems: "center" }} >
                             <Icons name="user" size={20} style={{marginRight : 5}} color={COLORS.white}/>
-                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 12,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">Profile</Animatable.Text>
+                            <Animatable.Text animation="rubberBand" iterationCount={10000} delay={100} style={{fontSize : 10,color : COLORS.white ,fontWeight : "bold",textAlign: 'center'  , justifyContent:"center"}} direction="normal">{strings.account}</Animatable.Text>
 
                         </View>
                         :
