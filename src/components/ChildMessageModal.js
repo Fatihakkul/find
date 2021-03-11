@@ -2,6 +2,7 @@ import React,{useState,useContext} from 'react'
 import { Text , View ,TextInput,StyleSheet,Dimensions, Pressable} from 'react-native'
 import Modal from 'react-native-modal'
 import Context from '../context/store'
+import strings from '../strings'
 import COLORS from '../style/Colors' 
 
 const width = Dimensions.get('window').width
@@ -26,14 +27,13 @@ const ChildMessageModal =(props)=>{
             animationOutTiming={800}
         >
             <View style={styles.container}>
-                <Text style={styles.title}>Find My Kids</Text>
+                <Text style={styles.title}>Find My Family</Text>
                 <View style={{alignItems : "center",marginBottom : 20}}>
-                    <Text style={styles.text}>Listeye eklemek için hızlı</Text>
-                    <Text style={styles.text}>bir mesaj gir</Text>
+                    <Text style={styles.text}>{strings.quickMessage}</Text>
                 </View>
                 <View style={styles.inputContainer}>
                     <TextInput 
-                        placeholder="bir şeyler yaz..."
+                        placeholder={strings.writeText}
                         multiline = {true}
                         style={{width : width*0.7}}
                         onChangeText={(text)=>setValue(text)}
@@ -41,10 +41,10 @@ const ChildMessageModal =(props)=>{
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Pressable style={[styles.button,{borderWidth : 1}]} onPress={props.cancel}> 
-                        <Text style={[styles.text,{color : COLORS.primary}]}>İptal</Text>
+                        <Text style={[styles.text,{color : COLORS.primary}]}>{strings.cancel}</Text>
                     </Pressable>
                     <Pressable style={[styles.button,{backgroundColor : COLORS.green}]} onPress={setContextData}>
-                        <Text style={[styles.text,{color :COLORS.white}]}>Kaydet</Text>
+                        <Text style={[styles.text,{color :COLORS.white}]}>{strings.save}</Text>
                     </Pressable>
                 </View>
             </View>

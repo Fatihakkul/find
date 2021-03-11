@@ -54,7 +54,7 @@ const EditUser = (props) => {
             setLoading(false)
             props.navigation.goBack()
         }else {
-            alert("Fotoğraf yüklenirken hata oluştu")
+            alert(strings.errorPhoto)
             setLoading(false)
         }
         setLoading(false)

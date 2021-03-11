@@ -47,7 +47,12 @@ import {
 import Axios from "axios"
 import API from "../../data/api"
 import Sound from "react-native-sound"
+
 import BackgroundJob from "react-native-background-actions"
+import BackgroundTimer from 'react-native-background-timer';
+
+
+
 import strings from "../../strings"
 
 
@@ -94,10 +99,19 @@ const taskRandom = async taskData => {
   });
 };
 
+
+// BackgroundTimer.runBackgroundTimer(() => {
+//   console.log("Selama")
+//   socketClient.on('new_sos', (sos) => {
+//     mySound.play()
+//   })
+// },3000);
+
+
 const options = {
-  taskName: 'Konum Alınıyor',
-  taskTitle: 'Konum Takibi Aktif',
-  taskDesc: 'Ailenin görebilmen için konum bilgileri alınıyor...',
+  taskName: strings.getLocation,
+  taskTitle: strings.activeLocation,
+  taskDesc:strings.notificationBody,
   taskIcon: {
     name: 'ic_launcher',
     type: 'mipmap',
@@ -158,6 +172,7 @@ const sdpConstraints = {
 
 
 let device = new RTCPeerConnection(pc_config)
+
 const HomeParent = props => {
 
 
@@ -177,12 +192,12 @@ const HomeParent = props => {
   const [loading, setLoading] = useState(false)
   const [childNotification, setChildNotification] = useState([])
   const [userPackage, setPackage] = useState(null)
-  const [connectLoading , setConnectLoading] = useState(true)
+  const [connectLoading, setConnectLoading] = useState(true)
 
 
   let isFront = true
 
-  useEffect(()=>{moment.locale("de")},[])
+  useEffect(() => { moment.locale("de") }, [])
   useEffect(() => { }, [state.locationHistory])
   useEffect(() => { }, [location])
 
@@ -236,14 +251,15 @@ const HomeParent = props => {
     })
 
     socketClient.on('candidate', (candidate) => {
+     
       device.addIceCandidate(new RTCIceCandidate(candidate.payload)).then(() => {
-          setConnectLoading(false)
-       })
+       
+      })
     })
 
     device.onicecandidate = (e) => {
-      if(choosed != null || choosed != undefined){
-        if (e.candidate ) {
+      if (choosed != null || choosed != undefined) {
+        if (e.candidate) {
 
           socketClient.emit('candidate', {
             socketID: socketClient.id,
@@ -251,10 +267,10 @@ const HomeParent = props => {
             type: "candidate",
             uniqueId: choosed.uniqueId
           })
-  
+
         }
       }
-     
+
     }
     device.oniceconnectionstatechange = (e) => {
       console.log(e)
@@ -313,21 +329,24 @@ const HomeParent = props => {
 
   const create = () => {
     console.log(choosed.uniqueId)
-    setListenVisible(true)
-    if(choosed.uniqueId != undefined){
+    if (choosed.uniqueId != undefined) {
+      setListenVisible(true)
+      setTimeout(() => {
+          setConnectLoading(true)
+      }, 60000);
       device.createOffer(sdpConstraints)
-      .then(sdp => {
-        device.setLocalDescription(sdp)
-        socketClient.emit('offerOranswer', {
-          socketID: socketClient.id,
-          payload: sdp,
-          type: "offer",
-          uniqueId: choosed.uniqueId
-        })
+        .then(sdp => {
+          device.setLocalDescription(sdp)
+          socketClient.emit('offerOranswer', {
+            socketID: socketClient.id,
+            payload: sdp,
+            type: "offer",
+            uniqueId: choosed.uniqueId
+          })
 
-      })
+        })
     }
-   
+
   }
 
 
@@ -443,12 +462,12 @@ const HomeParent = props => {
     let response = await Axios.post(API.base_url + API.location_history, {
       childUniqueId: child.uniqueId
     })
-    console.log(response.data.data.length,"========>>>>>>")
+    console.log(response.data.data.length, "========>>>>>>")
     //setLocationHistory(response.data.data)
-   // if (response.data.data.length > 0) {
-      dispatch({ type: "SET_LOCATIONHISTORY", locationHistory: response.data.data })
-      setLoading(true)
-  //  }
+    // if (response.data.data.length > 0) {
+    dispatch({ type: "SET_LOCATIONHISTORY", locationHistory: response.data.data })
+    setLoading(true)
+    //  }
 
 
   }
@@ -501,12 +520,12 @@ const HomeParent = props => {
           console.log(err, "wwwww")
 
           Alert.alert(
-            'KONUM HATASI',
-            'Uygulamaya devam edebilmek için konumunuz açık ve uygulamaya izin verilmiş olmalı.',
+            strings.errorGeo,
+            strings.errorGeoText,
             [
 
               {
-                text: 'Ayarlara git',
+                text: strings.goSetting,
                 onPress: () => Linking.openSettings(),
                 style: 'default'
               },
@@ -527,7 +546,7 @@ const HomeParent = props => {
     <SafeAreaView style={{ flex: 1 }}>
       { userPackage === true && userPackage != null ?
         <View style={{ flex: 1 }}>
-          {console.log(userPackage === true || userPackage != null, "sdf" ,)}
+          {console.log(userPackage === true || userPackage != null, "sdf",)}
 
           {
             location != null ?
@@ -535,7 +554,7 @@ const HomeParent = props => {
 
               <View style={styles.container}>
                 <ChildHistoryModal press={goMessage} name={choosed != null ? choosed.name : null} level={batteryLevel} isVisible={visible} onBackdropPress={() => setVisible(false)} />
-                <ListenModal loading={connectLoading}  onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
+                <ListenModal  device={device} onPress={stopConnection} isVisible={listenVisible} onBackdropPress={() => setListenVisible(!listenVisible)} />
                 <MapView
 
                   ref={mapRef}
@@ -565,7 +584,7 @@ const HomeParent = props => {
                     strokeWidth={3}
                   />
                   {
-                    location.uniqueId === undefined  && state.locationHistory.length > 0 ?
+                    location.uniqueId === undefined && state.locationHistory.length > 0 ?
                       <Marker
                         coordinate={{
                           latitude: state.locationHistory[state.locationHistory.length - 1].location.latitude,
@@ -575,23 +594,23 @@ const HomeParent = props => {
                       >
 
                         <View style={{ width: 50, height: 40, position: "absolute", top: 0, left: 26 }}>
-                          <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>En son buradaydı</Text>
+                          <Text style={{ color: parseInt(batteryLevel) > 20 ? COLORS.primary : COLORS.red, position: "absolute", fontSize: 7, top: 10, left: 6, fontWeight: "bold" }}>{strings.lastHere}</Text>
                         </View>
                         <MyCustomMarker />
                       </Marker>
                       :
                       null
-                     
+
                   }
 
 
 
-                  
+
                   {choosed != null ?
 
 
-                    location.uniqueId != undefined && choosed.uniqueId === location.uniqueId?
-                    
+                    location.uniqueId != undefined && choosed.uniqueId === location.uniqueId ?
+
 
                       <Marker
                         coordinate={{
@@ -607,12 +626,12 @@ const HomeParent = props => {
                         </View>
                         <MyCustomMarker />
                       </Marker>
-                    
+
                       :
 
                       null
-                      :
-                      null
+                    :
+                    null
                   }
                 </MapView>
 
@@ -667,14 +686,12 @@ const HomeParent = props => {
 
           <View style={{ width: width * 0.9, height: height * 0.4, backgroundColor: COLORS.white, borderRadius: 20, alignItems: "center", justifyContent: "space-around" }}>
             <View style={{ alignItems: "center" }}>
-              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>Uygulamayı kullanmaya </Text>
-              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>devam edebilmek için </Text>
-              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>lütfen paket alınız</Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>{strings.buyPackage}</Text>
             </View>
 
             <TouchableOpacity onPress={() => props.navigation.navigate('package')}  >
               <View style={{ width: width * 0.5, height: 40, borderRadius: 20, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
-                <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>PAKET SATIN AL</Text>
+                <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>{strings.buy}</Text>
               </View>
             </TouchableOpacity>
           </View>

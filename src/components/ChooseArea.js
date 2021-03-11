@@ -12,6 +12,7 @@ import customStyle from '../style/MapCustomStyle'
 import Axios from 'axios'
 import API from '../data/api'
 import imageView from "../assets/child.jpg"
+import strings from '../strings'
 
 
 const width = Dimensions.get("window").width
@@ -92,7 +93,7 @@ const ChooseArea = props => {
             }
         })
         if (response.data.data.response[0] === 1)
-            Alert.alert("Delete", "Adresses deleted")
+            Alert.alert("Delete", strings.deletedArea)
         dispatch({ type: "DELETE_AREA", delete: item.id })
         console.log(response)
     }
@@ -203,14 +204,12 @@ const ChooseArea = props => {
 
         <View style={{ width: width * 0.9, height: height * 0.4, backgroundColor: COLORS.white, borderRadius: 20, alignItems: "center", justifyContent: "space-around" }}>
           <View style={{alignItems : "center"}}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>Uygulamayı kullanmaya </Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>devam edebilmek için </Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>lütfen paket alınız</Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold", letterSpacing: 1, color: COLORS.settinText, marginTop: 5 }}>{strings.buyPackage}</Text>
           </View>
 
           <TouchableOpacity onPress={()=>props.navigation.navigate('package')}  >
             <View style={{ width: width * 0.5, height: 40, borderRadius: 20, backgroundColor: COLORS.lightGreen, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
-              <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>PAKET SATIN AL</Text>
+              <Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "bold" }}>{strings.buy}</Text>
             </View>
           </TouchableOpacity>
         </View>

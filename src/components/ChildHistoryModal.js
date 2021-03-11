@@ -5,6 +5,7 @@ import Colors from '../style/Colors'
 import Icons from 'react-native-vector-icons/Ionicons'
 import Iconss from 'react-native-vector-icons/MaterialIcons'
 import COLORS from '../style/Colors'
+import strings from '../strings'
 
 
 const {width , height} = Dimensions.get("window")
@@ -26,7 +27,7 @@ const ChildHistoryModal =(props)=>{
                     <View style={styles.childInfo}>
                         <Text style={[styles.text,{fontWeight :"bold"}]}>{props.name}</Text>
                         <View style={[styles.şarj]}>
-                            <Text style={styles.text}>Şarj düzeyi</Text>
+                            <Text style={styles.text}>{strings.batteryLevel}</Text>
                             <Icons size={40} color={COLORS.white} name="battery-dead-outline"/>
                             <Text style={{fontSize : 10,position : "absolute" , right : 13,color :COLORS.white,fontWeight : "bold"}}>{`%${props.level}`}</Text>
                         </View>
@@ -34,20 +35,19 @@ const ChildHistoryModal =(props)=>{
                </View>
              
                 <View style={{alignItems : "center",justifyContent : "space-evenly",flex : 0.7}}>
-                    <Text style={[styles.text,{fontWeight : "bold",fontSize : 19}]}>YÜKSEK SESLİ SİNYAL</Text>
+                    <Text style={[styles.text,{fontWeight : "bold",fontSize : 19}]}>{strings.singal}</Text>
                     <View style={styles.sosCircle}>
                         <Image style={{width : 50,height:50}}   source={require('../assets/soswhite.png')}/>
                     </View>
                    
                     <View style={[styles.sosContainer,{marginTop : 10,flexDirection :"column"}]}>
-                       <Text style={styles.text}>Çocuğunuz aramaları duymuyorsa</Text>
-                       <Text style={styles.text}>telefonuna yüksek sesli sinyal gönderin</Text>
+                       <Text style={styles.text}>{strings.sendSignal}</Text>
                     
                    </View>
                 </View>
                 <Pressable onPress={props.press}>
                             <View style={styles.cancel}>
-                               <Text style={[styles.text,{fontWeight : "bold"}]}>MESAJ GÖNDER</Text>
+                               <Text style={[styles.text,{fontWeight : "bold"}]}>{strings.sendMessaqe}</Text>
                             </View>
                 </Pressable>
             </View>

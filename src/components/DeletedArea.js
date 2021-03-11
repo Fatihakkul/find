@@ -3,6 +3,7 @@ import {View,Text,Pressable,StyleSheet,Dimensions} from 'react-native'
 import Modal from 'react-native-modal'
 import Colors from '../style/Colors'
 import Icons from 'react-native-vector-icons/Ionicons'
+import strings from '../strings'
 
 
 const width = Dimensions.get("window").width
@@ -18,7 +19,7 @@ const DeletedArea =(props)=>{
         >
             <View style={styles.conatiner}>
                 <Icons name="alert" size={25} color={Colors.white} />
-                <Text style={styles.warning} >Adresses deleted {props.item.name != undefined ? props.item.name : null} </Text>
+                <Text style={styles.warning} >{strings.deletedArea} {props.item.name != undefined ? props.item.name : null} </Text>
             </View>
         </Modal>
     )

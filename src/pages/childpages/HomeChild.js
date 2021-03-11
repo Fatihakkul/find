@@ -45,6 +45,9 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import {isPointWithinRadius} from "geolib"
 import RNSwitchAudioOutput from "react-native-switch-audio-output"
+import strings from '../../strings';
+
+
 
 let isFront = true
 let error = false
@@ -159,6 +162,7 @@ const mySound = new Sound("my_sound.mp3", Sound.MAIN_BUNDLE, (err) => {
         console.log("ss")
     }
 })
+
 const taskRandom = async taskData => {
     if (Platform.OS === 'ios') {
         console.warn(
@@ -264,9 +268,9 @@ const taskRandom = async taskData => {
 };
 
 const options = {
-    taskName: 'Konum belirleme',
-    taskTitle: 'Konum Belirleme Aktif',
-    taskDesc: 'Ailenin seni görebilmesi için konum bilgilerin alınıyor...',
+    taskName: strings.activeLocation,
+    taskTitle: strings.activeLocation,
+    taskDesc: strings.childNotificationBody,
     taskIcon: {
         name: 'ic_launcher',
         type: 'mipmap',
@@ -387,7 +391,7 @@ const HomeChild = props => {
         console.log(state.token , "tokennnnn")
         getChild()
         setArr(state.message)
-        BackgroundJob.start(taskRandom, options)
+       BackgroundJob.start(taskRandom, options)
         // uniqueId=state.user.data[0].uniqueId
         socketClient.on("user_connected", (data) => {
             console.log(data, "userConnect")

@@ -1,6 +1,7 @@
 import React from 'react' 
 import {View , TextInput ,Pressable} from 'react-native'
 import Icons from 'react-native-vector-icons/Ionicons'
+import strings from '../strings'
 import styles from '../style/childStyle/ChatChildStyle'
 import COLORS from '../style/Colors'
 const InputToolBar =(props) =>{
@@ -9,7 +10,7 @@ const InputToolBar =(props) =>{
                    
                     <View style={styles.inputContainer}>
                         <TextInput 
-                            placeholder="Bir mesaj girin"
+                            placeholder={strings.sendText}
                             onChangeText={props.onChangeText}
                             value={props.value}
                         />

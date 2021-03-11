@@ -10,6 +10,7 @@ import { Constants } from 'react-native-unimodules';
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+import strings from '../strings'
 
 const { width, height } = Dimensions.get("window")
 
@@ -65,12 +66,12 @@ const SplashScreen = (props) => {
                 console.log(err, "wwwww")
 
                 Alert.alert(
-                    'KONUM HATASI',
-                    'Uygulamaya devam edebilmek için konumunuz açık ve uygulamaya izin verilmiş olmalı.',
+                    strings.errorGeo,
+                    strings.errorGeoText,
                     [
 
                         {
-                            text: 'Ayarlara git',
+                            text: strings.goSetting,
                             onPress: () => Linking.openURL('app-settings:'),
                             style: 'default'
                         },
@@ -175,12 +176,12 @@ const SplashScreen = (props) => {
                     console.log(err, "wwwww")
 
                     Alert.alert(
-                        'KONUM HATASI',
-                        'Uygulamaya devam edebilmek için konumunuz açık ve uygulamaya izin verilmiş olmalı.',
+                        strings.errorGeo,
+                       strings.errorGeoText,
                         [
 
                             {
-                                text: 'Ayarlara git',
+                                text: strings.goSetting,
                                 onPress: () => Linking.openSettings(),
                                 style: 'default'
                             },

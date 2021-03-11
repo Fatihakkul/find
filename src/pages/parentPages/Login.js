@@ -18,6 +18,7 @@ import COLORS from '../../style/Colors';
 import config from "../../../config"
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+import strings from '../../strings';
 
 
 
@@ -139,7 +140,7 @@ const Login = props => {
       setLoading(false)
      
     } else {
-      Alert.alert("Bir hata oluştu")
+      Alert.alert(strings.error)
     }
 
     return auth().signInWithCredential(facebookCredential);
@@ -186,7 +187,7 @@ const Login = props => {
       props.navigation.navigate('bottomTab')
 
     } else {
-      Alert.alert("Bir hata oluştu")
+      Alert.alert(strings.error)
     }
   //  return auth().signInWithCredential(googleCredential);
   }
@@ -205,21 +206,21 @@ const Login = props => {
           <Pressable onPress={onGoogleButtonPress}>
             <View style={[styles.googleLogin,{borderColor : COLORS.red,borderWidth:2}]}>
               <Icon name="google" color={COLORS.red} size={25} style={{ position: "absolute", left: 10 }} />
-              <Text style={[styles.title,{color  : COLORS.red}]}>Google ile giriş yap</Text>
+              <Text style={[styles.title,{color  : COLORS.red}]}>{strings.loginWithgoogle}</Text>
             </View>
           </Pressable>
 
           <Pressable onPress={onFacebookButtonPress}>
             <View style={[styles.googleLogin,{borderColor:COLORS.facebookBlue, borderWidth:2} ]} >
               <Icon name="facebook" color={COLORS.facebookBlue} size={25} style={{ position: "absolute", left: 10 }} />
-              <Text style={[styles.title,{color : COLORS.facebookBlue}]}>Facebook ile giriş yap</Text>
+              <Text style={[styles.title,{color : COLORS.facebookBlue}]}>{strings.loginWithfacebook}</Text>
             </View>
           </Pressable>
 
           <Pressable onPress={emailSignin}>
             <View style={[styles.googleLogin,{borderColor:COLORS.primary ,borderWidth:2}]} >
               <Icon name="sms" color={COLORS.primary} size={25} style={{ position: "absolute", left: 10 }} />
-              <Text style={[styles.title,{color : COLORS.primary}]}>Email ile giriş yap</Text>
+              <Text style={[styles.title,{color : COLORS.primary}]}>{strings.loginWithemail}</Text>
             </View>
           </Pressable>
 

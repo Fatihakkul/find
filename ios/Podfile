@@ -33,6 +33,8 @@ target 'finmyfamily' do
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
   target 'finmyfamilyTests' do
     inherit! :complete
     # Pods for testing

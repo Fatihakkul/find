@@ -9,6 +9,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { launchImageLibrary } from "react-native-image-picker"
 import Icon from "react-native-vector-icons/Ionicons"
 import COLORS from '../style/Colors'
+import strings from '../strings'
 
 
 const width = Dimensions.get("window").width
@@ -69,7 +70,7 @@ const AddChildModal = props => {
     }
 
     const errorCode = () => {
-        setCode("Bir hata oluştu")
+        setCode(strings.error)
         setErr(true)
     }
 
@@ -202,11 +203,9 @@ const AddChildModal = props => {
             style={{ alignItems: "center" }}
         >
             <View style={styles.container}>
-                <Text style={styles.title}>Bir çocuk ekle</Text>
+                <Text style={styles.title}>{strings.addChild}</Text>
                 <View style={styles.textCont}>
-                    <Text style={styles.text}>Aşağıdaki bilgileri doldurduktan</Text>
-                    <Text style={styles.text}>sonra Kaydet butonuna tıklayıp kodu</Text>
-                    <Text style={styles.text}>çocuğunuzun telefonundaki uygulama giriniz</Text>
+                    <Text style={[styles.text,{textAlign : "center"}]}>{strings.addChildText}</Text>
 
                 </View>
                 <View style={{ width: 100, zIndex:2,height: 100, borderRadius: 50, marginTop: 10,alignItems: "center", justifyContent: "center" }}>
@@ -220,10 +219,10 @@ const AddChildModal = props => {
 
                 </View>
                 <View style={styles.inputContainer}>
-                    <Text>İsim : </Text>
+                    <Text>{strings.name} : </Text>
                     <View style={styles.input}>
                         <TextInput
-                            placeholder="İsim gir"
+                            placeholder={strings.enterName}
                             onChangeText={(text) => setName(text)}
                             value={name}
                         />
@@ -261,14 +260,14 @@ const AddChildModal = props => {
 
                 <View style={styles.qrcodeContainer}>
                     <Text style={styles.title}>{code}</Text>
-                    <Text style={[styles.title, { color: "black", opacity: 0.4 }]}>VEYA</Text>
+                    <Text style={[styles.title, { color: "black", opacity: 0.4 }]}>{strings.or}</Text>
                     <QRCode
                         value={`${code}`}
                     />
                 </View>
                 <View style={styles.buttonContainer}>
                     <Pressable onPress={() => setVisible(!visible)} style={[styles.button, { backgroundColor: Colors.white, borderColor: Colors.primary, borderWidth: 1 }]}>
-                        <Text style={{ color: Colors.primary, fontSize: 16 }}>İptal Et</Text>
+                        <Text style={{ color: Colors.primary, fontSize: 16 }}>{strings.cancel}</Text>
                     </Pressable>
                     {err ?
                         null
@@ -278,7 +277,7 @@ const AddChildModal = props => {
                             <ActivityIndicator color={COLORS.primary} />
                             :
                             <Pressable style={styles.button} onPress={saveData}>
-                                <Text style={{ color: Colors.white, fontSize: 16 }}>Kaydet</Text>
+                                <Text style={{ color: Colors.white, fontSize: 16 }}>{strings.save}</Text>
                             </Pressable>
 
                     }

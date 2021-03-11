@@ -193,7 +193,7 @@ const ConnectionCode = props => {
       console.log(response.data.data.response, "okeee")
       if(decoded.data.length === 0){
         
-        Alert.alert("Geçersiz Kod" ,"Girdiğiniz kod geçersiz. Lütfen çocuğu kaydettiğinizden emin olun")
+        Alert.alert(strings.errorCode ,strings.errorCodeText)
       }
       getFamily(decoded.data[0].parentId)
       setVisible(false)

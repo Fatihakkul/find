@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { View, Pressable, Text, Image, Dimensions, StyleSheet, FlatList } from "react-native"
 import Context from "../context/store"
+import strings from "../strings"
 import COLORS from "../style/Colors"
 const { width, height } = Dimensions.get("window")
 
@@ -32,7 +33,7 @@ const Header = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.family}>
-                <Text style={styles.text}>AİLE</Text>
+                <Text style={styles.text}>{strings.family}</Text>
             </View>
 
             <FlatList

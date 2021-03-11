@@ -6,6 +6,7 @@ import {ChatListItem,ChatChildListItem} from '../../components'
 import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
 import * as Notifications from "expo-notifications"
+import strings from '../../strings'
 
 const ChatHomeChild =(props)=>{
 
@@ -72,7 +73,7 @@ const ChatHomeChild =(props)=>{
         <SafeAreaView>
             <View style={{alignItems : "center",paddingTop : 10}}>
             <View style={styles.headerTitle}>
-                <Text style={styles.title}>MESAJLAR</Text>
+                <Text style={styles.title}>{strings.chat}</Text>
             </View>    
             <ChatChildListItem name="Parent" item={parent} picture={parent.picture} onPress={()=>goPage(parent , true)} />
                {childArray.length != 0 ?  
@@ -88,8 +89,7 @@ const ChatHomeChild =(props)=>{
 
             :
             <View style={[styles.emptyView,{marginTop : 20}]}>
-                <Text style={[styles.title,{color : COLORS.white}]}>Aile üyesi ekleyerek </Text>
-                <Text style={[styles.title,{color : COLORS.white}]}>onlarla mesajlaşabilirsin</Text>
+                <Text style={[styles.title,{color : COLORS.white}]}>{strings.addFamily}</Text>
             </View>
             }
                

@@ -7,6 +7,7 @@ import AsyncStoreage from '@react-native-async-storage/async-storage'
 import jwt_decoded from 'jwt-decode'
 import COLORS from '../style/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import strings from '../strings'
 
 
 
@@ -26,17 +27,17 @@ const Choose = props => {
       if(data !== "1"){
         if (Platform.OS === "android") {
           Alert.alert(
-            'BİLGİLENDİRME',
-            'UygulamayI sağlıklı kullanabilmek için ayarlardan konum iznine "Her zaman izin ver"i seçmelisiniz aksi takdirde uygulama doğru çalışmayacaktır',
+            strings.info,
+            strings.infoText,
             [
     
               {
-                text: 'Ayarlara git',
+                text: strings.goSetting,
                 onPress: () => Linking.openSettings(),
                 style: 'default'
               },
               {
-                text: 'İptal'
+                text: strings.cancel
                 
               }
             ]

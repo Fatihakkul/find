@@ -87,8 +87,8 @@ function Child(props) {
     return (
         <Provider>
             <Stack.Navigator initialRouteName="Code" {...props} >
-                <Stack.Screen name="Code" component={ConnectionCode} options={{ headerShown: false }} />
-                <Stack.Screen name="QR" component={QRCodeScannerPage} options={{ headerShown: false }} />
+                <Stack.Screen name="Code" component={ConnectionCode} options={{ headerShown: false  }} />
+                <Stack.Screen name="QR" component={QRCodeScannerPage} options={{ headerShown: false  } } />
                 <Stack.Screen name="chatchild" component={ChatChild} options={{ headerShown: false }} />
                 <Stack.Screen name="soschild" component={SosChild} options={{ headerShown: false }} />
                 <Stack.Screen name="home" component={ChildBottom} options={{ headerShown: false }} />

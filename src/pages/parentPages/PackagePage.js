@@ -89,7 +89,7 @@ const PackagePage = (props) => {
 
                             <Pressable>
                                 <View style={styles.button}>
-                                    <Text style={[styles.text, { color: COLORS.white, fontWeight: "bold" }]}>YÜKSELT</Text>
+                                    <Text style={[styles.text, { color: COLORS.white, fontWeight: "bold" }]}>{strings.update}</Text>
                                 </View>
                             </Pressable>
                         </View>
@@ -111,7 +111,7 @@ const PackagePage = (props) => {
 
                             <Pressable>
                                 <View style={styles.button}>
-                                    <Text style={[styles.text, { color: COLORS.white, fontWeight: "bold" }]}>YÜKSELT</Text>
+                                    <Text style={[styles.text, { color: COLORS.white, fontWeight: "bold" }]}>{strings.update}</Text>
                                 </View>
                             </Pressable>
                         </View>

@@ -18,4 +18,5 @@ export * from './parentPages/ChooseChild'
 export * from "./parentPages/PackagePage"
 export * from './SwiperPage'
 export * from "./parentPages/EditUser"
+export * from "./parentPages/EmailVerification"
 

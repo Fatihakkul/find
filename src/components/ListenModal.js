@@ -11,21 +11,38 @@ import API from "../data/api"
 import { launchImageLibrary } from "react-native-image-picker"
 import LottieView from "lottie-react-native"
 import InCallManager from 'react-native-incall-manager';
+import strings from '../strings'
 
 
 const { width, height } = Dimensions.get("window")
 
 const ListenModal = (props) => {
 
+
+    const [loading,setLoading]=useState(true)
+    const [listening,setListening]=useState(true)
+
     useEffect(() => {
         if (props.isVisible) {
             InCallManager.start({ media: 'audio' })
         } else {
             InCallManager.stop();
-
         }
     }, [props.isVisible])
 
+    useEffect(()=>{
+        
+        if(props.isVisible){
+          setTimeout(() => {
+              setLoading(false)
+          }, 60000);
+          setTimeout(() => {
+              setListening(false)
+          }, 80000);
+        }
+    },[props.isVisible])
+
+  
 
     return (
         <Modal
@@ -35,16 +52,27 @@ const ListenModal = (props) => {
             animationInTiming={800}
             style={{ alignItems: "center", justifyContent: "center" }}
         >
-            {props.loading ?
+            {loading ?
                 <View style={styles.container}>
                     <ActivityIndicator size={"large"} color={COLORS.primary} />
                 </View>
 
 
                 :
-                <View style={styles.container}>
+               listening ? 
+
+                <View style={[styles.container,{justifyContent  :"center"}]} >
+                    <Text style={{color :  COLORS.settinText,fontSize  :20,fontWeight : "bold" , letterSpacing : 2,marginBottom:20}}>{strings.loading}</Text>
+                    <ActivityIndicator size={"large"} color={COLORS.primary} />
+                </View>
+
+
+               :
+               
+              
+               <View style={styles.container}>
                     <View>
-                        <Text style={styles.text}>Çocuk dinleniyor...</Text>
+                        <Text style={styles.text}>{strings.listenChild}</Text>
                     </View>
                     <LottieView
                         source={require('../lottie/listen.json')}
@@ -58,16 +86,18 @@ const ListenModal = (props) => {
                     <View style={styles.buttonContainer}>
                         <Pressable onPress={props.onPress}>
                             <View style={[styles.button, { borderWidth: 2, borderColor: COLORS.lightGreen }]}>
-                                <Text style={[styles.buttonText, { color: COLORS.lightGreen }]}>Dinlemeyi durdur</Text>
+                                <Text style={[styles.buttonText, { color: COLORS.lightGreen }]}>{strings.stopListen}</Text>
                             </View>
                         </Pressable>
                         <Pressable style={[styles.button, { backgroundColor: COLORS.lightGreen }]}>
                             <View>
-                                <Text style={[styles.buttonText, { color: COLORS.white }]}>Mesaj Gönder</Text>
+                                <Text style={[styles.buttonText, { color: COLORS.white }]}>{strings.sendMessaqe}</Text>
                             </View>
                         </Pressable>
                     </View>
-                </View>}
+                </View>
+                }
+                
         </Modal>
     )
 }

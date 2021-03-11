@@ -65,17 +65,19 @@ const Register = props => {
 
 
                             console.log("giriş")
-                           signin()
+                           //signin()
+                           props.navigation.navigate('EmailVerification')
 
 
-                        } else alert("şifreler uyuşmuyor")
-                    } else alert("şifre tekrar giriniz")
+                        } else alert(strings.notPassword)
+                    } else alert(strings.passwordAgain)
                 }else {
-                     signin()
+                    // signin()
+                    props.navigation.navigate('EmailVerification')
                 }
-                } else alert("şifre giriniz")
-            } else alert("geçerli bir email giriniz")
-        } else alert("email giriniz")
+                } else alert(strings.password)
+            } else alert(strings.validEmail)
+        } else alert(strings.email)
     }
 
     return (

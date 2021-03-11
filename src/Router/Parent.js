@@ -7,7 +7,8 @@ import {
     Voice,
     ChildEvents,
     Settings,
-    Register
+    Register,
+    EmailVerification
 }from '../pages'
 import { createStackNavigator} from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -22,6 +23,7 @@ function Parent(){
     return(
         <Stack.Navigator>
             <Stack.Screen name="LoginParent" component={Login} options={{headerShown : false}}/>
+            <Stack.Screen name="EmailVerification" component={EmailVerification} options={{headerShown : false}}/>
             <Stack.Screen name="bottomTab" component={BottomTab}  options={{headerShown : false}}/>
             <Stack.Screen name="Register" component={Register}  options={{headerShown : false}}/>
         </Stack.Navigator>

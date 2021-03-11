@@ -9,7 +9,8 @@ import {
     FlatList,
     Dimensions,
     ScrollView,
-    ImageBackground
+    ImageBackground,
+    Linking
 } from 'react-native'
 import Context from '../../context/store'
 import styles from '../../style/parentStyle/SettingsStyle'
@@ -208,10 +209,14 @@ const Settings = props => {
                     <Text style={styles.settingsTitle}>{strings.support}</Text>
                 </View>
                 <View style={styles.suppport}>
-                    <Text style={styles.supportText}>FAQ</Text>
+                   <Pressable onPress={()=>Linking.openURL("https://findmykids.org/docs/privacy-policy/en")} >
+                        <Text style={styles.supportText}>Privacy Policy</Text>
+                    </Pressable>
+                   
                     <Text style={styles.supportText}>TERMS OF SERVİCE</Text>
-                    <Text style={styles.supportText}>CONTACT</Text>
-
+                    <Pressable onPress={()=>Linking.openURL('mailto:kmngwfth@gmail.com')}>
+                        <Text style={styles.supportText}>CONTACT</Text>
+                    </Pressable>
                 </View>
                 <View style={[styles.suppport, { marginTop: 10 }]}>
                     <Pressable style={styles.settingsItemContainer} onPress={logout}>
