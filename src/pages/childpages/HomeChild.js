@@ -472,7 +472,6 @@ const HomeChild = props => {
 
 
                                 <MapView
-
                                     style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                                     initialRegion={{
                                         latitude: state.position != null ? state.position.latitude : 47.516232,

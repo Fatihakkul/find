@@ -102,7 +102,12 @@ const strings = new LocalizedStrings({
         addChildText : "Filling in the information below then click the Save button and enter the code in the application on your child's phone.",
         name : "Name",
         enterName : "Enter name",
-        validateCode  :"Confirm your code"
+        validateCode  :"Confirm your code",
+        ageRange : "Please select an age range",
+        enterChildName: "Please enter the name of the child",
+        noUser  :"User not found",
+        enterAreaName : "Please enter your realm name",
+        Signup : "Sign up"
 
     },
     tr: {
@@ -202,7 +207,13 @@ const strings = new LocalizedStrings({
         addChildText  :"Aşağıdaki bilgileri doldurduktan sonra Kaydet butonuna tıklayıp kodu çocuğunuzun telefonundaki uygulama giriniz",
         name : "İsim",
         enterName : "İsim gir",
-        validateCode : "Kodu onayla"
+        validateCode : "Kodu onayla",
+        ageRange : "Lütfen yaş aralığı seçiniz",
+        enterChildName : "Lütfen çocuğun ismini giriniz",
+        noUser : "Kullanıcı bulanamadı",
+        enterAreaName  :"Lütfen bölge adı giriniz",
+        Signup  :"Kaydol"
+        
 
     },
     de: {
@@ -302,7 +313,12 @@ const strings = new LocalizedStrings({
         addChildText : "Füllen Sie die folgenden Informationen aus Klicken Sie dann auf die Schaltfläche Speichern und geben Sie den Code in die Anwendung auf dem Telefon Ihres Kindes ein.",
         name : "Name",
         enterName : "Name eingeben",
-        validateCode : "Bestätigen Sie Ihren Code"
+        validateCode : "Bestätigen Sie Ihren Code",
+        ageRange : "Bitte wählen Sie eine Altersgruppe",
+        enterChildName : "Bitte geben Sie den Namen des Kindes ein",
+        noUser  : "Benutzer wurde nicht gefunden",
+        enterAreaName  :"Bitte geben Sie Ihren Reichsnamen ein",
+        Signup : "Anmelden"
 
 
     }

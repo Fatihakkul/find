@@ -32,7 +32,7 @@ const styles =StyleSheet.create({
         borderWidth : 1,
         borderRadius : 40,
         paddingLeft : 20,
-        height : 37,
+        height : 45,
         marginRight  : 20
     },
     chatContainer : {

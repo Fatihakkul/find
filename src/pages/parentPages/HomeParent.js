@@ -207,6 +207,7 @@ const HomeParent = props => {
 
 
   useEffect(() => {
+    console.log(state.type , "sd")
     dispatch({ type: "SET_PACKAGE", package: true })
     setPackage(true)
   }, [])

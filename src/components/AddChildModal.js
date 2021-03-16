@@ -37,7 +37,7 @@ const AddChildModal = props => {
         console.log(state, "token")
         getCode()
 
-    }, [])
+    }, [visible])
 
     async function uploadImage() {
         const data = new FormData()
@@ -113,10 +113,10 @@ const AddChildModal = props => {
                 setVisible(!visible)
                 setLoading(false)
             }else {
-                alert("Lütfen yaş aralığı seçiniz")
+                alert(strings.ageRange)
             }
         }else {
-            alert("Lütfen çocuğun ismini giriniz")
+            alert(strings.enterChildName)
         }
        
     }

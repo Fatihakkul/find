@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, version } from 'react'
-import { SafeAreaView, View, Text, Pressable, ImageBackground, PermissionsAndroid, Keyboard, Linking, Dimensions, Image, TextInput, Platform, StatusBar, Alert } from 'react-native'
+import { SafeAreaView, View, Text, Pressable, ImageBackground, PermissionsAndroid, Keyboard, Linking, Dimensions, Image, TextInput, Platform, StatusBar, Alert, ActivityIndicator } from 'react-native'
 import Axios from 'axios'
 import Geolocation from '@react-native-community/geolocation'
 import Context from '../../context/store'
@@ -38,6 +38,7 @@ const ConnectionCode = props => {
   const [visible, setVisible] = useState(false)
   const [code, setCode] = useState("")
   const [pushUserToken, setPushUserToken] = useState(null)
+  const [loading,setLoadin] = useState(false)
 
   const sendSMS = async () => {
     Linking.openURL('smsto:' + undefined + `?body=${code}`);
@@ -103,10 +104,10 @@ const ConnectionCode = props => {
   };
 
   const getFamily = async (id) => {
-    console.log(id,"asd")
+    console.log(id, "asd")
     let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
       parentId: id
-    }).catch(err=>console.log(err, "-----"))
+    }).catch(err => console.log(err, "-----"))
     console.log(response.data.data.response, "family")
     dispatch({ type: "SET_FAMILY", family: response.data.data.response })
   }
@@ -178,33 +179,36 @@ const ConnectionCode = props => {
   }
 
   const connect = async () => {
+    setLoadin(true)
     console.log(pushUserToken, "aswqwe")
     let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
       code: parseInt(code),
       pushToken: pushUserToken
     }).catch(err => console.log(err, "err"))
 
-     
 
 
-    console.log(response,"====")
+
+    console.log(response, "====")
     if (response.data.responseStatus === 200) {
       const decoded = jwtDecode(response.data.data.response)
       console.log(response.data.data.response, "okeee")
-      if(decoded.data.length === 0){
-        
-        Alert.alert(strings.errorCode ,strings.errorCodeText)
+      if (decoded.data.length === 0) {
+
+        Alert.alert(strings.errorCode, strings.errorCodeText)
+        setLoadin(false)
       }
       getFamily(decoded.data[0].parentId)
       setVisible(false)
       dispatch({ type: "SET_USER", user: decoded })
       dispatch({ type: "SET_TOKEN", token: response.data.data.response })
       AsyncStorage.setItem("@CHILDTOKEN", response.data.data.response)
+      setLoadin(false)
       props.navigation.navigate("home")
 
     }
   }
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={COLORS.primary} />
@@ -237,7 +241,11 @@ const ConnectionCode = props => {
           <View style={{ position: "absolute", bottom: keyboardShown ? -100 : 40, right: 20 }}>
             <Pressable onPress={connect}>
               <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: COLORS.white, alignItems: "center", justifyContent: "center" }}>
-                <Icon name="chevron-forward-outline" />
+
+                { loading ? <ActivityIndicator size="large" color={COLORS.primary} /> : 
+
+                  <Icon name="chevron-forward-outline" />
+                }
               </View>
             </Pressable>
           </View>

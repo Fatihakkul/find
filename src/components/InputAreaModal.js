@@ -14,29 +14,35 @@ const InputAreaModal =props=>{
     
     const [loading , setlLoading] = useState(false)
     const [visible,setVisible]=useState(true)
-    const [area,setArea] = useState()
+    const [area,setArea] = useState("")
     const {state,dispatch} = useContext(Context)
 
     
     
     const setLocation=async()=>{
         console.log(area,props.coordinate)
-        setlLoading(true)
-        let response = await Axios.post(API.base_url + API.createLocation,  {
-            childrenId : props.childrendId ,
-            name : area,
-            longitude : props.coordinate.longitude ,
-            latitude : props.coordinate.latitude,
-        },{
-            headers : { 
-                 'Authorization': `bearer ${state.token}`
-                }
-        })
-        console.log(response.data)
-        dispatch({type : "SET_AREA" , area : response.data.data.response})
-        
-        setlLoading(false)
-        setVisible(!visible)
+        if(area !== "" ){
+            setlLoading(true)
+            let response = await Axios.post(API.base_url + API.createLocation,  {
+                childrenId : props.childrendId ,
+                name : area,
+                longitude : props.coordinate.longitude ,
+                latitude : props.coordinate.latitude,
+            },{
+                headers : { 
+                     'Authorization': `bearer ${state.token}`
+                    }
+            })
+            console.log(response.data)
+            dispatch({type : "SET_AREA" , area : response.data.data.response})
+            
+            setlLoading(false)
+            setVisible(!visible)
+        }else {
+            setlLoading(false)
+            alert(strings.enterAreaName)
+        }
+       
     }
 
     return(

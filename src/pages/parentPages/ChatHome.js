@@ -95,8 +95,8 @@ const ChatHome = (props) => {
                         <ActivityIndicator color={COLORS.primary} size="large" />
 
                         :
-                        <View style={[styles.emptyView, { marginTop: 20 }]}>
-                            <Text style={[styles.title, { color: COLORS.white }]}>{strings.addFamily}</Text>
+                        <View style={[styles.emptyView, { marginTop: 100  , alignItems  :"center",justifyContent:"center" }]}>
+                            <Text style={[styles.title, { color: COLORS.white  , textAlign : "center"}]}>{strings.addFamily}</Text>
                         </View>
                 }
                 <ScrollView horizontal={true} contentContainerStyle={{ paddingLeft: 20, alignItems: "center" }} style={{ height: 80, borderBottomLeftRadius: 25, borderBottomRightRadius: 25, elevation: 1, width: width, backgroundColor: "rgba(255,255,255,0.85)", alignSelf: "center", position: "absolute", top: Platform.OS === "android" ? 0 : 0 }}>

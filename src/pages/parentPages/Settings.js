@@ -47,6 +47,7 @@ const Settings = props => {
     const [child, setChild] = useState(null)
     const [lang, setLang] = useState(strings.getLanguage())
     useEffect(() => {
+        console.log(state.type)
         Geolocation.getCurrentPosition(succes => {
             console.log(succes, "coordinate")
         })

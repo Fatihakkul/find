@@ -45,21 +45,26 @@ const ChildInfoModal = (props) => {
     }
 
     const saveData = async () => {
-        setLoading(true)
-        let upload = await Axios.post(API.base_url + "/home" + API.update_user, {
-            role: "children",
-            id: props.data.id,
-            picture: `http://yatoo.demeli.org/uploads/${picture.data}`
-        })
-        let newData = await Axios.post(API.base_url + API.get_family, {
-            parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
-        })
-
-        dispatch({ type: "SET_FAMILY", family: newData.data.data.response })
-        console.log(newData,"newData")
-        setLoading(false)
-        setVisible(!visible)
-        console.log(upload)
+        if(picture != null){
+            setLoading(true)
+            let upload = await Axios.post(API.base_url + "/home" + API.update_user, {
+                role: "children",
+                id: props.data.id,
+                picture: `http://yatoo.demeli.org/uploads/${picture.data}`
+            })
+            let newData = await Axios.post(API.base_url + API.get_family, {
+                parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
+            })
+    
+            dispatch({ type: "SET_FAMILY", family: newData.data.data.response })
+            console.log(newData,"newData")
+            setLoading(false)
+            setVisible(!visible)
+        }else {
+            setVisible(!visible)
+            setLoading(false)
+        }
+       
     }
 
     return (

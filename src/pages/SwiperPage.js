@@ -199,7 +199,7 @@ const SwiperPage = (props) => {
         <View style={styles.slide3}>
 
           <Image style={{ width: width, height: height * 0.33, resizeMode: "cover", position: "absolute", top: 0, right: 0 }} source={require('../assets/slide.png')} />
-          <Text style={styles.title}>{strings.swipperSixTitle}</Text>
+          <Text style={styles.title}>{strings.swipperSixtitle}</Text>
           <View style={styles.textContainer}>
             <Text style={styles.descriptions}>{strings.swipperSix}</Text>
 

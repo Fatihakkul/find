@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
+import React, { useState ,useContext , useEffect} from 'react'
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput, Image, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import COLORS from '../../style/Colors'
 import Axios from "axios"
+import Context from "../../context/store"
 import API from "../../data/api"
 import strings from '../../strings'
+import jwt_decode from "jwt-decode"
+import AsyncStoreage from "@react-native-async-storage/async-storage"
+
 
 const { width, height } = Dimensions.get("window")
 
@@ -11,47 +15,56 @@ const EmailVerification = props => {
 
     
     const [code, setCode] = useState("")
+    const [loading , setLoading ] = useState(false)
+    const user = props.route.params.item
+    const {state,dispatch}=useContext(Context)
+
+
    
-    const validate = (text) => {
 
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (reg.test(text) === false) {
-            return false;
-        }
-        else {
+    const login = async () => {
 
-            return true
-        }
-    }
+        setLoading(true)
 
-    const signin = async () => {
         let responsePost = await Axios.post(API.base_url + API.signupsignin,
             {
-                type: 1,
-                email: email,
-                name: password
+                type: user.type,
+                email: user.email,
+                password: user.password,
+                pushToken: user.pushToken
+            }).catch(err=>{
+                console.log("err")
+                console.log(err)
+                alert(strings.error)
+                setLoading(false)
             })
-        console.log(responsePost, "userdata")
+
+        console.log(responsePost)
         if (responsePost.data.responseStatus === 200) {
+            console.log("1")
+            const decoded = jwt_decode(responsePost.data.data.response)
+            dispatch({ type: "SET_TYPE", tip: 1 })
+            dispatch({ type: "SET_USER", user: decoded })
+            dispatch({ type: "SET_TOKEN", token: responsePost.data.data.response })
 
-            //   const decoded = jwt_decode(responsePost.data.data.response)
-            //   dispatch({  type: "SET_TYPE" , tip : responsePost.data.data.type})
-            //   dispatch({  type: "SET_USER", user: decoded })
-            //   dispatch({  type: "SET_TOKEN", token: responsePost.data.data.response })
-            //   console.log(responsePost.data.data.type)
-
-            //   AsyncStoreage.setItem("@TYPE", "1")
-            //   if(responsePost.data.data.type === 1) {
-            //     AsyncStoreage.setItem("@TOKEN", responsePost.data.data.response)
-            //     //AsyncStoreage.setItem("@TYPE", response.data.data.type.toString())
-            //   }
+            AsyncStoreage.setItem("@TYPE", "1")
+            if (responsePost.data.data.type === 1) {
+                console.log("2")
+                AsyncStoreage.setItem("@TOKEN", responsePost.data.data.response)
+                AsyncStoreage.setItem("@TYPE", responsePost.data.data.type.toString())
+            }
+            props.navigation.navigate('bottomTab')
         }
+        setLoading(false)
 
     }
 
     const signIn = async () => {
         if(code != ""){
-            alert(code)
+            const decoded = jwt_decode(state.token)
+            if(code === decoded.code.toString()){
+                login()
+            }
         }else   
             alert(strings.error)
     }
@@ -73,11 +86,14 @@ const EmailVerification = props => {
                             onChangeText={(t)=>setCode(t)}
                         />
                     </View>
-                    <TouchableOpacity onPress={signIn} >
+                  {loading ?
+                  
+                    <ActivityIndicator color={COLORS.white} size="large" />
+                  :<TouchableOpacity onPress={signIn} >
                         <View style={styles.button}>
                             <Text style={styles.title}>{strings.validateCode}</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
 
 
