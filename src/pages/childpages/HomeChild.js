@@ -47,6 +47,9 @@ import {isPointWithinRadius} from "geolib"
 import RNSwitchAudioOutput from "react-native-switch-audio-output"
 import strings from '../../strings';
 
+import GeolocationService from 'react-native-geolocation-service';
+
+
 
 
 let isFront = true
@@ -183,7 +186,8 @@ const taskRandom = async taskData => {
             
         
           //  console.log(current)
-            Geolocation.getCurrentPosition(async success => {
+            GeolocationService.getCurrentPosition(async success => {
+            
              //   const konum = geolib.isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , sdfsdf, 10 )
                 for (let i = 0; i < areaList.length; i++) {
                     console.log("merhaba")
@@ -196,7 +200,7 @@ const taskRandom = async taskData => {
                             title : childName,
                             message : `${element.name} geldi` 
                         })
-                     //   console.log(response, "post response ======")
+                   
                     }
                     if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
                      //   console.log("alana girdi")
@@ -223,10 +227,8 @@ const taskRandom = async taskData => {
             }, (err) => {
                 console.log(err)
 
-
             }, {
-                enableHighAccuracy: false,
-                timeout: 2000
+                enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 
             })
 
 

@@ -67,6 +67,31 @@ const ChildInfoModal = (props) => {
        
     }
 
+    const deleteChild =async()=>{
+        console.log("sss")
+        setLoading(true)
+        let responese = await Axios.post(API.base_url + "/home" +API.update_user,{
+            role: "children",
+            id: props.data.id,
+            deleted : true
+        }).catch(err=>{
+            alert(strings.error)
+            setLoading(false)
+            setVisible(!visible)
+        })
+        console.log(responese,"ass")
+        let newData = await Axios.post(API.base_url + API.get_family, {
+            parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
+        }).catch(err=>{
+            alert(strings.error)
+            setLoading(false)
+            setVisible(!visible)
+        })
+        dispatch({ type: "SET_FAMILY", family: newData.data.data.response })
+        setLoading(false)
+        setVisible(!visible)
+    }
+
     return (
         <Modal
             isVisible={props.isVisible === visible ? true : false}
@@ -100,11 +125,18 @@ const ChildInfoModal = (props) => {
                     />
                 </View>
                 {loading ? <ActivityIndicator color={COLORS.primary} /> :
+                    <View style={{flexDirection: "row", alignItems: "center" ,justifyContent:"space-evenly",width:width*0.8 , marginTop :5}}>
                     <Pressable onPress={saveData}>
                         <View style={styles.button}>
                             <Text style={styles.text}>{strings.save}</Text>
                         </View>
                     </Pressable>
+                    <Pressable onPress={deleteChild}>
+                        <View style={styles.button}>
+                            <Text style={styles.text}>{strings.delete}</Text>
+                        </View>
+                    </Pressable>
+                    </View>
                 }
 
             </View>
@@ -129,7 +161,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1
     },
     button: {
-        width: width * 0.5,
+        width: width * 0.3,
         paddingVertical: 10,
         backgroundColor: COLORS.lightGreen,
         marginTop: 10,

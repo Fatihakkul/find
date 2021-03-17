@@ -6,6 +6,7 @@ import API from "../data/api"
 import strings from '../strings'
 
 import AsyncStoreage from "@react-native-async-storage/async-storage"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import jwt_decode from "jwt-decode";
 import * as Notifications from 'expo-notifications';
@@ -168,8 +169,8 @@ const Register = props => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={{ flex: 1, backgroundColor: COLORS.lightGreen }} >
+        <ScrollView style={{ flex: 1 , backgroundColor: COLORS.lightGreen}}>
+            <KeyboardAwareScrollView  contentContainerStyle={{flex : 1}} style={{  backgroundColor: COLORS.lightGreen }} >
                 <View style={styles.container}>
 
 
@@ -243,8 +244,8 @@ const Register = props => {
 
                     </View>
                 </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+            </KeyboardAwareScrollView>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({

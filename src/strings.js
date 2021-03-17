@@ -107,7 +107,8 @@ const strings = new LocalizedStrings({
         enterChildName: "Please enter the name of the child",
         noUser  :"User not found",
         enterAreaName : "Please enter your realm name",
-        Signup : "Sign up"
+        Signup : "Sign up",
+        delete : "DELETE"
 
     },
     tr: {
@@ -212,7 +213,8 @@ const strings = new LocalizedStrings({
         enterChildName : "Lütfen çocuğun ismini giriniz",
         noUser : "Kullanıcı bulanamadı",
         enterAreaName  :"Lütfen bölge adı giriniz",
-        Signup  :"Kaydol"
+        Signup  :"Kaydol",
+        delete : "SİL"
         
 
     },
@@ -318,7 +320,8 @@ const strings = new LocalizedStrings({
         enterChildName : "Bitte geben Sie den Namen des Kindes ein",
         noUser  : "Benutzer wurde nicht gefunden",
         enterAreaName  :"Bitte geben Sie Ihren Reichsnamen ein",
-        Signup : "Anmelden"
+        Signup : "Anmelden",
+        delete : "LÖSCHEN"
 
 
     }
