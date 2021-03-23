@@ -166,7 +166,7 @@ const Login = props => {
         type: 0,
         email: data.user.email,
         name: data.user.name,
-        pushToken : pushTokenUser
+        pushToken : pushTokenUser  
       })
      
     console.log("desire")
@@ -203,14 +203,14 @@ const Login = props => {
           <View>
             <Image style={{width:400,height:300,marginBottom:20}}  source={require("../../assets/Family.png")} />
           </View>
-          <Pressable onPress={onGoogleButtonPress}>
+          <Pressable onPress={pushTokenUser != null ? onGoogleButtonPress : ()=>alert(strings.error)}>
             <View style={[styles.googleLogin,{borderColor : COLORS.red,borderWidth:2}]}>
               <Icon name="google" color={COLORS.red} size={25} style={{ position: "absolute", left: 10 }} />
               <Text style={[styles.title,{color  : COLORS.red}]}>{strings.loginWithgoogle}</Text>
             </View>
           </Pressable>
 
-          <Pressable onPress={onFacebookButtonPress}>
+          <Pressable onPress={pushTokenUser != null ? onFacebookButtonPress : ()=>alert(strings.error)}>
             <View style={[styles.googleLogin,{borderColor:COLORS.facebookBlue, borderWidth:2} ]} >
               <Icon name="facebook" color={COLORS.facebookBlue} size={25} style={{ position: "absolute", left: 10 }} />
               <Text style={[styles.title,{color : COLORS.facebookBlue}]}>{strings.loginWithfacebook}</Text>

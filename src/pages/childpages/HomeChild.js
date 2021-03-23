@@ -187,7 +187,12 @@ const taskRandom = async taskData => {
         
           //  console.log(current)
             GeolocationService.getCurrentPosition(async success => {
-            
+                socketClient.emit("live_location", {
+                    location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
+                    uniqueId: childId,
+                    parentUniqueId: parentId,
+                    level: level
+                })
              //   const konum = geolib.isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , sdfsdf, 10 )
                 for (let i = 0; i < areaList.length; i++) {
                     console.log("merhaba")
@@ -199,7 +204,7 @@ const taskRandom = async taskData => {
                             parentUniqueId : parentId,
                             title : childName,
                             message : `${element.name} geldi` 
-                        })
+                        }).catch(err=>console.log(err))
                    
                     }
                     if(current === false && isPointWithinRadius({latitude : success.coords.latitude , longitude : success.coords.longitude} , {latitude : element.latitude,longitude : element.longitude}, 10) === true){
@@ -208,7 +213,7 @@ const taskRandom = async taskData => {
                             parentUniqueId : parentId,
                             title : childName,
                             message : `${element.name} çıktı` 
-                        })
+                        }).catch(err=>console.log(err))
                     //    console.log(response, "post response >>>>======")
                     }
 
@@ -218,17 +223,12 @@ const taskRandom = async taskData => {
                     
                 }
 
-                socketClient.emit("live_location", {
-                    location: { latitude: success.coords.latitude, longitude: success.coords.longitude },
-                    uniqueId: childId,
-                    parentUniqueId: parentId,
-                    level: level
-                })
+               
             }, (err) => {
                 console.log(err)
 
             }, {
-                enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 
+                enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 ,accuracy : {android : "high"}
             })
 
 
@@ -380,6 +380,7 @@ const HomeChild = props => {
 
     useEffect(() => {
 
+       
         // let response = await Axios.post(API.base_url + API.getLocation, {
         //     childrenId: child.id,
         // }, {

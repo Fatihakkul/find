@@ -11,6 +11,7 @@ import { Constants } from 'react-native-unimodules';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import strings from '../strings'
+import API from '../data/api'
 
 const { width, height } = Dimensions.get("window")
 
@@ -128,7 +129,7 @@ const SplashScreen = (props) => {
 
     const connection = async (e, decoded) => {
         console.log(e)
-        let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
+        let response = await Axios.post(API.base_url+'/children/childrenlogin', {
             code: parseInt(e)
         }).catch(err => console.log(err, "err"))
 
@@ -141,7 +142,7 @@ const SplashScreen = (props) => {
     }
 
     const getFamily = async (id) => {
-        let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
+        let response = await Axios.post(API.base_url +"/children/getfamily", {
             parentId: id
         })
         console.log(response.data.data.response, "family")

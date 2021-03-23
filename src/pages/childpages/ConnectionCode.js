@@ -17,6 +17,7 @@ import strings from "../../strings"
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+import API from '../../data/api'
 
 const width = Dimensions.get("window").width
 
@@ -105,7 +106,7 @@ const ConnectionCode = props => {
 
   const getFamily = async (id) => {
     console.log(id, "asd")
-    let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
+    let response = await Axios.post(API.base_url + "/children/getfamily", {
       parentId: id
     }).catch(err => console.log(err, "-----"))
     console.log(response.data.data.response, "family")
@@ -162,7 +163,7 @@ const ConnectionCode = props => {
 
   const connection = async (e) => {
     console.log(e)
-    let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
+    let response = await Axios.post(API.base_url+'/children/childrenlogin', {
       code: parseInt(e.data)
     }).catch(err => console.log(err, "err"))
 
@@ -181,7 +182,7 @@ const ConnectionCode = props => {
   const connect = async () => {
     setLoadin(true)
     console.log(pushUserToken, "aswqwe")
-    let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
+    let response = await Axios.post(API.base_url + '/children/childrenlogin', {
       code: parseInt(code),
       pushToken: pushUserToken
     }).catch(err => console.log(err, "err"))

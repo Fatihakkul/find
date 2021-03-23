@@ -572,8 +572,8 @@ const HomeParent = props => {
 
                   <Polyline
 
-                    coordinates={[...state.locationHistory.map((item) => item.location), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
-                    strokeColor={Colors.primary}
+                    coordinates={[...state.locationHistory.map((item) => item.location).sort((a,b)=>a.id - b.id), ...(state.location).filter(item => choosed != null && item.uniqueId === choosed.uniqueId).map(obj => obj.location)]}
+                    strokeColor={Colors.black}
                     strokeColors={[
                       '#7F0000',
                       '#00000000',
@@ -583,6 +583,8 @@ const HomeParent = props => {
                       '#7F0000'
                     ]}
                     strokeWidth={3}
+                    miterLimit={5}
+                    lineJoin={"round"}
                   />
                   {
                     location.uniqueId === undefined && state.locationHistory.length > 0 ?

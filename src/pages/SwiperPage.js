@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
     color: "red"
   },
   title: {
-    color: COLORS.demoPrimary,
-    fontSize: 18,
+    color: COLORS.white,
+    fontSize: 20,
     fontWeight: "bold",
     //  fontFamily:"Montserrat-Regular"
   },

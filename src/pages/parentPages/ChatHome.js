@@ -8,6 +8,7 @@ import COLORS from '../../style/Colors'
 import strings from '../../strings'
 import * as Notifications from "expo-notifications"
 import { useIsFocused } from "@react-navigation/native";
+import API from '../../data/api'
 
 const { width, height } = Dimensions.get('window')
 
@@ -58,7 +59,7 @@ const ChatHome = (props) => {
     const getFamily = async () => {
         console.log("err")
         setLoading(true)
-        let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
+        let response = await Axios.post( API.base_url+"/children/getfamily", {
             parentId: state.type === 1 ? state.user.userData[0].family.parents[0].id : state.user.parentData.id
         })
         setChildArray(response.data.data.response)

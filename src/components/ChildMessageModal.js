@@ -4,6 +4,7 @@ import Modal from 'react-native-modal'
 import Context from '../context/store'
 import strings from '../strings'
 import COLORS from '../style/Colors' 
+import AsyncStoreage from "@react-native-async-storage/async-storage"
 
 const width = Dimensions.get('window').width
 
@@ -14,8 +15,12 @@ const ChildMessageModal =(props)=>{
     const [visible,setVisible]=useState(true)
     
     const setContextData =()=>{
-        dispatch({type : "SET_MESSAGE" , message : value})
-        setVisible(!visible)
+        if(value != ""){
+            dispatch({type : "SET_MESSAGE" , message : value})
+            setVisible(!visible)
+            AsyncStoreage.setItem("@CHILDFASTMESSAGE", value )
+        }else setVisible(!visible)
+    
     }
 
     return(
@@ -54,7 +59,7 @@ const ChildMessageModal =(props)=>{
 }
 const styles = StyleSheet.create({
     container : {
-        width : width*0.85,
+        width : width*0.9,
         height :270,
         backgroundColor :COLORS.white,
         borderRadius : 10,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
         justifyContent : "center"
     },
     inputContainer : {
-        backgroundColor : COLORS.gray,
+        backgroundColor : COLORS.lightGray,
         width : width*0.75,
         borderRadius : 10,
         paddingLeft : 15,
@@ -83,7 +88,8 @@ const styles = StyleSheet.create({
     },
     text : {
         fontSize : 18,
-        letterSpacing : 0.7
+        letterSpacing : 0.7,
+        textAlign  :"center"
     },
     buttonsContainer : {
         width : "100%",

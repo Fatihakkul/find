@@ -7,6 +7,7 @@ import styles from '../../style/parentStyle/ChooseChildStyle'
 import COLORS from '../../style/Colors'
 import * as Notifications from "expo-notifications"
 import strings from '../../strings'
+import API from '../../data/api'
 
 const ChatHomeChild =(props)=>{
 
@@ -61,7 +62,7 @@ const ChatHomeChild =(props)=>{
     }
     const getFamily =async()=>{
         setLoading(true)
-        let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily",{
+        let response = await Axios.post(API.base_url + "/children/getfamily",{
             parentId : state.family[0].parentId
          })
         setChildArray(response.data.data.response)

@@ -12,6 +12,7 @@ import { useIsFocused } from "@react-navigation/native"
 import {RNCamera } from "react-native-camera"
 
 import COLORS from '../../style/Colors'
+import API from '../../data/api'
 
 const { width, height } = Dimensions.get("window")
 
@@ -74,7 +75,7 @@ const QRCodeScannerPage = props => {
     }
 
     const getFamily = async (id) => {
-        let response = await Axios.post("https://wherismykid.herokuapp.com/api/children/getfamily", {
+        let response = await Axios.post( API.base_url+"/children/getfamily", {
             parentId: id
         })
         console.log(response.data.data.response, "family")
@@ -95,7 +96,7 @@ const QRCodeScannerPage = props => {
 
     const connection = async (e) => {
         console.log(e)
-        let response = await Axios.post('https://wherismykid.herokuapp.com/api/children/childrenlogin', {
+        let response = await Axios.post( API.base_url+'/children/childrenlogin', {
             code: parseInt(e.data),
             pushToken: pushToken
         }).catch(err => console.log(err, "err"))
